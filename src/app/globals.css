@@ -1,0 +1,52 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-obsidian text-cream;
+  }
+
+  ::selection {
+    @apply bg-gold/30 text-cream;
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #0a0a0a;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #c9a86c;
+    border-radius: 3px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #d4b87d;
+  }
+}
+
+@layer components {
+  .glass-card {
+    @apply bg-smoke/40 backdrop-blur-md border border-white/5 rounded-xl;
+  }
+
+  .gold-gradient {
+    @apply bg-gradient-to-r from-gold-dark via-gold to-gold-light bg-clip-text text-transparent;
+  }
+
+  .btn-primary {
+    @apply bg-gold text-obsidian font-medium px-8 py-3 rounded-sm
+           hover:bg-gold-light transition-colors duration-300
+           tracking-wider uppercase text-sm;
+  }
+
+  .btn-outline {
+    @apply border border-gold text-gold px-8 py-3 rounded-sm
+           hover:bg-gold hover:text-obsidian transition-all duration-300
+           tracking-wider uppercase text-sm;
+  }
+}
