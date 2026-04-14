@@ -6,7 +6,8 @@ interface CloudinaryLoaderParams {
   quality?: number;
 }
 
-export function cloudinaryLoader({ src, width, quality }: CloudinaryLoaderParams): string {
+// Default export required by next.config.js loaderFile
+export default function cloudinaryLoader({ src, width, quality }: CloudinaryLoaderParams): string {
   const params = ["f_auto", `q_${quality || "auto"}`, `w_${width}`];
   return `https://res.cloudinary.com/${CLOUD_NAME}/image/upload/${params.join(",")}/${src}`;
 }

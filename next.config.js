@@ -1,6 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
+    loader: "custom",
+    loaderFile: "./src/lib/cloudinary.ts",
     remotePatterns: [
       {
         protocol: "https",

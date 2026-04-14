@@ -5,7 +5,6 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import type { Scent } from "@/types";
 import { useCartStore } from "@/store/cart";
-import { cloudinaryLoader } from "@/lib/cloudinary";
 import { formatCurrency } from "@/lib/utils";
 import { FreshlyPouredBadge } from "./FreshlyPouredBadge";
 
@@ -37,7 +36,6 @@ export function ProductCard({ scent, index }: ProductCardProps) {
           {/* Image */}
           <div className="relative aspect-square overflow-hidden bg-smoke">
             <Image
-              loader={cloudinaryLoader}
               src={scent.cloudinaryId}
               alt={scent.name}
               fill

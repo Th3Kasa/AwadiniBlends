@@ -3,7 +3,7 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import scents from "@/data/scents.json";
 import type { Scent } from "@/types";
-import { cloudinaryLoader, getProductImageUrl } from "@/lib/cloudinary";
+import { getProductImageUrl } from "@/lib/cloudinary";
 import { formatCurrency } from "@/lib/utils";
 import { FreshlyPouredBadge } from "@/components/product/FreshlyPouredBadge";
 import { AddToCartButton } from "./AddToCartButton";
@@ -44,7 +44,6 @@ export default function ProductPage({ params }: Props) {
           {/* Image */}
           <div className="relative aspect-square rounded-2xl overflow-hidden bg-smoke">
             <Image
-              loader={cloudinaryLoader}
               src={scent.cloudinaryId}
               alt={scent.name}
               fill
