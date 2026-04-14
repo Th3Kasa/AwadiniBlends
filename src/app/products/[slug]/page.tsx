@@ -44,7 +44,7 @@ export default function ProductPage({ params }: Props) {
           {/* Image */}
           <div className="relative aspect-square rounded-2xl overflow-hidden bg-smoke">
             <Image
-              src={scent.cloudinaryId}
+              src={getProductImageUrl(scent.cloudinaryId, 900)}
               alt={scent.name}
               fill
               className="object-cover"

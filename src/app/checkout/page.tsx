@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { useCartStore } from "@/store/cart";
 import { SquarePaymentForm } from "@/components/checkout/SquarePaymentForm";
+import { getProductImageUrl } from "@/lib/cloudinary";
 import { formatCurrency } from "@/lib/utils";
 
 interface CustomerForm {
@@ -301,7 +302,7 @@ export default function CheckoutPage() {
                   <li key={item.scent.slug} className="flex gap-3 items-center">
                     <div className="relative w-14 h-14 rounded-lg overflow-hidden bg-smoke flex-shrink-0">
                       <Image
-                        src={item.scent.cloudinaryId}
+                        src={getProductImageUrl(item.scent.cloudinaryId, 56)}
                         alt={item.scent.name}
                         fill
                         className="object-cover"
