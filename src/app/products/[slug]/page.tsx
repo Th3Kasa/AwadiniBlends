@@ -3,8 +3,9 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import scents from "@/data/scents.json";
 import type { Scent } from "@/types";
-import { getProductImageUrl } from "@/lib/cloudinary";
 import { formatCurrency } from "@/lib/utils";
+
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "";
 import { FreshlyPouredBadge } from "@/components/product/FreshlyPouredBadge";
 import { AddToCartButton } from "./AddToCartButton";
 
@@ -28,7 +29,7 @@ export function generateMetadata({ params }: Props): Metadata {
     openGraph: {
       title: `${scent.name} | Awadini Fragrance Blends`,
       description: scent.tagline,
-      images: [getProductImageUrl(scent.cloudinaryId, 1200)],
+      images: [`${SITE_URL}${scent.image}`],
     },
   };
 }
@@ -44,7 +45,7 @@ export default function ProductPage({ params }: Props) {
           {/* Image */}
           <div className="relative aspect-square rounded-2xl overflow-hidden bg-smoke">
             <Image
-              src={getProductImageUrl(scent.cloudinaryId, 900)}
+              src={scent.image}
               alt={scent.name}
               fill
               className="object-cover"

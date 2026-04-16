@@ -11,7 +11,7 @@
       "heart": ["White Floral", "Pear"],
       "base": ["Light Musk", "Cedar"]
     },
-    "cloudinaryId": "awadini/green-apple",
+    "image": "/images/scents/green-apple.jpg",
     "weight": "10ml",
     "inStock": true
   },
@@ -27,7 +27,7 @@
       "heart": ["Damascus Rose", "Peony"],
       "base": ["Vanilla Bean", "Sandalwood"]
     },
-    "cloudinaryId": "awadini/strawberry-rose",
+    "image": "/images/scents/strawberry-rose.jpg",
     "weight": "10ml",
     "inStock": true
   },
@@ -43,7 +43,7 @@
       "heart": ["Caramel", "Tonka Bean"],
       "base": ["Amber", "White Musk"]
     },
-    "cloudinaryId": "awadini/vanilla",
+    "image": "/images/scents/vanilla.jpg",
     "weight": "10ml",
     "inStock": true
   },
@@ -59,7 +59,7 @@
       "heart": ["Jasmine", "Lily of the Valley"],
       "base": ["Cedarwood", "Amber"]
     },
-    "cloudinaryId": "awadini/musk",
+    "image": "/images/scents/musk.jpg",
     "weight": "10ml",
     "inStock": true
   },
@@ -75,7 +75,7 @@
       "heart": ["Rose Absolute", "Geranium"],
       "base": ["Soft Musk", "Cedarwood"]
     },
-    "cloudinaryId": "awadini/tea-rose",
+    "image": "/images/scents/tea-rose.jpg",
     "weight": "10ml",
     "inStock": true
   },
@@ -91,7 +91,7 @@
       "heart": ["Jasmine", "Orange Blossom"],
       "base": ["Honey", "Soft Woods"]
     },
-    "cloudinaryId": "awadini/honeysuckle",
+    "image": "/images/scents/honeysuckle.jpg",
     "weight": "10ml",
     "inStock": true
   },
@@ -107,7 +107,7 @@
       "heart": ["Rose", "Lavender"],
       "base": ["Patchouli", "Vetiver"]
     },
-    "cloudinaryId": "awadini/rose-geranium",
+    "image": "/images/scents/rose-geranium.jpg",
     "weight": "10ml",
     "inStock": true
   },
@@ -123,7 +123,7 @@
       "heart": ["Lily", "Violet"],
       "base": ["Sheer Musk", "White Tea"]
     },
-    "cloudinaryId": "awadini/forget-me-not",
+    "image": "/images/scents/forget-me-not.jpg",
     "weight": "10ml",
     "inStock": true
   }

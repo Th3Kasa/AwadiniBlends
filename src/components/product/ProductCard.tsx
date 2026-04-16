@@ -5,7 +5,6 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import type { Scent } from "@/types";
 import { useCartStore } from "@/store/cart";
-import { getProductImageUrl } from "@/lib/cloudinary";
 import { formatCurrency } from "@/lib/utils";
 import { FreshlyPouredBadge } from "./FreshlyPouredBadge";
 
@@ -37,7 +36,7 @@ export function ProductCard({ scent, index }: ProductCardProps) {
           {/* Image */}
           <div className="relative aspect-square overflow-hidden bg-smoke">
             <Image
-              src={getProductImageUrl(scent.cloudinaryId, 600)}
+              src={scent.image}
               alt={scent.name}
               fill
               className="object-cover transition-transform duration-700 group-hover:scale-105"

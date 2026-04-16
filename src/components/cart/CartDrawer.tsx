@@ -5,7 +5,6 @@ import Link from "next/link";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { useCartStore } from "@/store/cart";
-import { getProductImageUrl } from "@/lib/cloudinary";
 import { formatCurrency } from "@/lib/utils";
 
 export function CartDrawer() {
@@ -119,7 +118,7 @@ export function CartDrawer() {
                     >
                       <div className="relative w-20 h-20 rounded-lg overflow-hidden bg-smoke flex-shrink-0">
                         <Image
-                          src={getProductImageUrl(item.scent.cloudinaryId, 80)}
+                          src={item.scent.image}
                           alt={item.scent.name}
                           fill
                           className="object-cover"

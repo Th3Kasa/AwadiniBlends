@@ -12,7 +12,7 @@ export interface Scent {
   tagline: string;
   description: string;
   notes: ScentNotes;
-  cloudinaryId: string;
+  image: string;
   weight: string;
   inStock: boolean;
 }
