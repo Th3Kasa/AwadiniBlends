@@ -2,7 +2,7 @@
   {
     "slug": "green-apple",
     "name": "Green Apple",
-    "price": 25.00,
+    "price": 12.00,
     "tier": "core",
     "tagline": "Crisp orchard freshness that lingers all day",
     "description": "A vibrant burst of freshly picked green apples blended with subtle citrus undertones. This invigorating scent captures the essence of a crisp morning in an Australian orchard, delivering a clean and refreshing fragrance that melts into the skin and lasts from dawn to dusk.",
@@ -18,7 +18,7 @@
   {
     "slug": "strawberry-rose",
     "name": "Strawberry Rose",
-    "price": 25.00,
+    "price": 12.00,
     "tier": "core",
     "tagline": "Sweet fruity-floral romance in every drop",
     "description": "A luscious marriage of sun-ripened strawberries and velvety Damascus rose petals. This enchanting blend balances sweetness with sophistication, creating a warm, fruity-floral fragrance that wraps around you like a whispered compliment. Engineered for longevity with high-concentration perfume oils.",
@@ -34,7 +34,7 @@
   {
     "slug": "vanilla",
     "name": "Vanilla",
-    "price": 25.00,
+    "price": 12.00,
     "tier": "core",
     "tagline": "Warm, soft, and irresistibly creamy",
     "description": "Pure Madagascan vanilla essence enveloped in warm amber and delicate caramel undertones. This timeless scent is the definition of comfort — a rich, creamy fragrance that melts into the skin and becomes uniquely yours. A staple for those who appreciate understated elegance.",
@@ -50,7 +50,7 @@
   {
     "slug": "musk",
     "name": "Musk",
-    "price": 25.00,
+    "price": 12.00,
     "tier": "core",
     "tagline": "Classic depth with smooth sophistication",
     "description": "A masterfully crafted blend of clean white musk layered with subtle woody accords. This deeply smooth fragrance embodies timeless sophistication — equally at home in the boardroom or an evening out. The high-concentration oil formula ensures this scent becomes your signature from the first application.",
@@ -66,7 +66,7 @@
   {
     "slug": "tea-rose",
     "name": "Tea Rose",
-    "price": 25.00,
+    "price": 12.00,
     "tier": "core",
     "tagline": "Traditional fresh floral elegance",
     "description": "An exquisite interpretation of the classic tea rose — delicate, refined, and timeless. This scent captures the essence of a heritage rose garden in full bloom, with layers of fresh green leaves and soft floral petals. Handcrafted with care for those who cherish traditional florals with lasting power.",
@@ -82,7 +82,7 @@
   {
     "slug": "honeysuckle",
     "name": "Honeysuckle",
-    "price": 25.00,
+    "price": 12.00,
     "tier": "core",
     "tagline": "Light, honey-sweet floral bliss",
     "description": "Capture the golden warmth of a summer afternoon with this luminous honeysuckle blend. Sweet nectar-like notes dance with delicate floral accords, creating a fragrance that is both uplifting and deeply comforting. Each drop is freshly poured to preserve the authentic essence of sun-warmed honeysuckle blooms.",
@@ -98,7 +98,7 @@
   {
     "slug": "rose-geranium",
     "name": "Rose Geranium",
-    "price": 25.00,
+    "price": 12.00,
     "tier": "core",
     "tagline": "Herbaceous rosy-green sophistication",
     "description": "A beautifully complex blend where the rosy sweetness of geranium leaf meets fresh herbaceous green notes. This artisanal fragrance is both grounding and uplifting — a botanical masterpiece that evolves on the skin throughout the day. Crafted in small batches to ensure every bottle delivers the perfect balance.",
@@ -114,7 +114,7 @@
   {
     "slug": "forget-me-not",
     "name": "Forget Me Not",
-    "price": 25.00,
+    "price": 12.00,
     "tier": "core",
     "tagline": "Delicate, light, and unforgettable",
     "description": "A whisper-soft floral that leaves a lasting impression. This delicate blend mirrors the understated beauty of forget-me-not blossoms — gentle, ethereal, and impossible to forget. The lightest scent in our collection, yet engineered with the same high-concentration oils for remarkable staying power.",

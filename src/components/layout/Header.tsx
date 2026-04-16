@@ -45,12 +45,6 @@ export function Header() {
               Collection
             </Link>
             <Link
-              href="/#markets"
-              className="text-sm tracking-wider text-cream/70 hover:text-gold transition-colors duration-300 uppercase"
-            >
-              Find Us
-            </Link>
-            <Link
               href="/contact"
               className="text-sm tracking-wider text-cream/70 hover:text-gold transition-colors duration-300 uppercase"
             >
@@ -134,13 +128,6 @@ export function Header() {
               className="block text-sm tracking-wider text-cream/70 hover:text-gold transition-colors duration-300 uppercase py-2"
             >
               Collection
-            </Link>
-            <Link
-              href="/#markets"
-              onClick={() => setMenuOpen(false)}
-              className="block text-sm tracking-wider text-cream/70 hover:text-gold transition-colors duration-300 uppercase py-2"
-            >
-              Find Us
             </Link>
             <Link
               href="/contact"

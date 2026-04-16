@@ -26,7 +26,23 @@ export async function POST(request: NextRequest) {
 
   const { sourceId, customer, items } = parsed.data;
 
-  // 2. Server-side price recalculation (never trust client totals)
+  // 2. Server-side price recalculation with bundle tier pricing
+  // Tiers (based on total quantity ordered):
+  //   1 item  → $12 each
+  //   2 items → $11 each (Duo)
+  //   3–4     → $10 each (Trio)
+  //   5+      → $9  each (Collection)
+  const BASE_PRICE = 12; // matches scents.json
+  const totalQty = items.reduce((sum, i) => sum + i.quantity, 0);
+
+  function getBundleUnitPrice(): number {
+    if (totalQty >= 5) return 9;
+    if (totalQty >= 3) return 10;
+    if (totalQty >= 2) return 11;
+    return BASE_PRICE;
+  }
+
+  const unitPrice = getBundleUnitPrice();
   let totalCents = 0;
   const lineItems: { name: string; quantity: number; unitPrice: number }[] = [];
 
@@ -44,12 +60,12 @@ export async function POST(request: NextRequest) {
         { status: 422 }
       );
     }
-    const unitCents = Math.round(scent.price * 100);
+    const unitCents = Math.round(unitPrice * 100);
     totalCents += unitCents * item.quantity;
     lineItems.push({
       name: scent.name,
       quantity: item.quantity,
-      unitPrice: scent.price,
+      unitPrice,
     });
   }
 

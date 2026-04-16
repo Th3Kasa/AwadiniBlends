@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 
 function getTimeUntilCutoff(): { hours: number; minutes: number; seconds: number; isPastCutoff: boolean } {
   const now = new Date();
-
   const aestOffset = 10 * 60;
   const localOffset = now.getTimezoneOffset();
   const aestTime = new Date(now.getTime() + (aestOffset + localOffset) * 60 * 1000);
@@ -43,49 +42,56 @@ export function DispatchCountdown() {
     return () => clearInterval(interval);
   }, []);
 
-  if (!mounted) {
-    return (
-      <section className="py-12 border-t border-white/5">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <p className="text-cream/40 text-sm">
-            Same-day dispatch available on orders placed before 2:00 PM AEST
-          </p>
-        </div>
-      </section>
-    );
-  }
-
   return (
-    <section className="py-12 border-t border-white/5">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        {time.isPastCutoff ? (
-          <div>
+    <section className="py-8 border-y border-white/5 bg-smoke/20">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {!mounted ? (
+          <p className="text-center text-cream/40 text-xs tracking-widest uppercase">
+            Same-day dispatch on orders before 2:00 PM AEST
+          </p>
+        ) : time.isPastCutoff ? (
+          <div className="text-center">
             <p className="text-cream/50 text-sm">
               Today&apos;s dispatch window has closed.
             </p>
             <p className="text-cream/30 text-xs mt-1">
-              Orders placed now will be freshly poured and dispatched next
-              business day.
+              Orders placed now will be freshly poured and dispatched next business day.
             </p>
           </div>
         ) : (
-          <div>
-            <p className="text-gold text-xs tracking-[0.3em] uppercase mb-3">
-              Next-Day Dispatch
-            </p>
-            <p className="text-cream/60 text-sm mb-4">
-              Order within the next
-            </p>
-            <div className="flex items-center justify-center gap-3 sm:gap-4">
-              <TimeBlock value={time.hours} label="Hours" />
-              <span className="text-gold/50 text-xl font-light">:</span>
-              <TimeBlock value={time.minutes} label="Minutes" />
-              <span className="text-gold/50 text-xl font-light">:</span>
-              <TimeBlock value={time.seconds} label="Seconds" />
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8">
+            {/* Label */}
+            <div className="text-center sm:text-right">
+              <p className="text-gold text-[10px] tracking-[0.3em] uppercase">
+                Order before
+              </p>
+              <p className="font-serif text-cream text-lg leading-tight">2 PM AEST</p>
+              <p className="text-cream/30 text-[10px] tracking-wider uppercase">
+                same-day dispatch
+              </p>
             </div>
-            <p className="text-cream/30 text-xs mt-4">
-              for same-day pour &amp; dispatch (2:00 PM AEST cutoff)
-            </p>
+
+            {/* Divider */}
+            <div className="hidden sm:block w-px h-10 bg-white/10" />
+
+            {/* Timer */}
+            <div className="flex items-center gap-2 sm:gap-3">
+              <TimeBlock value={time.hours} label="Hrs" />
+              <span className="text-gold/40 text-lg font-light mb-3">:</span>
+              <TimeBlock value={time.minutes} label="Min" />
+              <span className="text-gold/40 text-lg font-light mb-3">:</span>
+              <TimeBlock value={time.seconds} label="Sec" />
+            </div>
+
+            {/* Divider */}
+            <div className="hidden sm:block w-px h-10 bg-white/10" />
+
+            {/* Tagline */}
+            <div className="text-center sm:text-left hidden sm:block">
+              <p className="text-cream/50 text-xs leading-relaxed max-w-[140px]">
+                Freshly poured &amp; shipped the same day
+              </p>
+            </div>
           </div>
         )}
       </div>
@@ -96,12 +102,12 @@ export function DispatchCountdown() {
 function TimeBlock({ value, label }: { value: number; label: string }) {
   return (
     <div className="flex flex-col items-center">
-      <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-lg bg-smoke/60 border border-white/5 flex items-center justify-center">
-        <span className="font-serif text-2xl sm:text-3xl text-cream">
+      <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-md bg-smoke border border-white/8 flex items-center justify-center">
+        <span className="font-serif text-xl sm:text-2xl text-cream">
           {value.toString().padStart(2, "0")}
         </span>
       </div>
-      <span className="text-[10px] text-cream/30 uppercase tracking-wider mt-2">
+      <span className="text-[9px] text-cream/25 uppercase tracking-wider mt-1.5">
         {label}
       </span>
     </div>

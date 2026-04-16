@@ -13,9 +13,23 @@ interface ProductCardProps {
   index: number;
 }
 
+// Unique gradient per scent so placeholder cards still look intentional
+const gradients: Record<string, string> = {
+  "green-apple": "from-[#1a2a1a] via-[#0f1f0f] to-obsidian",
+  "strawberry-rose": "from-[#2a1a1f] via-[#1a0f12] to-obsidian",
+  vanilla: "from-[#2a2010] via-[#1a150a] to-obsidian",
+  musk: "from-[#1a1a2a] via-[#0f0f1a] to-obsidian",
+  "tea-rose": "from-[#2a1520] via-[#1a0f18] to-obsidian",
+  honeysuckle: "from-[#2a2215] via-[#1a170f] to-obsidian",
+  "rose-geranium": "from-[#251520] via-[#180f18] to-obsidian",
+  "forget-me-not": "from-[#151a2a] via-[#0f121a] to-obsidian",
+};
+
 export function ProductCard({ scent, index }: ProductCardProps) {
   const addItem = useCartStore((s) => s.addItem);
   const openCart = useCartStore((s) => s.openCart);
+
+  const gradient = gradients[scent.slug] ?? "from-smoke via-[#1a1a1a] to-obsidian";
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -32,9 +46,17 @@ export function ProductCard({ scent, index }: ProductCardProps) {
       transition={{ duration: 0.5, delay: index * 0.1, ease: "easeOut" }}
     >
       <Link href={`/products/${scent.slug}`} className="group block">
-        <div className="glass-card overflow-hidden transition-all duration-500 hover:border-gold/20 hover:shadow-lg hover:shadow-gold/5">
+        <div className="glass-card overflow-hidden transition-all duration-500 hover:border-gold/20 hover:shadow-xl hover:shadow-gold/5">
           {/* Image */}
-          <div className="relative aspect-square overflow-hidden bg-smoke">
+          <div className={`relative aspect-square overflow-hidden bg-gradient-to-b ${gradient}`}>
+            {/* Subtle gold shimmer overlay visible until real photo loads */}
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(201,168,108,0.06)_0%,transparent_70%)]" />
+            {/* Scent name watermark (hidden once real image loads via object-cover) */}
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none">
+              <p className="font-serif text-2xl text-cream/[0.07] text-center px-4 leading-tight">
+                {scent.name}
+              </p>
+            </div>
             <Image
               src={scent.image}
               alt={scent.name}
@@ -54,9 +76,9 @@ export function ProductCard({ scent, index }: ProductCardProps) {
                 <h3 className="font-serif text-lg text-cream group-hover:text-gold transition-colors duration-300">
                   {scent.name}
                 </h3>
-                <p className="text-xs text-cream/40 mt-1">{scent.tagline}</p>
+                <p className="text-xs text-cream/40 mt-1 leading-snug">{scent.tagline}</p>
               </div>
-              <p className="text-gold font-medium text-sm flex-shrink-0">
+              <p className="text-gold font-medium text-sm flex-shrink-0 pt-0.5">
                 {formatCurrency(scent.price)}
               </p>
             </div>
