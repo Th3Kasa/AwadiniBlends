@@ -101,7 +101,35 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // 5. Notify business via Web3Forms
+    // 5. Add customer to Brevo email list (non-blocking)
+    try {
+      const brevoKey = process.env.BREVO_API_KEY;
+      if (brevoKey) {
+        const [firstName, ...rest] = customer.name.trim().split(" ");
+        await fetch("https://api.brevo.com/v3/contacts", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            "api-key": brevoKey,
+          },
+          body: JSON.stringify({
+            email: customer.email,
+            attributes: {
+              FIRSTNAME: firstName,
+              LASTNAME: rest.join(" ") || "",
+              SMS: customer.phone,
+            },
+            listIds: [2], // Brevo default "All contacts" list — change if needed
+            updateEnabled: true, // update if they already exist
+          }),
+        });
+      }
+    } catch (brevoErr) {
+      console.error("Brevo subscriber failed (non-critical):", brevoErr);
+    }
+
+    // 6. Notify business via Web3Forms
     try {
       const accessKey = process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY;
       if (accessKey) {
