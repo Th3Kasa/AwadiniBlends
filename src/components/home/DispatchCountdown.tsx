@@ -46,15 +46,15 @@ export function DispatchCountdown() {
     <section className="py-8 border-y border-white/5 bg-smoke/20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {!mounted ? (
-          <p className="text-center text-cream/40 text-xs tracking-widest uppercase">
+          <p className="text-center text-cream/90 text-xs tracking-widest uppercase">
             Same-day dispatch on orders before 2:00 PM AEST
           </p>
         ) : time.isPastCutoff ? (
           <div className="text-center">
-            <p className="text-cream/50 text-sm">
+            <p className="text-cream/80 text-sm">
               Today&apos;s dispatch window has closed.
             </p>
-            <p className="text-cream/30 text-xs mt-1">
+            <p className="text-cream/85 text-xs mt-1">
               Orders placed now will be freshly poured and dispatched next business day.
             </p>
           </div>
@@ -66,7 +66,7 @@ export function DispatchCountdown() {
                 Order before
               </p>
               <p className="font-serif text-cream text-lg leading-tight">2 PM AEST</p>
-              <p className="text-cream/30 text-[10px] tracking-wider uppercase">
+              <p className="text-cream/85 text-[10px] tracking-wider uppercase">
                 same-day dispatch
               </p>
             </div>
@@ -88,7 +88,7 @@ export function DispatchCountdown() {
 
             {/* Tagline */}
             <div className="text-center sm:text-left hidden sm:block">
-              <p className="text-cream/50 text-xs leading-relaxed max-w-[140px]">
+              <p className="text-cream/80 text-xs leading-relaxed max-w-[140px]">
                 Freshly poured &amp; shipped the same day
               </p>
             </div>
@@ -107,7 +107,7 @@ function TimeBlock({ value, label }: { value: number; label: string }) {
           {value.toString().padStart(2, "0")}
         </span>
       </div>
-      <span className="text-[9px] text-cream/25 uppercase tracking-wider mt-1.5">
+      <span className="text-[9px] text-cream/55 uppercase tracking-wider mt-1.5">
         {label}
       </span>
     </div>

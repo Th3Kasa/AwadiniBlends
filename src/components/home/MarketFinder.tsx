@@ -41,7 +41,7 @@ export function MarketFinder() {
           <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl text-cream tracking-tight">
             Visit in Person
           </h2>
-          <p className="text-cream/40 text-sm sm:text-base mt-4 max-w-xl mx-auto">
+          <p className="text-cream/90 text-sm sm:text-base mt-4 max-w-xl mx-auto">
             Experience our fragrances before you buy. Find us at these Sydney
             locations.
           </p>
@@ -56,7 +56,7 @@ export function MarketFinder() {
               className={`px-5 py-2.5 rounded-sm text-xs sm:text-sm tracking-wider uppercase transition-all duration-300 ${
                 activeIndex === index
                   ? "bg-gold text-obsidian"
-                  : "border border-white/10 text-cream/50 hover:border-gold/30 hover:text-cream"
+                  : "border border-white/10 text-cream/80 hover:border-gold/30 hover:text-cream"
               }`}
             >
               {market.name.length > 25
@@ -102,7 +102,7 @@ export function MarketFinder() {
                 <h3 className="font-serif text-xl sm:text-2xl text-cream">
                   {markets[activeIndex].name}
                 </h3>
-                <p className="text-cream/40 text-sm mt-1">
+                <p className="text-cream/90 text-sm mt-1">
                   {markets[activeIndex].address}
                 </p>
               </div>
@@ -124,11 +124,11 @@ export function MarketFinder() {
                     d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
                   />
                 </svg>
-                <span className="text-sm text-cream/60">
+                <span className="text-sm text-cream/85">
                   {markets[activeIndex].schedule}
                 </span>
               </div>
-              <p className="text-sm text-cream/50 leading-relaxed pl-7">
+              <p className="text-sm text-cream/80 leading-relaxed pl-7">
                 {markets[activeIndex].description}
               </p>
             </div>
@@ -150,7 +150,7 @@ export function MarketFinder() {
               <h4 className="font-serif text-sm text-cream mb-1">
                 {market.name}
               </h4>
-              <p className="text-xs text-cream/30">{market.address}</p>
+              <p className="text-xs text-cream/85">{market.address}</p>
             </button>
           ))}
         </div>

@@ -76,7 +76,7 @@ export function ProductCard({ scent, index }: ProductCardProps) {
                 <h3 className="font-serif text-lg text-cream group-hover:text-gold transition-colors duration-300">
                   {scent.name}
                 </h3>
-                <p className="text-xs text-cream/40 mt-1 leading-snug">{scent.tagline}</p>
+                <p className="text-xs text-cream/90 mt-1 leading-snug">{scent.tagline}</p>
               </div>
               <p className="text-gold font-medium text-sm flex-shrink-0 pt-0.5">
                 {formatCurrency(scent.price)}
@@ -84,7 +84,7 @@ export function ProductCard({ scent, index }: ProductCardProps) {
             </div>
 
             <div className="mt-4 flex items-center justify-between">
-              <span className="text-[10px] text-cream/30 uppercase tracking-wider">
+              <span className="text-[10px] text-cream/85 uppercase tracking-wider">
                 {scent.weight} &middot; Oil-Based
               </span>
               <button

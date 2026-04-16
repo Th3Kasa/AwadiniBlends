@@ -18,7 +18,7 @@ export default function ContactPage() {
           <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl text-cream tracking-tight mb-4">
             Contact Us
           </h1>
-          <p className="text-cream/40 text-sm leading-relaxed">
+          <p className="text-cream/90 text-sm leading-relaxed">
             Questions about our collection, custom orders, or stockist
             enquiries? We'd love to hear from you.
           </p>
@@ -52,7 +52,7 @@ export default function ContactPage() {
               </div>
               <h3 className="font-serif text-sm text-cream">Based In</h3>
             </div>
-            <p className="text-cream/40 text-sm">
+            <p className="text-cream/90 text-sm">
               Liverpool, NSW 2170
               <br />
               South West Sydney, Australia
@@ -79,7 +79,7 @@ export default function ContactPage() {
               </div>
               <h3 className="font-serif text-sm text-cream">Response Time</h3>
             </div>
-            <p className="text-cream/40 text-sm">
+            <p className="text-cream/90 text-sm">
               We respond within 24–48 hours
               <br />
               Mon–Fri, AEST

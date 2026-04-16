@@ -18,12 +18,12 @@ export default function RefundPolicyPage() {
           <h1 className="font-serif text-3xl sm:text-4xl text-cream mb-2">
             Refund Policy
           </h1>
-          <p className="text-cream/30 text-sm">
+          <p className="text-cream/85 text-sm">
             Last updated: {new Date().toLocaleDateString("en-AU", { year: "numeric", month: "long", day: "numeric" })}
           </p>
         </div>
 
-        <div className="prose prose-invert prose-sm max-w-none space-y-8 text-cream/70 leading-relaxed">
+        <div className="prose prose-invert prose-sm max-w-none space-y-8 text-cream/90 leading-relaxed">
 
           <div className="glass-card p-6">
             <p className="text-cream/90 text-sm leading-relaxed">
@@ -68,7 +68,7 @@ export default function RefundPolicyPage() {
             <p className="mt-3">
               A product failure may include (but is not limited to):
             </p>
-            <ul className="mt-2 ml-4 space-y-1 list-disc list-outside text-cream/60">
+            <ul className="mt-2 ml-4 space-y-1 list-disc list-outside text-cream/85">
               <li>The product is not of acceptable quality (e.g., contaminated, spoiled, or has an abnormal smell inconsistent with the product description).</li>
               <li>The product does not match its description on our website.</li>
               <li>The product arrives damaged due to a fault in packaging or transit handling on our part.</li>
@@ -83,7 +83,7 @@ export default function RefundPolicyPage() {
               <strong className="text-cream">7 calendar days</strong> of
               receiving your order. To make a claim:
             </p>
-            <ol className="mt-3 ml-4 space-y-2 list-decimal list-outside text-cream/60">
+            <ol className="mt-3 ml-4 space-y-2 list-decimal list-outside text-cream/85">
               <li>
                 Contact us at{" "}
                 <Link
@@ -110,7 +110,7 @@ export default function RefundPolicyPage() {
               Upon assessment, we will offer one of the following remedies
               based on the nature of the defect:
             </p>
-            <ul className="mt-3 ml-4 space-y-2 list-disc list-outside text-cream/60">
+            <ul className="mt-3 ml-4 space-y-2 list-disc list-outside text-cream/85">
               <li>
                 <strong className="text-cream">Major failure:</strong> You may
                 choose a full refund to your original payment method or a
@@ -131,7 +131,7 @@ export default function RefundPolicyPage() {
 
           <PolicySection title="5. Non-Returnable Situations">
             <p>We are unable to offer a refund or replacement where:</p>
-            <ul className="mt-3 ml-4 space-y-1 list-disc list-outside text-cream/60">
+            <ul className="mt-3 ml-4 space-y-1 list-disc list-outside text-cream/85">
               <li>You have changed your mind about the purchase.</li>
               <li>You chose the wrong scent.</li>
               <li>The product has been used (partially or fully).</li>
@@ -175,7 +175,7 @@ export default function RefundPolicyPage() {
               </Link>{" "}
               or write to:
             </p>
-            <div className="mt-3 p-4 bg-smoke/50 rounded-lg text-cream/60 text-sm">
+            <div className="mt-3 p-4 bg-smoke/50 rounded-lg text-cream/85 text-sm">
               <p>AWAD, DAVID MAHIR (Sole Trader)</p>
               <p>Awadini Fragrance Blends</p>
               <p>ABN: 60 669 962 543</p>
@@ -198,7 +198,7 @@ function PolicySection({
   return (
     <div>
       <h2 className="font-serif text-lg text-cream mb-3">{title}</h2>
-      <div className="text-cream/60 text-sm leading-relaxed">{children}</div>
+      <div className="text-cream/85 text-sm leading-relaxed">{children}</div>
     </div>
   );
 }

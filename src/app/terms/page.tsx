@@ -18,7 +18,7 @@ export default function TermsPage() {
           <h1 className="font-serif text-3xl sm:text-4xl text-cream mb-2">
             Terms &amp; Conditions
           </h1>
-          <p className="text-cream/30 text-sm">
+          <p className="text-cream/85 text-sm">
             Last updated:{" "}
             {new Date().toLocaleDateString("en-AU", {
               year: "numeric",
@@ -28,7 +28,7 @@ export default function TermsPage() {
           </p>
         </div>
 
-        <div className="space-y-8 text-cream/70 leading-relaxed">
+        <div className="space-y-8 text-cream/90 leading-relaxed">
           <div className="glass-card p-6">
             <p className="text-cream/90 text-sm leading-relaxed">
               These Terms &amp; Conditions (&ldquo;Terms&rdquo;) govern your
@@ -37,7 +37,7 @@ export default function TermsPage() {
               you agree to be bound by these Terms. These Terms are governed by
               the laws of New South Wales, Australia.
             </p>
-            <p className="text-cream/60 text-sm mt-3">
+            <p className="text-cream/85 text-sm mt-3">
               Operated by:{" "}
               <strong className="text-cream">
                 AWAD, DAVID MAHIR (Sole Trader)
@@ -232,7 +232,7 @@ export default function TermsPage() {
               </Link>{" "}
               or write to:
             </p>
-            <div className="mt-3 p-4 bg-smoke/50 rounded-lg text-cream/60 text-sm">
+            <div className="mt-3 p-4 bg-smoke/50 rounded-lg text-cream/85 text-sm">
               <p>AWAD, DAVID MAHIR (Sole Trader)</p>
               <p>Awadini Fragrance Blends</p>
               <p>ABN: 60 669 962 543</p>
@@ -255,7 +255,7 @@ function TermsSection({
   return (
     <div>
       <h2 className="font-serif text-lg text-cream mb-3">{title}</h2>
-      <div className="text-cream/60 text-sm leading-relaxed">{children}</div>
+      <div className="text-cream/85 text-sm leading-relaxed">{children}</div>
     </div>
   );
 }

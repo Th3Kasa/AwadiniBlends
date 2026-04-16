@@ -138,11 +138,11 @@ export default function CheckoutPage() {
             </svg>
           </div>
           <h1 className="font-serif text-3xl text-cream mb-3">Order Placed</h1>
-          <p className="text-cream/50 text-sm mb-2">
+          <p className="text-cream/80 text-sm mb-2">
             Thank you for your order. Your fragrances are being freshly poured
             just for you.
           </p>
-          <p className="text-cream/30 text-xs mb-8">
+          <p className="text-cream/85 text-xs mb-8">
             We&apos;ll start preparing your order right away and dispatch within
             1–2 business days.
           </p>
@@ -184,7 +184,7 @@ export default function CheckoutPage() {
           <div className="lg:col-span-3 space-y-8">
             {/* Customer Details */}
             <div className="glass-card p-6 sm:p-8">
-              <h2 className="text-xs tracking-[0.3em] uppercase text-cream/40 mb-6">
+              <h2 className="text-xs tracking-[0.3em] uppercase text-cream/90 mb-6">
                 Delivery Details
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
@@ -241,7 +241,7 @@ export default function CheckoutPage() {
                   autoComplete="address-level2"
                 />
                 <div>
-                  <label className="block text-[11px] tracking-wider uppercase text-cream/40 mb-2">
+                  <label className="block text-[11px] tracking-wider uppercase text-cream/90 mb-2">
                     State
                   </label>
                   <select
@@ -293,7 +293,7 @@ export default function CheckoutPage() {
           {/* Order Summary — 2 cols */}
           <div className="lg:col-span-2">
             <div className="glass-card p-6 sticky top-24">
-              <h2 className="text-xs tracking-[0.3em] uppercase text-cream/40 mb-6">
+              <h2 className="text-xs tracking-[0.3em] uppercase text-cream/90 mb-6">
                 Order Summary
               </h2>
               <ul className="space-y-4 mb-6">
@@ -312,7 +312,7 @@ export default function CheckoutPage() {
                       <p className="text-sm text-cream truncate">
                         {item.scent.name}
                       </p>
-                      <p className="text-xs text-cream/40">
+                      <p className="text-xs text-cream/90">
                         Qty {item.quantity}
                       </p>
                     </div>
@@ -323,12 +323,12 @@ export default function CheckoutPage() {
                 ))}
               </ul>
               <div className="border-t border-white/5 pt-5 space-y-2">
-                <div className="flex justify-between text-sm text-cream/50">
+                <div className="flex justify-between text-sm text-cream/80">
                   <span>Shipping</span>
                   <span className="text-gold">Free</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-sm uppercase tracking-wider text-cream/60">
+                  <span className="text-sm uppercase tracking-wider text-cream/85">
                     Total
                   </span>
                   <span className="font-serif text-xl text-gold">
@@ -336,7 +336,7 @@ export default function CheckoutPage() {
                   </span>
                 </div>
               </div>
-              <p className="text-[10px] text-cream/25 mt-4 leading-relaxed">
+              <p className="text-[10px] text-cream/55 mt-4 leading-relaxed">
                 Your order is freshly poured upon payment confirmation. Estimated
                 dispatch: 1–2 business days.
               </p>
@@ -375,7 +375,7 @@ function Field({
     <div className={colSpan}>
       <label
         htmlFor={name}
-        className="block text-[11px] tracking-wider uppercase text-cream/40 mb-2"
+        className="block text-[11px] tracking-wider uppercase text-cream/90 mb-2"
       >
         {label}
       </label>
@@ -387,7 +387,7 @@ function Field({
         onChange={onChange}
         autoComplete={autoComplete}
         maxLength={maxLength}
-        className={`w-full bg-smoke border rounded-sm px-4 py-3 text-sm text-cream placeholder:text-cream/20 focus:outline-none focus:border-gold transition-colors ${
+        className={`w-full bg-smoke border rounded-sm px-4 py-3 text-sm text-cream placeholder:text-cream/80 focus:outline-none focus:border-gold transition-colors ${
           error ? "border-red-500/50" : "border-white/10"
         }`}
       />

@@ -34,19 +34,19 @@ export function Header() {
           <div className="hidden md:flex items-center gap-8">
             <Link
               href="/"
-              className="text-sm tracking-wider text-cream/70 hover:text-gold transition-colors duration-300 uppercase"
+              className="text-sm tracking-wider text-cream/90 hover:text-gold transition-colors duration-300 uppercase"
             >
               Home
             </Link>
             <Link
               href="/#collection"
-              className="text-sm tracking-wider text-cream/70 hover:text-gold transition-colors duration-300 uppercase"
+              className="text-sm tracking-wider text-cream/90 hover:text-gold transition-colors duration-300 uppercase"
             >
               Collection
             </Link>
             <Link
               href="/contact"
-              className="text-sm tracking-wider text-cream/70 hover:text-gold transition-colors duration-300 uppercase"
+              className="text-sm tracking-wider text-cream/90 hover:text-gold transition-colors duration-300 uppercase"
             >
               Contact
             </Link>
@@ -56,7 +56,7 @@ export function Header() {
           <div className="flex items-center gap-4">
             <button
               onClick={openCart}
-              className="relative p-2 text-cream/70 hover:text-gold transition-colors duration-300"
+              className="relative p-2 text-cream/90 hover:text-gold transition-colors duration-300"
               aria-label="Open cart"
             >
               <svg
@@ -83,7 +83,7 @@ export function Header() {
             {/* Mobile Hamburger */}
             <button
               onClick={() => setMenuOpen(!menuOpen)}
-              className="md:hidden p-2 text-cream/70 hover:text-gold transition-colors duration-300"
+              className="md:hidden p-2 text-cream/90 hover:text-gold transition-colors duration-300"
               aria-label="Toggle menu"
             >
               <svg
@@ -118,21 +118,21 @@ export function Header() {
             <Link
               href="/"
               onClick={() => setMenuOpen(false)}
-              className="block text-sm tracking-wider text-cream/70 hover:text-gold transition-colors duration-300 uppercase py-2"
+              className="block text-sm tracking-wider text-cream/90 hover:text-gold transition-colors duration-300 uppercase py-2"
             >
               Home
             </Link>
             <Link
               href="/#collection"
               onClick={() => setMenuOpen(false)}
-              className="block text-sm tracking-wider text-cream/70 hover:text-gold transition-colors duration-300 uppercase py-2"
+              className="block text-sm tracking-wider text-cream/90 hover:text-gold transition-colors duration-300 uppercase py-2"
             >
               Collection
             </Link>
             <Link
               href="/contact"
               onClick={() => setMenuOpen(false)}
-              className="block text-sm tracking-wider text-cream/70 hover:text-gold transition-colors duration-300 uppercase py-2"
+              className="block text-sm tracking-wider text-cream/90 hover:text-gold transition-colors duration-300 uppercase py-2"
             >
               Contact
             </Link>

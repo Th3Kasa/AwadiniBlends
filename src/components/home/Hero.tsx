@@ -41,7 +41,7 @@ export function Hero() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
-          className="text-cream/50 text-base sm:text-lg md:text-xl max-w-2xl mx-auto mb-10 leading-relaxed"
+          className="text-cream/80 text-base sm:text-lg md:text-xl max-w-2xl mx-auto mb-10 leading-relaxed"
         >
           100% homemade, high-concentration perfume oils freshly poured in small
           batches. Engineered for longevity, crafted with intention.
@@ -65,7 +65,7 @@ export function Hero() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1, delay: 0.8 }}
-          className="mt-16 flex items-center justify-center gap-8 text-cream/25 text-xs tracking-wider uppercase"
+          className="mt-16 flex items-center justify-center gap-8 text-cream/55 text-xs tracking-wider uppercase"
         >
           <span>Made to Order</span>
           <span className="w-1 h-1 rounded-full bg-gold/50" />

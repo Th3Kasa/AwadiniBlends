@@ -7,6 +7,15 @@
     @apply bg-obsidian text-cream;
   }
 
+  /* Improve base paragraph/text readability */
+  p, li, td, th {
+    @apply text-cream/85;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply text-cream;
+  }
+
   ::selection {
     @apply bg-gold/30 text-cream;
   }
@@ -31,7 +40,7 @@
 
 @layer components {
   .glass-card {
-    @apply bg-smoke/40 backdrop-blur-md border border-white/5 rounded-xl;
+    @apply bg-smoke/40 backdrop-blur-md border border-white/10 rounded-xl;
   }
 
   .gold-gradient {

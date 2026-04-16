@@ -4,11 +4,10 @@ import { notFound } from "next/navigation";
 import scents from "@/data/scents.json";
 import type { Scent } from "@/types";
 import { formatCurrency } from "@/lib/utils";
-
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "";
 import { FreshlyPouredBadge } from "@/components/product/FreshlyPouredBadge";
 import { AddToCartButton } from "./AddToCartButton";
 
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "";
 const allScents = scents as Scent[];
 
 interface Props {
@@ -62,19 +61,19 @@ export default function ProductPage({ params }: Props) {
               {scent.name}
             </h1>
 
-            <p className="text-gold/80 text-sm italic mb-6">{scent.tagline}</p>
+            <p className="text-gold text-sm italic mb-6">{scent.tagline}</p>
 
             <p className="text-3xl font-serif text-gold mb-8">
               {formatCurrency(scent.price)}
             </p>
 
-            <p className="text-cream/50 text-sm leading-relaxed mb-10">
+            <p className="text-cream/80 text-sm leading-relaxed mb-10">
               {scent.description}
             </p>
 
             {/* Scent Notes */}
             <div className="mb-10">
-              <h3 className="text-xs tracking-[0.3em] uppercase text-cream/40 mb-5">
+              <h3 className="text-xs tracking-[0.3em] uppercase text-cream/70 mb-5">
                 Scent Profile
               </h3>
               <div className="grid grid-cols-3 gap-4">
@@ -85,17 +84,17 @@ export default function ProductPage({ params }: Props) {
             </div>
 
             {/* Details */}
-            <div className="flex items-center gap-6 mb-8 text-xs text-cream/30 uppercase tracking-wider">
+            <div className="flex items-center gap-6 mb-8 text-xs text-cream/65 uppercase tracking-wider">
               <span>{scent.weight}</span>
-              <span className="w-1 h-1 rounded-full bg-cream/20" />
+              <span className="w-1 h-1 rounded-full bg-cream/40" />
               <span>Oil-Based</span>
-              <span className="w-1 h-1 rounded-full bg-cream/20" />
+              <span className="w-1 h-1 rounded-full bg-cream/40" />
               <span>Made to Order</span>
             </div>
 
             <AddToCartButton scent={scent} />
 
-            <p className="text-xs text-cream/25 mt-4 text-center lg:text-left">
+            <p className="text-xs text-cream/60 mt-4 text-center lg:text-left">
               Free shipping Australia wide &middot; Freshly poured upon your order
             </p>
           </div>
@@ -115,7 +114,7 @@ function NoteColumn({ title, notes }: { title: string; notes: string[] }) {
         {notes.map((note) => (
           <span
             key={note}
-            className="block text-xs text-cream/50 bg-smoke/50 border border-white/5 rounded-full px-3 py-1.5 text-center"
+            className="block text-xs text-cream/80 bg-smoke/50 border border-white/8 rounded-full px-3 py-1.5 text-center"
           >
             {note}
           </span>

@@ -64,7 +64,7 @@ export function CartDrawer() {
               <h2 className="font-serif text-xl tracking-wider">Your Bag</h2>
               <button
                 onClick={closeCart}
-                className="p-2 text-cream/50 hover:text-cream transition-colors"
+                className="p-2 text-cream/80 hover:text-cream transition-colors"
                 aria-label="Close cart"
               >
                 <svg
@@ -94,7 +94,7 @@ export function CartDrawer() {
                     viewBox="0 0 24 24"
                     strokeWidth={1}
                     stroke="currentColor"
-                    className="w-16 h-16 text-cream/20 mb-4"
+                    className="w-16 h-16 text-cream/80 mb-4"
                   >
                     <path
                       strokeLinecap="round"
@@ -102,10 +102,10 @@ export function CartDrawer() {
                       d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"
                     />
                   </svg>
-                  <p className="text-cream/40 text-sm mb-2">
+                  <p className="text-cream/90 text-sm mb-2">
                     Your bag is empty
                   </p>
-                  <p className="text-cream/25 text-xs">
+                  <p className="text-cream/55 text-xs">
                     Discover our artisanal collection
                   </p>
                 </div>
@@ -129,7 +129,7 @@ export function CartDrawer() {
                         <h3 className="font-serif text-sm text-cream truncate">
                           {item.scent.name}
                         </h3>
-                        <p className="text-xs text-cream/40 mt-0.5">
+                        <p className="text-xs text-cream/90 mt-0.5">
                           {item.scent.weight}
                         </p>
                         <p className="text-sm text-gold mt-1">
@@ -144,7 +144,7 @@ export function CartDrawer() {
                                 item.quantity - 1
                               )
                             }
-                            className="w-7 h-7 rounded-sm border border-white/10 text-cream/60 hover:border-gold hover:text-gold transition-colors flex items-center justify-center text-sm"
+                            className="w-7 h-7 rounded-sm border border-white/10 text-cream/85 hover:border-gold hover:text-gold transition-colors flex items-center justify-center text-sm"
                             aria-label="Decrease quantity"
                           >
                             &minus;
@@ -159,14 +159,14 @@ export function CartDrawer() {
                                 item.quantity + 1
                               )
                             }
-                            className="w-7 h-7 rounded-sm border border-white/10 text-cream/60 hover:border-gold hover:text-gold transition-colors flex items-center justify-center text-sm"
+                            className="w-7 h-7 rounded-sm border border-white/10 text-cream/85 hover:border-gold hover:text-gold transition-colors flex items-center justify-center text-sm"
                             aria-label="Increase quantity"
                           >
                             +
                           </button>
                           <button
                             onClick={() => removeItem(item.scent.slug)}
-                            className="ml-auto text-cream/30 hover:text-red-400 transition-colors"
+                            className="ml-auto text-cream/85 hover:text-red-400 transition-colors"
                             aria-label="Remove item"
                           >
                             <svg
@@ -196,14 +196,14 @@ export function CartDrawer() {
             {items.length > 0 && (
               <div className="px-6 py-5 border-t border-white/5 space-y-4">
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-cream/60 uppercase tracking-wider">
+                  <span className="text-sm text-cream/85 uppercase tracking-wider">
                     Subtotal
                   </span>
                   <span className="font-serif text-lg text-gold">
                     {formatCurrency(total)}
                   </span>
                 </div>
-                <p className="text-xs text-cream/30 text-center">
+                <p className="text-xs text-cream/85 text-center">
                   Shipping included &middot; Freshly poured upon order
                 </p>
                 <Link

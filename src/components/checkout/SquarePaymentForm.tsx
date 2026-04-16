@@ -19,7 +19,7 @@ export function SquarePaymentForm({
 
   return (
     <div>
-      <h3 className="text-xs tracking-[0.3em] uppercase text-cream/40 mb-5">
+      <h3 className="text-xs tracking-[0.3em] uppercase text-cream/90 mb-5">
         Payment Details
       </h3>
       <PaymentForm

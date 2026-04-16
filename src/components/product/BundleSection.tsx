@@ -73,7 +73,7 @@ export function BundleSection() {
           <h2 className="font-serif text-3xl sm:text-4xl text-cream tracking-tight">
             Build Your Scent Collection
           </h2>
-          <p className="text-cream/40 text-sm mt-3 max-w-sm mx-auto">
+          <p className="text-cream/90 text-sm mt-3 max-w-sm mx-auto">
             Mix and match any blends. The more you explore, the more you save.
           </p>
         </motion.div>
@@ -104,7 +104,7 @@ export function BundleSection() {
                     className={`absolute top-0 right-0 text-[10px] tracking-widest uppercase font-medium px-3 py-1 rounded-bl-lg ${
                       bundle.highlight
                         ? "bg-gold text-obsidian"
-                        : "bg-white/10 text-cream/60"
+                        : "bg-white/10 text-cream/85"
                     }`}
                   >
                     {bundle.badge}
@@ -141,7 +141,7 @@ export function BundleSection() {
                       >
                         {formatCurrency(total)}
                       </span>
-                      <span className="text-cream/25 text-sm line-through leading-none mb-0.5">
+                      <span className="text-cream/55 text-sm line-through leading-none mb-0.5">
                         {formatCurrency(rrp)}
                       </span>
                     </div>
@@ -154,7 +154,7 @@ export function BundleSection() {
                       className={`w-full py-3 text-xs tracking-[0.15em] uppercase font-medium rounded-sm transition-all duration-300 ${
                         bundle.highlight
                           ? "bg-gold text-obsidian hover:bg-[#d4b87d]"
-                          : "border border-white/12 text-cream/60 hover:border-gold/40 hover:text-gold"
+                          : "border border-white/12 text-cream/85 hover:border-gold/40 hover:text-gold"
                       }`}
                     >
                       Add to Bag
@@ -175,7 +175,7 @@ export function BundleSection() {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ delay: 0.4 }}
-          className="text-center text-cream/20 text-[11px] tracking-wider mt-10"
+          className="text-center text-cream/80 text-[11px] tracking-wider mt-10"
         >
           Free shipping &middot; Freshly poured upon order &middot; Ships within 1–2 business days
         </motion.p>
