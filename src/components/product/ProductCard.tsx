@@ -4,7 +4,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import type { Scent } from "@/types";
-import { useCartStore } from "@/store/cart";
 import { formatCurrency } from "@/lib/utils";
 import { FreshlyPouredBadge } from "./FreshlyPouredBadge";
 
@@ -26,17 +25,7 @@ const gradients: Record<string, string> = {
 };
 
 export function ProductCard({ scent, index }: ProductCardProps) {
-  const addItem = useCartStore((s) => s.addItem);
-  const openCart = useCartStore((s) => s.openCart);
-
   const gradient = gradients[scent.slug] ?? "from-smoke via-[#1a1a1a] to-obsidian";
-
-  const handleAddToCart = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    addItem(scent);
-    openCart();
-  };
 
   return (
     <motion.div
@@ -49,9 +38,7 @@ export function ProductCard({ scent, index }: ProductCardProps) {
         <div className="glass-card overflow-hidden transition-all duration-500 hover:border-gold/20 hover:shadow-xl hover:shadow-gold/5">
           {/* Image */}
           <div className={`relative aspect-square overflow-hidden bg-gradient-to-b ${gradient}`}>
-            {/* Subtle gold shimmer overlay visible until real photo loads */}
             <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(201,168,108,0.06)_0%,transparent_70%)]" />
-            {/* Scent name watermark (hidden once real image loads via object-cover) */}
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none">
               <p className="font-serif text-2xl text-cream/[0.07] text-center px-4 leading-tight">
                 {scent.name}
@@ -76,24 +63,15 @@ export function ProductCard({ scent, index }: ProductCardProps) {
                 <h3 className="font-serif text-lg text-cream group-hover:text-gold transition-colors duration-300">
                   {scent.name}
                 </h3>
-                <p className="text-xs text-cream/90 mt-1 leading-snug">{scent.tagline}</p>
+                <p className="text-xs text-cream/70 mt-1 leading-snug">{scent.tagline}</p>
               </div>
               <p className="text-gold font-medium text-sm flex-shrink-0 pt-0.5">
                 {formatCurrency(scent.price)}
               </p>
             </div>
-
-            <div className="mt-4 flex items-center justify-between">
-              <span className="text-[10px] text-cream/85 uppercase tracking-wider">
-                {scent.weight} &middot; Oil-Based
-              </span>
-              <button
-                onClick={handleAddToCart}
-                className="text-xs tracking-wider uppercase text-gold border border-gold/30 px-4 py-2 rounded-sm hover:bg-gold hover:text-obsidian transition-all duration-300"
-              >
-                Add to Bag
-              </button>
-            </div>
+            <p className="text-[10px] text-cream/50 uppercase tracking-wider mt-3">
+              {scent.weight} &middot; Oil-Based
+            </p>
           </div>
         </div>
       </Link>
