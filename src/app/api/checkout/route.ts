@@ -50,10 +50,19 @@ export async function POST(request: NextRequest) {
   // Authoritative server-side shipping:
   //   3+ items → FREE (bundle price is set to cover postage costs)
   //   1–2 items → live AusPost rate, silent flat-rate fallback if API unavailable
-  const shippingQuote = totalQty >= 3
-    ? { cost: 0, source: "bundle_free" as const }
-    : await getShippingCost(customer.postcode, customer.state);
-  const shippingCost  = shippingQuote.cost;
+  let shippingCost    = 0;
+  let shippingSource: "auspost" | "bundle_free" | "calculated" = "bundle_free";
+  let shippingService: string | undefined = undefined;
+
+  if (totalQty >= 3) {
+    shippingCost   = 0;
+    shippingSource = "bundle_free";
+  } else {
+    const quote    = await getShippingCost(customer.postcode, customer.state);
+    shippingCost   = quote.cost;
+    shippingSource = quote.source;
+    shippingService = quote.service;
+  }
   const shippingCents = Math.round(shippingCost * 100);
 
   for (const item of items) {
@@ -155,7 +164,7 @@ export async function POST(request: NextRequest) {
             subject: `New Order — ${customer.name} — A$${(grandTotalCents / 100).toFixed(2)}`,
             from_name: "Awadini Orders",
             replyto: customer.email,
-            message: buildOrderMessage(customer, lineItems, totalCents / 100, shippingCost, grandTotalCents / 100, payment.id!, shippingQuote.source, "service" in shippingQuote ? shippingQuote.service : undefined),
+            message: buildOrderMessage(customer, lineItems, totalCents / 100, shippingCost, grandTotalCents / 100, payment.id!, shippingSource, shippingService),
           }),
         });
       }
