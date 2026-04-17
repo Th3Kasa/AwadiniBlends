@@ -6,6 +6,7 @@ import type { Scent } from "@/types";
 import { formatCurrency } from "@/lib/utils";
 import { FreshlyPouredBadge } from "@/components/product/FreshlyPouredBadge";
 import { AddToCartButton } from "./AddToCartButton";
+import { BundleSection } from "@/components/product/BundleSection";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "";
 const allScents = scents as Scent[];
@@ -38,6 +39,7 @@ export default function ProductPage({ params }: Props) {
   if (!scent) notFound();
 
   return (
+    <>
     <section className="py-12 sm:py-20">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16">
@@ -101,6 +103,8 @@ export default function ProductPage({ params }: Props) {
         </div>
       </div>
     </section>
+    <BundleSection preselectedSlug={scent.slug} />
+    </>
   );
 }
 

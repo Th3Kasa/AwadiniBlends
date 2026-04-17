@@ -1,7 +1,7 @@
 export function FreshlyPouredBadge({ className = "" }: { className?: string }) {
   return (
     <span
-      className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-gold/10 border border-gold/20 text-gold text-[11px] tracking-wider uppercase ${className}`}
+      className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-gold/10 border border-gold/20 text-gold text-xs tracking-wider uppercase ${className}`}
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"

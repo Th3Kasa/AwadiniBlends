@@ -1,23 +1,24 @@
 import type { Metadata } from "next";
-import { Playfair_Display, Inter } from "next/font/google";
+import { Cormorant_Garamond, DM_Sans } from "next/font/google";
 import "./globals.css";
 import { ShippingBanner } from "@/components/layout/ShippingBanner";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { CartDrawer } from "@/components/cart/CartDrawer";
 
-const playfair = Playfair_Display({
+const cormorant = Cormorant_Garamond({
   subsets: ["latin"],
-  weight: ["400", "600", "700"],
+  weight: ["300", "400", "500", "600", "700"],
+  style: ["normal", "italic"],
   display: "swap",
-  variable: "--font-playfair",
+  variable: "--font-cormorant",
 });
 
-const inter = Inter({
+const dmSans = DM_Sans({
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600"],
+  weight: ["300", "400", "500", "600", "700"],
   display: "swap",
-  variable: "--font-sans",
+  variable: "--font-dm-sans",
 });
 
 export const metadata: Metadata = {
@@ -66,8 +67,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${playfair.variable} ${inter.variable}`}>
+    <html lang="en" className={`${cormorant.variable} ${dmSans.variable}`}>
       <body className="bg-obsidian text-cream font-sans antialiased">
+        {/* Ensure content is visible if JS is disabled */}
+        <noscript>
+          <style>{`* { opacity: 1 !important; transform: none !important; }`}</style>
+        </noscript>
         <ShippingBanner />
         <Header />
         <main className="min-h-screen">{children}</main>

@@ -19,7 +19,7 @@ export function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
         >
-          <p className="text-gold text-xs sm:text-sm tracking-[0.35em] uppercase mb-6">
+          <p className="text-gold text-xs tracking-[0.35em] uppercase mb-6">
             Artisanal Perfume Oils &middot; Sydney, Australia
           </p>
         </motion.div>
@@ -28,11 +28,11 @@ export function Hero() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.15, ease: "easeOut" }}
-          className="font-serif text-4xl sm:text-5xl md:text-7xl lg:text-8xl tracking-tight text-cream leading-[1.1] mb-8"
+          className="font-serif text-5xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tight text-cream leading-[1.05] mb-8"
         >
           Scent That
           <br />
-          <span className="gold-gradient">Melts Into</span>
+          <span className="gold-gradient italic">Melts Into</span>
           <br />
           The Skin
         </motion.h1>
@@ -41,10 +41,10 @@ export function Hero() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
-          className="text-cream/80 text-base sm:text-lg md:text-xl max-w-2xl mx-auto mb-10 leading-relaxed"
+          className="text-cream/70 text-base sm:text-lg max-w-xl mx-auto mb-10 leading-7"
         >
-          100% homemade, high-concentration perfume oils freshly poured in small
-          batches. Engineered for longevity, crafted with intention.
+          High-concentration perfume oils, freshly poured in small batches.
+          Engineered for longevity, crafted with intention.
         </motion.p>
 
         <motion.div
@@ -53,11 +53,11 @@ export function Hero() {
           transition={{ duration: 0.8, delay: 0.45, ease: "easeOut" }}
           className="flex flex-col sm:flex-row items-center justify-center gap-4"
         >
-          <Link href="/#collection" className="btn-primary">
-            Explore Collection
+          <Link href="/#bundles" className="btn-primary">
+            Build Your Bundle
           </Link>
-          <Link href="/contact" className="btn-outline">
-            Get in Touch
+          <Link href="/#collection" className="btn-outline">
+            Explore Collection
           </Link>
         </motion.div>
 
@@ -65,7 +65,7 @@ export function Hero() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1, delay: 0.8 }}
-          className="mt-16 flex items-center justify-center gap-8 text-cream/55 text-xs tracking-wider uppercase"
+          className="mt-16 flex items-center justify-center gap-8 text-cream/70 text-sm"
         >
           <span>Made to Order</span>
           <span className="w-1 h-1 rounded-full bg-gold/50" />

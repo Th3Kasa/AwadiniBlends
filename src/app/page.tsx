@@ -8,8 +8,8 @@ export default function HomePage() {
   return (
     <>
       <Hero />
-      <ProductGrid scents={scents as Scent[]} />
       <BundleSection />
+      <ProductGrid scents={scents as Scent[]} />
     </>
   );
 }

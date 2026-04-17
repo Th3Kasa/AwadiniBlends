@@ -25,7 +25,7 @@ export function Header() {
             <h1 className="font-serif text-xl sm:text-2xl tracking-wider text-cream">
               AWADINI
             </h1>
-            <p className="text-[10px] tracking-[0.25em] text-gold uppercase -mt-1 hidden sm:block">
+            <p className="text-xs tracking-[0.25em] text-gold uppercase -mt-1 hidden sm:block">
               Fragrance Blends
             </p>
           </Link>
@@ -34,19 +34,19 @@ export function Header() {
           <div className="hidden md:flex items-center gap-8">
             <Link
               href="/"
-              className="text-sm tracking-wider text-cream/90 hover:text-gold transition-colors duration-300 uppercase"
+              className="text-sm text-cream/70 hover:text-gold transition-colors duration-300 focus-visible:outline-none focus-visible:text-gold"
             >
               Home
             </Link>
             <Link
               href="/#collection"
-              className="text-sm tracking-wider text-cream/90 hover:text-gold transition-colors duration-300 uppercase"
+              className="text-sm text-cream/70 hover:text-gold transition-colors duration-300 focus-visible:outline-none focus-visible:text-gold"
             >
               Collection
             </Link>
             <Link
               href="/contact"
-              className="text-sm tracking-wider text-cream/90 hover:text-gold transition-colors duration-300 uppercase"
+              className="text-sm text-cream/70 hover:text-gold transition-colors duration-300 focus-visible:outline-none focus-visible:text-gold"
             >
               Contact
             </Link>
@@ -56,7 +56,7 @@ export function Header() {
           <div className="flex items-center gap-4">
             <button
               onClick={openCart}
-              className="relative p-2 text-cream/90 hover:text-gold transition-colors duration-300"
+              className="relative p-2 text-cream/70 hover:text-gold transition-colors duration-300 focus-visible:outline-none focus-visible:text-gold"
               aria-label="Open cart"
             >
               <svg
@@ -74,7 +74,7 @@ export function Header() {
                 />
               </svg>
               {hydrated && itemCount > 0 && (
-                <span className="absolute -top-1 -right-1 bg-gold text-obsidian text-[10px] font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                <span className="absolute -top-1 -right-1 bg-gold text-obsidian text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
                   {itemCount}
                 </span>
               )}
@@ -83,7 +83,7 @@ export function Header() {
             {/* Mobile Hamburger */}
             <button
               onClick={() => setMenuOpen(!menuOpen)}
-              className="md:hidden p-2 text-cream/90 hover:text-gold transition-colors duration-300"
+              className="md:hidden p-2 text-cream/70 hover:text-gold transition-colors duration-300"
               aria-label="Toggle menu"
             >
               <svg
@@ -118,21 +118,21 @@ export function Header() {
             <Link
               href="/"
               onClick={() => setMenuOpen(false)}
-              className="block text-sm tracking-wider text-cream/90 hover:text-gold transition-colors duration-300 uppercase py-2"
+              className="block text-sm text-cream/70 hover:text-gold transition-colors duration-300 py-2"
             >
               Home
             </Link>
             <Link
               href="/#collection"
               onClick={() => setMenuOpen(false)}
-              className="block text-sm tracking-wider text-cream/90 hover:text-gold transition-colors duration-300 uppercase py-2"
+              className="block text-sm text-cream/70 hover:text-gold transition-colors duration-300 py-2"
             >
               Collection
             </Link>
             <Link
               href="/contact"
               onClick={() => setMenuOpen(false)}
-              className="block text-sm tracking-wider text-cream/90 hover:text-gold transition-colors duration-300 uppercase py-2"
+              className="block text-sm text-cream/70 hover:text-gold transition-colors duration-300 py-2"
             >
               Contact
             </Link>

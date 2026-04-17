@@ -16,7 +16,7 @@ export function ProductGrid({ scents }: ProductGridProps) {
           <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl text-cream tracking-tight">
             Artisanal Scent Library
           </h2>
-          <p className="text-cream/90 text-sm sm:text-base mt-4 max-w-xl mx-auto">
+          <p className="text-cream/70 text-base mt-4 max-w-xl mx-auto leading-7">
             Each fragrance is freshly poured upon order using high-concentration
             perfume oils, crafted to melt into the skin and last all day.
           </p>

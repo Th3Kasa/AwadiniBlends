@@ -9,13 +9,13 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
           {/* Brand */}
           <div>
-            <h3 className="font-serif text-2xl tracking-wider text-cream mb-3">
+            <h3 className="font-serif text-2xl tracking-wider text-cream mb-2">
               AWADINI
             </h3>
             <p className="text-xs tracking-[0.25em] text-gold uppercase mb-4">
               Fragrance Blends
             </p>
-            <p className="text-sm text-cream/80 leading-relaxed">
+            <p className="text-sm text-cream/70 leading-7">
               100% homemade, high-concentration perfume oils. Freshly poured in
               small batches in Sydney, Australia.
             </p>
@@ -23,14 +23,14 @@ export function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h4 className="text-sm font-medium tracking-wider uppercase text-cream/80 mb-4">
+            <h4 className="text-sm font-medium text-cream mb-4">
               Quick Links
             </h4>
             <ul className="space-y-3">
               <li>
                 <Link
                   href="/#collection"
-                  className="text-sm text-cream/80 hover:text-gold transition-colors duration-300"
+                  className="text-sm text-cream/70 hover:text-gold transition-colors duration-300"
                 >
                   Our Collection
                 </Link>
@@ -38,7 +38,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/contact"
-                  className="text-sm text-cream/80 hover:text-gold transition-colors duration-300"
+                  className="text-sm text-cream/70 hover:text-gold transition-colors duration-300"
                 >
                   Contact Us
                 </Link>
@@ -48,14 +48,14 @@ export function Footer() {
 
           {/* Legal */}
           <div>
-            <h4 className="text-sm font-medium tracking-wider uppercase text-cream/80 mb-4">
+            <h4 className="text-sm font-medium text-cream mb-4">
               Legal
             </h4>
             <ul className="space-y-3">
               <li>
                 <Link
                   href="/refund-policy"
-                  className="text-sm text-cream/80 hover:text-gold transition-colors duration-300"
+                  className="text-sm text-cream/70 hover:text-gold transition-colors duration-300"
                 >
                   Refund Policy
                 </Link>
@@ -63,7 +63,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/terms"
-                  className="text-sm text-cream/80 hover:text-gold transition-colors duration-300"
+                  className="text-sm text-cream/70 hover:text-gold transition-colors duration-300"
                 >
                   Terms &amp; Conditions
                 </Link>
@@ -74,15 +74,9 @@ export function Footer() {
 
         {/* Bottom Bar */}
         <div className="mt-12 pt-8 border-t border-white/5">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-            <p className="text-xs text-cream/85">
-              &copy; {currentYear} Awadini Fragrance Blends. All rights
-              reserved.
-            </p>
-            <p className="text-xs text-cream/85">
-              AWAD, DAVID MAHIR (Sole Trader) &middot; ABN 60 669 962 543
-            </p>
-          </div>
+          <p className="text-xs text-cream/70 text-center sm:text-left">
+            &copy; {currentYear} Awadini Fragrance Blends. All rights reserved.
+          </p>
         </div>
       </div>
     </footer>

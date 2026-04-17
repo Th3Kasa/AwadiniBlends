@@ -5,7 +5,6 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import type { Scent } from "@/types";
 import { formatCurrency } from "@/lib/utils";
-import { FreshlyPouredBadge } from "./FreshlyPouredBadge";
 
 interface ProductCardProps {
   scent: Scent;
@@ -51,25 +50,22 @@ export function ProductCard({ scent, index }: ProductCardProps) {
               className="object-cover transition-transform duration-700 group-hover:scale-105"
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
             />
-            <div className="absolute top-3 left-3">
-              <FreshlyPouredBadge />
-            </div>
           </div>
 
           {/* Info */}
           <div className="p-5">
             <div className="flex items-start justify-between gap-2">
               <div>
-                <h3 className="font-serif text-lg text-cream group-hover:text-gold transition-colors duration-300">
+                <h3 className="font-sans font-medium text-base text-cream group-hover:text-gold transition-colors duration-300">
                   {scent.name}
                 </h3>
-                <p className="text-xs text-cream/70 mt-1 leading-snug">{scent.tagline}</p>
+                <p className="text-sm text-cream/70 mt-1 leading-normal">{scent.tagline}</p>
               </div>
               <p className="text-gold font-medium text-sm flex-shrink-0 pt-0.5">
                 {formatCurrency(scent.price)}
               </p>
             </div>
-            <p className="text-[10px] text-cream/50 uppercase tracking-wider mt-3">
+            <p className="text-xs text-gold/60 mt-3">
               {scent.weight} &middot; Oil-Based
             </p>
           </div>
