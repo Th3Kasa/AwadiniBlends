@@ -23,30 +23,24 @@ export function SquarePaymentForm({ onTokenReceived, isSubmitting }: SquarePayme
     >
       <CreditCard
         style={{
-          // Dark background for the entire card input area
           ".input-container": {
             borderColor: "rgba(255,255,255,0.15)",
             borderRadius: "6px",
-            backgroundColor: "#1c1c1c",
           },
           ".input-container.is-focus": {
             borderColor: "#c9a86c",
-            boxShadow: "0 0 0 2px rgba(201,168,108,0.15)",
           },
           ".input-container.is-error": {
             borderColor: "rgba(248,113,113,0.7)",
           },
           ".message-text": {
             color: "rgba(245,240,232,0.65)",
-            fontSize: "12px",
           },
           ".message-icon": {
             color: "rgba(245,240,232,0.65)",
           },
           "input": {
-            backgroundColor: "#1c1c1c",
             color: "#f5f0e8",
-            fontSize: "14px",
           },
           "input::placeholder": {
             color: "rgba(245,240,232,0.3)",
