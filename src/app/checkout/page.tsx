@@ -1,12 +1,13 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { useCartStore } from "@/store/cart";
 import { SquarePaymentForm } from "@/components/checkout/SquarePaymentForm";
 import { formatCurrency } from "@/lib/utils";
-import { getShippingCost } from "@/lib/shipping";
+
+// ── Types ─────────────────────────────────────────────────────────────────────
 
 interface CustomerForm {
   name: string;
@@ -17,6 +18,13 @@ interface CustomerForm {
   city: string;
   state: string;
   postcode: string;
+}
+
+interface ShippingQuote {
+  cost: number;
+  source: "auspost" | "estimated";
+  service: string | null;
+  deliveryTime: string | null;
 }
 
 const initialForm: CustomerForm = {
@@ -30,44 +38,86 @@ const initialForm: CustomerForm = {
   postcode: "",
 };
 
+// ── Validators ────────────────────────────────────────────────────────────────
+
 const validators: Record<keyof CustomerForm, (v: string) => string | undefined> = {
-  name: (v) => (!v || v.trim().length < 2 ? "Full name is required" : undefined),
-  email: (v) =>
-    !v || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)
-      ? "Enter a valid email address"
-      : undefined,
-  phone: (v) =>
-    !v || !/^[\d\s+\-()\s]{8,15}$/.test(v.trim())
-      ? "Enter a valid phone number (8–15 digits)"
-      : undefined,
-  addressLine1: (v) =>
-    !v || v.trim().length < 3 ? "Street address is required" : undefined,
-  addressLine2: () => undefined,
-  city: (v) => (!v || v.trim().length < 2 ? "City / suburb is required" : undefined),
-  state: (v) => (!v ? "Please select a state" : undefined),
-  postcode: (v) =>
-    !v || !/^\d{4}$/.test(v) ? "Enter a valid 4-digit postcode" : undefined,
+  name:         (v) => (!v || v.trim().length < 2 ? "Full name is required" : undefined),
+  email:        (v) => (!v || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) ? "Enter a valid email address" : undefined),
+  phone:        (v) => (!v || !/^[\d\s+\-()\s]{8,15}$/.test(v.trim()) ? "Enter a valid phone number (8–15 digits)" : undefined),
+  addressLine1: (v) => (!v || v.trim().length < 3 ? "Street address is required" : undefined),
+  addressLine2: ()  => undefined,
+  city:         (v) => (!v || v.trim().length < 2 ? "City / suburb is required" : undefined),
+  state:        (v) => (!v ? "Please select a state" : undefined),
+  postcode:     (v) => (!v || !/^\d{4}$/.test(v) ? "Enter a valid 4-digit postcode" : undefined),
 };
+
+// ── Page ──────────────────────────────────────────────────────────────────────
 
 export default function CheckoutPage() {
   const router = useRouter();
-  const [hydrated, setHydrated] = useState(false);
-  const [form, setForm] = useState<CustomerForm>(initialForm);
-  const [errors, setErrors] = useState<Partial<CustomerForm>>({});
-  const [touched, setTouched] = useState<Partial<Record<keyof CustomerForm, boolean>>>({});
+  const [hydrated, setHydrated]       = useState(false);
+  const [form, setForm]               = useState<CustomerForm>(initialForm);
+  const [errors, setErrors]           = useState<Partial<CustomerForm>>({});
+  const [touched, setTouched]         = useState<Partial<Record<keyof CustomerForm, boolean>>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
-  const [success, setSuccess] = useState(false);
+  const [success, setSuccess]         = useState(false);
 
-  const items = useCartStore((s) => s.items);
+  // Shipping quote state — fetched from /api/shipping when postcode + state ready
+  const [shippingQuote, setShippingQuote]     = useState<ShippingQuote | null>(null);
+  const [shippingLoading, setShippingLoading] = useState(false);
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const items     = useCartStore((s) => s.items);
   const clearCart = useCartStore((s) => s.clearCart);
 
   useEffect(() => { setHydrated(true); }, []);
 
-  const subtotal = items.reduce((sum, item) => sum + item.scent.price * item.quantity, 0);
-  const shippingCost = form.state ? getShippingCost(form.state) : null;
-  const total = subtotal + (shippingCost ?? 0);
+  // ── Live shipping quote ─────────────────────────────────────────────────────
+  // Fires 600 ms after the user finishes typing the postcode, as long as a
+  // state is also selected. Calls our server-side /api/shipping route so the
+  // AusPost API key is never exposed to the browser.
 
+  const fetchShipping = useCallback(async (postcode: string, state: string) => {
+    setShippingLoading(true);
+    setShippingQuote(null);
+    try {
+      const res = await fetch(
+        `/api/shipping?postcode=${encodeURIComponent(postcode)}&state=${encodeURIComponent(state)}`
+      );
+      if (!res.ok) throw new Error("shipping lookup failed");
+      const data: ShippingQuote = await res.json();
+      setShippingQuote(data);
+    } catch {
+      // Non-critical — checkout can still proceed; server will recalculate
+      setShippingQuote(null);
+    } finally {
+      setShippingLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+
+    const { postcode, state } = form;
+    if (/^\d{4}$/.test(postcode) && state) {
+      debounceRef.current = setTimeout(() => {
+        fetchShipping(postcode, state);
+      }, 600);
+    } else {
+      setShippingQuote(null);
+    }
+
+    return () => {
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+    };
+  }, [form.postcode, form.state, fetchShipping]);
+
+  // ── Derived totals ──────────────────────────────────────────────────────────
+  const subtotal = items.reduce((sum, item) => sum + item.scent.price * item.quantity, 0);
+  const total    = subtotal + (shippingQuote?.cost ?? 0);
+
+  // ── Field handlers ──────────────────────────────────────────────────────────
   const validateField = (name: keyof CustomerForm, value: string) => {
     const error = validators[name](value);
     setErrors((prev) => ({ ...prev, [name]: error }));
@@ -100,6 +150,7 @@ export default function CheckoutPage() {
     validateField(key, value);
   };
 
+  // ── Payment ─────────────────────────────────────────────────────────────────
   const handlePaymentToken = async (sourceId: string) => {
     if (!validateAll()) return;
     if (items.length === 0) { setSubmitError("Your cart is empty."); return; }
@@ -130,6 +181,7 @@ export default function CheckoutPage() {
     }
   };
 
+  // ── Guards ──────────────────────────────────────────────────────────────────
   if (!hydrated) return null;
 
   if (success) {
@@ -146,7 +198,7 @@ export default function CheckoutPage() {
             Thank you for your order. Your fragrances are being handcrafted just for you.
           </p>
           <p className="text-cream/70 text-sm mb-8">
-            We&apos;ll dispatch within 1–2 business days.
+            We&apos;ll dispatch within 1–2 business days from Liverpool NSW 2170.
           </p>
           <button onClick={() => router.push("/")} className="btn-outline">
             Continue Shopping
@@ -167,6 +219,7 @@ export default function CheckoutPage() {
     );
   }
 
+  // ── Render ──────────────────────────────────────────────────────────────────
   return (
     <section className="py-12 sm:py-20">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -175,7 +228,8 @@ export default function CheckoutPage() {
         </h1>
 
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
-          {/* ── Left: Form ── */}
+
+          {/* ── Left: Form ─────────────────────────────────────────────────── */}
           <div className="lg:col-span-3 space-y-6">
 
             {/* Delivery Details */}
@@ -186,6 +240,7 @@ export default function CheckoutPage() {
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+
                 <Field label="Full Name" name="name" value={form.name}
                   onChange={handleField} onBlur={handleBlur}
                   error={errors.name} autoComplete="name" colSpan="sm:col-span-2" />
@@ -194,13 +249,13 @@ export default function CheckoutPage() {
                   <Field label="Email Address" name="email" type="email" value={form.email}
                     onChange={handleField} onBlur={handleBlur}
                     error={errors.email} autoComplete="email" />
-                  {!errors.email && (
+                  {!errors.email && form.email && (
                     <p className="text-xs text-gold/70 mt-1 flex items-center gap-1">
                       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" className="w-3 h-3 flex-shrink-0">
                         <path d="M2.5 3A1.5 1.5 0 0 0 1 4.5v.793c.026.009.051.02.076.032L7.674 8.51c.206.1.446.1.652 0l6.598-3.185A.755.755 0 0 1 15 5.293V4.5A1.5 1.5 0 0 0 13.5 3h-11Z" />
                         <path d="M15 6.954 8.978 9.86a2.25 2.25 0 0 1-1.956 0L1 6.954V11.5A1.5 1.5 0 0 0 2.5 13h11a1.5 1.5 0 0 0 1.5-1.5V6.954Z" />
                       </svg>
-                      Exclusive offers sent to this address
+                      Order confirmation sent here
                     </p>
                   )}
                 </div>
@@ -225,9 +280,7 @@ export default function CheckoutPage() {
 
                 {/* State select */}
                 <div>
-                  <label className="block text-sm font-medium text-cream/70 mb-2">
-                    State
-                  </label>
+                  <label className="block text-sm font-medium text-cream/70 mb-2">State</label>
                   <select
                     name="state"
                     value={form.state}
@@ -238,17 +291,39 @@ export default function CheckoutPage() {
                     }`}
                   >
                     <option value="" className="bg-charcoal">Select state</option>
-                    {["NSW","VIC","QLD","SA","WA","TAS","NT","ACT"].map((s) => (
+                    {["NSW", "VIC", "QLD", "SA", "WA", "TAS", "NT", "ACT"].map((s) => (
                       <option key={s} value={s} className="bg-charcoal">{s}</option>
                     ))}
                   </select>
-                  {errors.state && <p className="text-red-400 text-xs mt-1.5 flex items-center gap-1">⚠ {errors.state}</p>}
+                  {errors.state && (
+                    <p className="text-red-400 text-xs mt-1.5 flex items-center gap-1">⚠ {errors.state}</p>
+                  )}
                 </div>
 
-                <Field label="Postcode" name="postcode" value={form.postcode}
-                  onChange={handleField} onBlur={handleBlur}
-                  error={errors.postcode} autoComplete="postal-code"
-                  maxLength={4} placeholder="e.g. 2000" />
+                {/* Postcode — triggers shipping lookup on valid 4-digit entry */}
+                <div>
+                  <Field label="Postcode" name="postcode" value={form.postcode}
+                    onChange={handleField} onBlur={handleBlur}
+                    error={errors.postcode} autoComplete="postal-code"
+                    maxLength={4} placeholder="e.g. 2000" />
+                  {!errors.postcode && /^\d{4}$/.test(form.postcode) && form.state && (
+                    <p className="text-xs text-cream/40 mt-1.5 flex items-center gap-1.5">
+                      {shippingLoading ? (
+                        <>
+                          <span className="inline-block w-3 h-3 border border-gold/40 border-t-gold rounded-full animate-spin" />
+                          Looking up shipping rate…
+                        </>
+                      ) : shippingQuote?.source === "auspost" ? (
+                        <>
+                          <span className="text-gold/60">✓</span> Live Australia Post rate
+                        </>
+                      ) : shippingQuote ? (
+                        <>Estimated rate — exact rate confirmed at dispatch</>
+                      ) : null}
+                    </p>
+                  )}
+                </div>
+
               </div>
             </div>
 
@@ -277,7 +352,7 @@ export default function CheckoutPage() {
             </div>
           </div>
 
-          {/* ── Right: Order Summary ── */}
+          {/* ── Right: Order Summary ──────────────────────────────────────── */}
           <div className="lg:col-span-2">
             <div className="rounded-xl border border-white/10 bg-charcoal p-6 sticky top-24">
               <h2 className="text-base font-medium text-cream mb-5">Order Summary</h2>
@@ -304,48 +379,79 @@ export default function CheckoutPage() {
                   <span>Subtotal</span>
                   <span>{formatCurrency(subtotal)}</span>
                 </div>
-                <div className="flex justify-between items-center text-sm text-cream/70">
-                  <span>Shipping</span>
-                  {shippingCost !== null ? (
-                    <span className="text-cream font-medium">{formatCurrency(shippingCost)}</span>
+
+                {/* Shipping row — shows live cost or prompt */}
+                <div className="flex justify-between items-start text-sm text-cream/70">
+                  <div>
+                    <span>Shipping</span>
+                    {shippingQuote?.service && (
+                      <p className="text-xs text-cream/40 mt-0.5">{shippingQuote.service}</p>
+                    )}
+                    {shippingQuote?.deliveryTime && (
+                      <p className="text-xs text-cream/40">{shippingQuote.deliveryTime}</p>
+                    )}
+                  </div>
+
+                  {shippingLoading ? (
+                    <span className="flex items-center gap-1.5 text-cream/40 text-xs">
+                      <span className="inline-block w-3 h-3 border border-gold/40 border-t-gold rounded-full animate-spin" />
+                      Calculating…
+                    </span>
+                  ) : shippingQuote ? (
+                    <div className="text-right">
+                      <span className="text-cream font-medium">{formatCurrency(shippingQuote.cost)}</span>
+                      {shippingQuote.source === "auspost" && (
+                        <p className="text-xs text-gold/60 mt-0.5">Live AusPost rate</p>
+                      )}
+                      {shippingQuote.source === "estimated" && (
+                        <p className="text-xs text-cream/40 mt-0.5">Estimated</p>
+                      )}
+                    </div>
                   ) : (
-                    <span className="text-cream/40 italic text-xs">Select state above</span>
+                    <span className="text-cream/40 italic text-xs">
+                      {form.state && !form.postcode ? "Enter postcode above" : "Enter postcode & state"}
+                    </span>
                   )}
                 </div>
+
                 <div className="flex justify-between items-center pt-2 border-t border-white/8">
                   <span className="text-sm font-medium text-cream">Total</span>
                   <span className="font-serif text-2xl text-gold">
-                    {shippingCost !== null ? formatCurrency(total) : formatCurrency(subtotal)}
+                    {shippingQuote ? formatCurrency(total) : formatCurrency(subtotal)}
+                    {!shippingQuote && <span className="text-sm text-cream/40 font-sans ml-1">+ shipping</span>}
                   </span>
                 </div>
               </div>
 
-              {shippingCost !== null && (
-                <p className="text-xs text-cream/70 mt-3">
-                  Shipping via Australia Post from Sydney.
+              {/* Dispatch info */}
+              <div className="mt-4 pt-4 border-t border-white/8 space-y-1">
+                <p className="text-xs text-cream/70">
+                  📦 Dispatched from Liverpool NSW 2170 via Australia Post.
                 </p>
-              )}
-              <p className="text-xs text-cream/70 mt-1 leading-6">
-                Handcrafted to order. Estimated dispatch: 1–2 business days.
-              </p>
+                <p className="text-xs text-cream/70">
+                  Handcrafted to order · 1–2 business day dispatch
+                </p>
+              </div>
 
               {/* Trust badges */}
               <div className="mt-4 pt-4 border-t border-white/8 flex items-center justify-center gap-4">
-                {["Secure Payment", "Free Shipping", "Made to Order"].map((badge) => (
+                {["Secure Payment", "Made in Australia", "Made to Order"].map((badge) => (
                   <div key={badge} className="text-center">
-                    <p className="text-xs text-cream/70">{badge}</p>
+                    <p className="text-xs text-cream/50">{badge}</p>
                   </div>
                 ))}
               </div>
             </div>
           </div>
+
         </div>
       </div>
     </section>
   );
 }
 
-// ── Reusable Field Component ──────────────────────────────────────────────────
+// ── Reusable Field Component ───────────────────────────────────────────────────
+
 interface FieldProps {
   label: string;
   name: string;
@@ -360,7 +466,10 @@ interface FieldProps {
   placeholder?: string;
 }
 
-function Field({ label, name, value, onChange, onBlur, type = "text", error, autoComplete, colSpan = "", maxLength, placeholder }: FieldProps) {
+function Field({
+  label, name, value, onChange, onBlur, type = "text",
+  error, autoComplete, colSpan = "", maxLength, placeholder,
+}: FieldProps) {
   return (
     <div className={colSpan}>
       <label htmlFor={name} className="block text-sm font-medium text-cream/70 mb-2">

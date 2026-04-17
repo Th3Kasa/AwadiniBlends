@@ -46,7 +46,11 @@ export async function POST(request: NextRequest) {
   const unitPrice = getBundleUnitPrice();
   let totalCents = 0;
   const lineItems: { name: string; quantity: number; unitPrice: number }[] = [];
-  const shippingCost = getShippingCost(customer.state);
+  // Authoritative server-side shipping cost — uses live AusPost API when key
+  // is configured, falls back to flat state-based rate. Never trust the
+  // client-supplied amount.
+  const shippingQuote = await getShippingCost(customer.postcode, customer.state);
+  const shippingCost  = shippingQuote.cost;
   const shippingCents = Math.round(shippingCost * 100);
 
   for (const item of items) {
@@ -148,7 +152,7 @@ export async function POST(request: NextRequest) {
             subject: `New Order — ${customer.name} — A$${(grandTotalCents / 100).toFixed(2)}`,
             from_name: "Awadini Orders",
             replyto: customer.email,
-            message: buildOrderMessage(customer, lineItems, totalCents / 100, shippingCost, grandTotalCents / 100, payment.id!),
+            message: buildOrderMessage(customer, lineItems, totalCents / 100, shippingCost, grandTotalCents / 100, payment.id!, shippingQuote.source, shippingQuote.service),
           }),
         });
       }
@@ -176,29 +180,38 @@ function buildOrderMessage(
   subtotal: number,
   shipping: number,
   grandTotal: number,
-  paymentId: string
+  paymentId: string,
+  shippingSource: "auspost" | "estimated" = "estimated",
+  shippingService?: string,
 ): string {
   const itemList = items
     .map((i) => `  - ${i.name} x ${i.quantity} = A$${(i.unitPrice * i.quantity).toFixed(2)}`)
     .join("\n");
 
+  const shippingLabel = shippingSource === "auspost"
+    ? `Shipping via AusPost${shippingService ? ` (${shippingService})` : ""}`
+    : `Shipping — ${customer.state} (estimated)`;
+
   return [
-    `New Order Received`,
+    `New Order Received — Awadini Fragrance Blends`,
     ``,
-    `Customer: ${customer.name}`,
-    `Email: ${customer.email}`,
-    `Phone: ${customer.phone}`,
+    `Customer:  ${customer.name}`,
+    `Email:     ${customer.email}`,
+    `Phone:     ${customer.phone}`,
     ``,
     `Deliver to:`,
-    `${customer.addressLine1}${customer.addressLine2 ? ", " + customer.addressLine2 : ""}`,
-    `${customer.city} ${customer.state} ${customer.postcode}`,
+    `  ${customer.addressLine1}${customer.addressLine2 ? ", " + customer.addressLine2 : ""}`,
+    `  ${customer.city} ${customer.state} ${customer.postcode}`,
     ``,
-    `Items:`,
+    `Dispatch from: Liverpool NSW 2170`,
+    ``,
+    `Items ordered:`,
     itemList,
     ``,
-    `Subtotal: A$${subtotal.toFixed(2)}`,
-    `Shipping (${customer.state}): A$${shipping.toFixed(2)}`,
-    `Total: A$${grandTotal.toFixed(2)}`,
+    `Subtotal:  A$${subtotal.toFixed(2)}`,
+    `${shippingLabel}: A$${shipping.toFixed(2)}`,
+    `TOTAL:     A$${grandTotal.toFixed(2)}`,
+    ``,
     `Square Payment ID: ${paymentId}`,
   ].join("\n");
 }
