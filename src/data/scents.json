@@ -12,7 +12,7 @@
       "base": ["Light Musk", "Cedar"]
     },
     "image": "/images/scents/green-apple.jpg",
-    "weight": "10ml",
+    "weight": "8ml",
     "inStock": true
   },
   {
@@ -28,7 +28,7 @@
       "base": ["Vanilla Bean", "Sandalwood"]
     },
     "image": "/images/scents/strawberry-rose.jpg",
-    "weight": "10ml",
+    "weight": "8ml",
     "inStock": true
   },
   {
@@ -44,7 +44,7 @@
       "base": ["Amber", "White Musk"]
     },
     "image": "/images/scents/vanilla.jpg",
-    "weight": "10ml",
+    "weight": "8ml",
     "inStock": true
   },
   {
@@ -60,7 +60,7 @@
       "base": ["Cedarwood", "Amber"]
     },
     "image": "/images/scents/musk.jpg",
-    "weight": "10ml",
+    "weight": "8ml",
     "inStock": true
   },
   {
@@ -76,7 +76,7 @@
       "base": ["Soft Musk", "Cedarwood"]
     },
     "image": "/images/scents/tea-rose.jpg",
-    "weight": "10ml",
+    "weight": "8ml",
     "inStock": true
   },
   {
@@ -92,7 +92,7 @@
       "base": ["Honey", "Soft Woods"]
     },
     "image": "/images/scents/honeysuckle.jpg",
-    "weight": "10ml",
+    "weight": "8ml",
     "inStock": true
   },
   {
@@ -108,7 +108,7 @@
       "base": ["Patchouli", "Vetiver"]
     },
     "image": "/images/scents/rose-geranium.jpg",
-    "weight": "10ml",
+    "weight": "8ml",
     "inStock": true
   },
   {
@@ -124,7 +124,7 @@
       "base": ["Sheer Musk", "White Tea"]
     },
     "image": "/images/scents/forget-me-not.jpg",
-    "weight": "10ml",
+    "weight": "8ml",
     "inStock": true
   }
 ]

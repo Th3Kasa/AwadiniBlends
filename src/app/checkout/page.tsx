@@ -6,6 +6,7 @@ import Image from "next/image";
 import { useCartStore } from "@/store/cart";
 import { SquarePaymentForm } from "@/components/checkout/SquarePaymentForm";
 import { formatCurrency } from "@/lib/utils";
+import { getShippingCost } from "@/lib/shipping";
 
 interface CustomerForm {
   name: string;
@@ -63,7 +64,9 @@ export default function CheckoutPage() {
 
   useEffect(() => { setHydrated(true); }, []);
 
-  const total = items.reduce((sum, item) => sum + item.scent.price * item.quantity, 0);
+  const subtotal = items.reduce((sum, item) => sum + item.scent.price * item.quantity, 0);
+  const shippingCost = form.state ? getShippingCost(form.state) : null;
+  const total = subtotal + (shippingCost ?? 0);
 
   const validateField = (name: keyof CustomerForm, value: string) => {
     const error = validators[name](value);
@@ -299,20 +302,31 @@ export default function CheckoutPage() {
               <div className="border-t border-white/8 pt-4 space-y-2.5">
                 <div className="flex justify-between items-center text-sm text-cream/70">
                   <span>Subtotal</span>
-                  <span>{formatCurrency(total)}</span>
+                  <span>{formatCurrency(subtotal)}</span>
                 </div>
                 <div className="flex justify-between items-center text-sm text-cream/70">
                   <span>Shipping</span>
-                  <span className="text-gold font-medium">Free</span>
+                  {shippingCost !== null ? (
+                    <span className="text-cream font-medium">{formatCurrency(shippingCost)}</span>
+                  ) : (
+                    <span className="text-cream/40 italic text-xs">Select state above</span>
+                  )}
                 </div>
                 <div className="flex justify-between items-center pt-2 border-t border-white/8">
                   <span className="text-sm font-medium text-cream">Total</span>
-                  <span className="font-serif text-2xl text-gold">{formatCurrency(total)}</span>
+                  <span className="font-serif text-2xl text-gold">
+                    {shippingCost !== null ? formatCurrency(total) : formatCurrency(subtotal)}
+                  </span>
                 </div>
               </div>
 
-              <p className="text-xs text-cream/70 mt-4 leading-6">
-                Handcrafted to order in Sydney. Estimated dispatch: 1–2 business days. Free shipping Australia wide.
+              {shippingCost !== null && (
+                <p className="text-xs text-cream/70 mt-3">
+                  Shipping via Australia Post from Sydney.
+                </p>
+              )}
+              <p className="text-xs text-cream/70 mt-1 leading-6">
+                Handcrafted to order. Estimated dispatch: 1–2 business days.
               </p>
 
               {/* Trust badges */}

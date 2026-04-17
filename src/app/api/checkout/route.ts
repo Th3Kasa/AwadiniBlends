@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { CheckoutSchema } from "@/lib/schemas";
 import { getSquareClient, squareLocationId } from "@/lib/square";
+import { getShippingCost } from "@/lib/shipping";
 import scents from "@/data/scents.json";
 import type { Scent } from "@/types";
 
@@ -45,6 +46,8 @@ export async function POST(request: NextRequest) {
   const unitPrice = getBundleUnitPrice();
   let totalCents = 0;
   const lineItems: { name: string; quantity: number; unitPrice: number }[] = [];
+  const shippingCost = getShippingCost(customer.state);
+  const shippingCents = Math.round(shippingCost * 100);
 
   for (const item of items) {
     const scent = allScents.find((s) => s.slug === item.slug);
@@ -69,7 +72,8 @@ export async function POST(request: NextRequest) {
     });
   }
 
-  // 4. Create Square payment
+  // 4. Create Square payment (items + shipping)
+  const grandTotalCents = totalCents + shippingCents;
   const squareClient = getSquareClient();
 
   try {
@@ -77,7 +81,7 @@ export async function POST(request: NextRequest) {
       sourceId,
       idempotencyKey: crypto.randomUUID(),
       amountMoney: {
-        amount: BigInt(totalCents),
+        amount: BigInt(grandTotalCents),
         currency: "AUD",
       },
       locationId: squareLocationId,
@@ -141,10 +145,10 @@ export async function POST(request: NextRequest) {
           },
           body: JSON.stringify({
             access_key: accessKey,
-            subject: `New Order — ${customer.name} — A$${(totalCents / 100).toFixed(2)}`,
+            subject: `New Order — ${customer.name} — A$${(grandTotalCents / 100).toFixed(2)}`,
             from_name: "Awadini Orders",
             replyto: customer.email,
-            message: buildOrderMessage(customer, lineItems, totalCents / 100, payment.id!),
+            message: buildOrderMessage(customer, lineItems, totalCents / 100, shippingCost, grandTotalCents / 100, payment.id!),
           }),
         });
       }
@@ -169,7 +173,9 @@ export async function POST(request: NextRequest) {
 function buildOrderMessage(
   customer: { name: string; email: string; phone: string; addressLine1: string; addressLine2?: string; city: string; state: string; postcode: string },
   items: { name: string; quantity: number; unitPrice: number }[],
-  total: number,
+  subtotal: number,
+  shipping: number,
+  grandTotal: number,
   paymentId: string
 ): string {
   const itemList = items
@@ -190,7 +196,9 @@ function buildOrderMessage(
     `Items:`,
     itemList,
     ``,
-    `Total: A$${total.toFixed(2)}`,
+    `Subtotal: A$${subtotal.toFixed(2)}`,
+    `Shipping (${customer.state}): A$${shipping.toFixed(2)}`,
+    `Total: A$${grandTotal.toFixed(2)}`,
     `Square Payment ID: ${paymentId}`,
   ].join("\n");
 }

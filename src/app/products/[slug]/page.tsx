@@ -109,7 +109,7 @@ export default function ProductPage({ params }: Props) {
             <AddToCartButton scent={scent} />
 
             <p className="text-sm text-cream/70 mt-4 text-center lg:text-left">
-              Free shipping Australia wide &middot; Handcrafted to order in Sydney
+              Ships via Australia Post &middot; Handcrafted to order in Sydney
             </p>
           </div>
         </div>

@@ -200,7 +200,7 @@ export function CartDrawer() {
                   </span>
                 </div>
                 <p className="text-sm text-cream/70 text-center">
-                  Shipping included &middot; Handcrafted to order in Sydney
+                  Shipping calculated at checkout &middot; Handcrafted to order in Sydney
                 </p>
                 <Link
                   href="/checkout"

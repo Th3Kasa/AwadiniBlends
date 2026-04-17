@@ -254,7 +254,7 @@ export function BundleSection({ preselectedSlug }: { preselectedSlug?: string } 
           transition={{ delay: 0.4 }}
           className="text-center text-cream/70 text-sm mt-10"
         >
-          Free shipping &middot; Handcrafted to order &middot; Ships within 1–2 business days
+          Handcrafted to order &middot; Ships via Australia Post &middot; 1–2 business days dispatch
         </motion.p>
       </div>
     </section>
