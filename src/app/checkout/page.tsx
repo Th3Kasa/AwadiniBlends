@@ -24,7 +24,7 @@ interface CustomerForm {
 
 interface ShippingQuote {
   cost:         number;
-  source:       "auspost" | "free";
+  source:       "auspost" | "bundle_free" | "calculated";
   service:      string | null;
   deliveryTime: string | null;
 }
@@ -38,14 +38,14 @@ const initialForm: CustomerForm = {
 // ── Validators ─────────────────────────────────────────────────────────────────
 
 const validators: Record<keyof CustomerForm, (v: string) => string | undefined> = {
-  name:         (v) => (!v || v.trim().length < 2          ? "Full name is required"                        : undefined),
-  email:        (v) => (!v || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) ? "Enter a valid email address"        : undefined),
+  name:         (v) => (!v || v.trim().length < 2 ? "Full name is required" : undefined),
+  email:        (v) => (!v || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) ? "Enter a valid email address" : undefined),
   phone:        (v) => (!v || !/^[\d\s+\-()\s]{8,15}$/.test(v.trim()) ? "Enter a valid phone number (8–15 digits)" : undefined),
-  addressLine1: (v) => (!v || v.trim().length < 3          ? "Street address is required"                   : undefined),
+  addressLine1: (v) => (!v || v.trim().length < 3 ? "Street address is required" : undefined),
   addressLine2: ()  => undefined,
-  city:         (v) => (!v || v.trim().length < 2          ? "City / suburb is required"                    : undefined),
-  state:        (v) => (!v                                  ? "Please select a state"                       : undefined),
-  postcode:     (v) => (!v || !/^\d{4}$/.test(v)           ? "Enter a valid 4-digit postcode"               : undefined),
+  city:         (v) => (!v || v.trim().length < 2 ? "City / suburb is required" : undefined),
+  state:        (v) => (!v ? "Please select a state" : undefined),
+  postcode:     (v) => (!v || !/^\d{4}$/.test(v) ? "Enter a valid 4-digit postcode" : undefined),
 };
 
 // ── Page ───────────────────────────────────────────────────────────────────────
@@ -70,16 +70,23 @@ export default function CheckoutPage() {
 
   useEffect(() => { setHydrated(true); }, []);
 
-  // ── Live shipping fetch ────────────────────────────────────────────────────
-  const fetchShipping = useCallback(async (postcode: string) => {
+  // ── Derived values ─────────────────────────────────────────────────────────
+  const totalQty = items.reduce((sum, i) => sum + i.quantity, 0);
+  const subtotal = items.reduce((sum, i) => sum + i.scent.price * i.quantity, 0);
+  const isBundleFree = totalQty >= 3;
+
+  // ── Shipping fetch (only needed for 1–2 items) ─────────────────────────────
+  const fetchShipping = useCallback(async (postcode: string, state: string, qty: number) => {
     setShippingLoading(true);
     try {
-      const res  = await fetch(`/api/shipping?postcode=${encodeURIComponent(postcode)}`);
+      const url = `/api/shipping?postcode=${encodeURIComponent(postcode)}&state=${encodeURIComponent(state)}&qty=${qty}`;
+      const res  = await fetch(url);
       if (!res.ok) throw new Error();
       const data: ShippingQuote = await res.json();
       setShippingQuote(data);
     } catch {
-      setShippingQuote({ cost: 0, source: "free", service: null, deliveryTime: null });
+      // Non-critical — checkout can still proceed; server recalculates anyway
+      setShippingQuote(null);
     } finally {
       setShippingLoading(false);
     }
@@ -87,18 +94,26 @@ export default function CheckoutPage() {
 
   useEffect(() => {
     if (debounceRef.current) clearTimeout(debounceRef.current);
-    const { postcode } = form;
-    if (/^\d{4}$/.test(postcode)) {
-      debounceRef.current = setTimeout(() => fetchShipping(postcode), 600);
+
+    // Bundle of 3+ is always free — no need to query AusPost
+    if (isBundleFree) {
+      setShippingQuote({ cost: 0, source: "bundle_free", service: null, deliveryTime: null });
+      setShippingLoading(false);
+      return;
+    }
+
+    const { postcode, state } = form;
+    if (/^\d{4}$/.test(postcode) && state) {
+      debounceRef.current = setTimeout(() => fetchShipping(postcode, state, totalQty), 600);
     } else {
       setShippingQuote(null);
     }
-    return () => { if (debounceRef.current) clearTimeout(debounceRef.current); };
-  }, [form.postcode, fetchShipping]);
 
-  // ── Derived totals ─────────────────────────────────────────────────────────
-  const subtotal = items.reduce((sum, i) => sum + i.scent.price * i.quantity, 0);
-  const total    = subtotal + (shippingQuote?.cost ?? 0);
+    return () => { if (debounceRef.current) clearTimeout(debounceRef.current); };
+  }, [form.postcode, form.state, totalQty, isBundleFree, fetchShipping]);
+
+  const shippingCost = shippingQuote?.cost ?? 0;
+  const total        = subtotal + shippingCost;
 
   // ── Field handlers ─────────────────────────────────────────────────────────
   const validateField = (name: keyof CustomerForm, value: string) => {
@@ -133,7 +148,7 @@ export default function CheckoutPage() {
     validateField(key, value);
   };
 
-  // ── Address autocomplete selection ────────────────────────────────────────
+  // ── Address autocomplete ───────────────────────────────────────────────────
   const handleAddressSelect = (s: AddressSuggestion) => {
     setForm((prev) => ({
       ...prev,
@@ -142,20 +157,8 @@ export default function CheckoutPage() {
       state:        s.state,
       postcode:     s.postcode,
     }));
-    setTouched((prev) => ({
-      ...prev,
-      addressLine1: true,
-      city:         true,
-      state:        true,
-      postcode:     true,
-    }));
-    setErrors((prev) => ({
-      ...prev,
-      addressLine1: undefined,
-      city:         undefined,
-      state:        undefined,
-      postcode:     undefined,
-    }));
+    setTouched((prev) => ({ ...prev, addressLine1: true, city: true, state: true, postcode: true }));
+    setErrors((prev) => ({ ...prev, addressLine1: undefined, city: undefined, state: undefined, postcode: undefined }));
   };
 
   // ── Payment ────────────────────────────────────────────────────────────────
@@ -173,13 +176,12 @@ export default function CheckoutPage() {
         body:    JSON.stringify({
           sourceId,
           customer: form,
-          items: items.map((item) => ({ slug: item.scent.slug, quantity: item.quantity })),
+          items: items.map((i) => ({ slug: i.scent.slug, quantity: i.quantity })),
         }),
       });
 
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || "Payment failed. Please try again.");
-
       clearCart();
       setSuccess(true);
     } catch (err) {
@@ -202,15 +204,10 @@ export default function CheckoutPage() {
             </svg>
           </div>
           <h1 className="font-serif text-3xl text-cream mb-3">Order Placed</h1>
-          <p className="text-cream/70 text-sm leading-7 mb-2">
-            Thank you for your order. Your fragrances are being handcrafted just for you.
+          <p className="text-cream/70 text-sm leading-7 mb-8">
+            Thank you for your order. Your fragrances are being handcrafted just for you and will be dispatched within 1–2 business days.
           </p>
-          <p className="text-cream/70 text-sm mb-8">
-            We&apos;ll be in touch shortly with your dispatch details.
-          </p>
-          <button onClick={() => router.push("/")} className="btn-outline">
-            Continue Shopping
-          </button>
+          <button onClick={() => router.push("/")} className="btn-outline">Continue Shopping</button>
         </div>
       </div>
     );
@@ -232,6 +229,22 @@ export default function CheckoutPage() {
     <section className="py-12 sm:py-20">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <h1 className="font-serif text-3xl sm:text-4xl text-cream mb-10 text-center">Checkout</h1>
+
+        {/* Bundle free-shipping nudge — shown when 1–2 items in cart */}
+        {!isBundleFree && (
+          <div className="mb-6 rounded-md border border-gold/20 bg-gold/5 px-4 py-3 flex items-center gap-3">
+            <span className="text-gold text-base flex-shrink-0">✦</span>
+            <p className="text-sm text-cream/80">
+              Add <span className="text-gold font-medium">{3 - totalQty} more {3 - totalQty === 1 ? "fragrance" : "fragrances"}</span> to unlock <span className="text-gold font-medium">free shipping</span> on your order.
+            </p>
+            <button
+              onClick={() => router.push("/")}
+              className="ml-auto text-xs text-gold/70 border border-gold/25 rounded px-3 py-1.5 hover:border-gold/50 hover:text-gold transition-all whitespace-nowrap flex-shrink-0"
+            >
+              Add More
+            </button>
+          </div>
+        )}
 
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
 
@@ -292,29 +305,24 @@ export default function CheckoutPage() {
                   autoComplete="address-line2" colSpan="sm:col-span-2"
                   placeholder="Apartment, unit, suite, etc." />
 
-                {/* City — may be auto-filled by autocomplete */}
                 <Field label="City / Suburb" name="city" value={form.city}
                   onChange={handleField} onBlur={handleBlur}
                   error={errors.city} autoComplete="address-level2" />
 
-                {/* State select — may be auto-filled */}
+                {/* State */}
                 <div>
                   <label className="block text-sm font-medium text-cream/70 mb-2">State</label>
                   <select
-                    name="state"
-                    value={form.state}
-                    onChange={handleField}
-                    onBlur={handleBlur}
+                    name="state" value={form.state}
+                    onChange={handleField} onBlur={handleBlur}
                     className={`w-full bg-[#1c1c1c] border rounded-md px-4 py-3 text-sm text-cream
                       focus:outline-none focus:border-gold focus:ring-1 focus:ring-gold/20
                       transition-all appearance-none cursor-pointer ${
-                        errors.state
-                          ? "border-red-400/60"
-                          : "border-white/15 hover:border-white/30"
+                        errors.state ? "border-red-400/60" : "border-white/15 hover:border-white/30"
                       }`}
                   >
                     <option value="" className="bg-charcoal">Select state</option>
-                    {["NSW", "VIC", "QLD", "SA", "WA", "TAS", "NT", "ACT"].map((s) => (
+                    {["NSW","VIC","QLD","SA","WA","TAS","NT","ACT"].map((s) => (
                       <option key={s} value={s} className="bg-charcoal">{s}</option>
                     ))}
                   </select>
@@ -323,21 +331,21 @@ export default function CheckoutPage() {
                   )}
                 </div>
 
-                {/* Postcode — triggers shipping fetch */}
+                {/* Postcode — triggers shipping fetch for 1–2 items */}
                 <div>
                   <Field label="Postcode" name="postcode" value={form.postcode}
                     onChange={handleField} onBlur={handleBlur}
                     error={errors.postcode} autoComplete="postal-code"
                     maxLength={4} placeholder="e.g. 2000" />
-                  {!errors.postcode && /^\d{4}$/.test(form.postcode) && shippingLoading && (
-                    <p className="text-xs text-cream/30 mt-1.5 flex items-center gap-1.5">
-                      <span className="inline-block w-3 h-3 border border-gold/30 border-t-gold rounded-full animate-spin" />
-                      Looking up shipping…
-                    </p>
-                  )}
-                  {!errors.postcode && shippingQuote?.source === "auspost" && (
-                    <p className="text-xs text-gold/60 mt-1.5 flex items-center gap-1">
-                      <span>✓</span> Live Australia Post rate applied
+                  {/* Shipping lookup status — only relevant for <3 items */}
+                  {!isBundleFree && !errors.postcode && /^\d{4}$/.test(form.postcode) && form.state && (
+                    <p className="text-xs text-cream/35 mt-1.5 flex items-center gap-1.5">
+                      {shippingLoading
+                        ? <><span className="inline-block w-3 h-3 border border-gold/30 border-t-gold rounded-full animate-spin" /> Looking up shipping rate…</>
+                        : shippingQuote?.source === "auspost"
+                          ? <><span className="text-gold/60">✓</span> Live Australia Post rate</>
+                          : null
+                      }
                     </p>
                   )}
                 </div>
@@ -362,9 +370,7 @@ export default function CheckoutPage() {
 
               {submitError && (
                 <div className="mt-4 p-3 rounded-md bg-red-500/10 border border-red-500/20">
-                  <p className="text-red-400 text-sm flex items-center gap-2">
-                    <span>⚠</span> {submitError}
-                  </p>
+                  <p className="text-red-400 text-sm flex items-center gap-2">⚠ {submitError}</p>
                 </div>
               )}
             </div>
@@ -410,21 +416,25 @@ export default function CheckoutPage() {
                     )}
                   </div>
 
-                  {shippingLoading ? (
+                  {/* Bundle — always free */}
+                  {isBundleFree ? (
+                    <div className="text-right">
+                      <span className="text-gold font-medium text-sm">Free</span>
+                      <p className="text-xs text-gold/50 mt-0.5">Bundle discount</p>
+                    </div>
+                  ) : shippingLoading ? (
                     <span className="flex items-center gap-1.5 text-cream/35 text-xs">
                       <span className="inline-block w-3 h-3 border border-gold/30 border-t-gold rounded-full animate-spin" />
                       Calculating…
                     </span>
                   ) : shippingQuote ? (
-                    shippingQuote.cost === 0 ? (
-                      <span className="text-gold text-sm font-medium">Free</span>
-                    ) : (
-                      <span className="text-cream font-medium text-sm">
-                        {formatCurrency(shippingQuote.cost)}
-                      </span>
-                    )
+                    <span className="text-cream font-medium text-sm">
+                      {formatCurrency(shippingQuote.cost)}
+                    </span>
                   ) : (
-                    <span className="text-cream/30 italic text-xs">Enter postcode</span>
+                    <span className="text-cream/30 italic text-xs">
+                      {form.state ? "Enter postcode" : "Enter state & postcode"}
+                    </span>
                   )}
                 </div>
 
@@ -432,9 +442,14 @@ export default function CheckoutPage() {
                 <div className="flex justify-between items-center pt-2.5 border-t border-white/8">
                   <span className="text-sm font-medium text-cream">Total</span>
                   <span className="font-serif text-2xl text-gold">
-                    {shippingQuote
+                    {(isBundleFree || shippingQuote)
                       ? formatCurrency(total)
-                      : <>{formatCurrency(subtotal)}<span className="font-sans text-sm text-cream/30 ml-1">+ shipping</span></>
+                      : (
+                        <>
+                          {formatCurrency(subtotal)}
+                          <span className="font-sans text-xs text-cream/30 ml-1">+ shipping</span>
+                        </>
+                      )
                     }
                   </span>
                 </div>
@@ -445,7 +460,7 @@ export default function CheckoutPage() {
                 {[
                   { icon: "🔒", label: "Secure Payment" },
                   { icon: "🇦🇺", label: "Made in Australia" },
-                  { icon: "✦",  label: "Made to Order" },
+                  { icon: "✦",  label: "Made to Order"   },
                 ].map(({ icon, label }) => (
                   <div key={label} className="text-center">
                     <p className="text-base mb-0.5">{icon}</p>
@@ -473,28 +488,23 @@ function StepBadge({ n }: { n: number }) {
 }
 
 interface FieldProps {
-  label:        string;
-  name:         string;
-  value:        string;
-  onChange:     (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onBlur?:      (e: React.FocusEvent<HTMLInputElement>) => void;
-  type?:        string;
-  error?:       string;
+  label:         string;
+  name:          string;
+  value:         string;
+  onChange:      (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onBlur?:       (e: React.FocusEvent<HTMLInputElement>) => void;
+  type?:         string;
+  error?:        string;
   autoComplete?: string;
-  colSpan?:     string;
-  maxLength?:   number;
-  placeholder?: string;
+  colSpan?:      string;
+  maxLength?:    number;
+  placeholder?:  string;
 }
 
-function Field({
-  label, name, value, onChange, onBlur,
-  type = "text", error, autoComplete, colSpan = "", maxLength, placeholder,
-}: FieldProps) {
+function Field({ label, name, value, onChange, onBlur, type = "text", error, autoComplete, colSpan = "", maxLength, placeholder }: FieldProps) {
   return (
     <div className={colSpan}>
-      <label htmlFor={name} className="block text-sm font-medium text-cream/70 mb-2">
-        {label}
-      </label>
+      <label htmlFor={name} className="block text-sm font-medium text-cream/70 mb-2">{label}</label>
       <input
         id={name} name={name} type={type} value={value}
         onChange={onChange} onBlur={onBlur}
@@ -507,9 +517,7 @@ function Field({
           }`}
       />
       {error && (
-        <p className="text-red-400 text-xs mt-1.5 flex items-center gap-1">
-          <span>⚠</span> {error}
-        </p>
+        <p className="text-red-400 text-xs mt-1.5 flex items-center gap-1"><span>⚠</span> {error}</p>
       )}
     </div>
   );

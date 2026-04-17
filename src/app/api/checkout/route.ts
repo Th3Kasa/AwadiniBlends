@@ -46,9 +46,13 @@ export async function POST(request: NextRequest) {
   const unitPrice = getBundleUnitPrice();
   let totalCents = 0;
   const lineItems: { name: string; quantity: number; unitPrice: number }[] = [];
-  // Authoritative server-side shipping cost — uses live AusPost API when key
-  // is configured, otherwise FREE ($0). Product prices include shipping margin.
-  const shippingQuote = await getShippingCost(customer.postcode);
+
+  // Authoritative server-side shipping:
+  //   3+ items → FREE (bundle price is set to cover postage costs)
+  //   1–2 items → live AusPost rate, silent flat-rate fallback if API unavailable
+  const shippingQuote = totalQty >= 3
+    ? { cost: 0, source: "bundle_free" as const }
+    : await getShippingCost(customer.postcode, customer.state);
   const shippingCost  = shippingQuote.cost;
   const shippingCents = Math.round(shippingCost * 100);
 
@@ -151,7 +155,7 @@ export async function POST(request: NextRequest) {
             subject: `New Order — ${customer.name} — A$${(grandTotalCents / 100).toFixed(2)}`,
             from_name: "Awadini Orders",
             replyto: customer.email,
-            message: buildOrderMessage(customer, lineItems, totalCents / 100, shippingCost, grandTotalCents / 100, payment.id!, shippingQuote.source, shippingQuote.service),
+            message: buildOrderMessage(customer, lineItems, totalCents / 100, shippingCost, grandTotalCents / 100, payment.id!, shippingQuote.source, "service" in shippingQuote ? shippingQuote.service : undefined),
           }),
         });
       }
@@ -180,16 +184,17 @@ function buildOrderMessage(
   shipping: number,
   grandTotal: number,
   paymentId: string,
-  shippingSource: "auspost" | "estimated" = "estimated",
+  shippingSource: "auspost" | "bundle_free" | "calculated" = "calculated",
   shippingService?: string,
 ): string {
   const itemList = items
     .map((i) => `  - ${i.name} x ${i.quantity} = A$${(i.unitPrice * i.quantity).toFixed(2)}`)
     .join("\n");
 
-  const shippingLabel = shippingSource === "auspost"
-    ? `Shipping via AusPost${shippingService ? ` (${shippingService})` : ""}`
-    : `Shipping`;
+  const shippingLabel =
+    shippingSource === "bundle_free" ? `Shipping (FREE — bundle discount)` :
+    shippingSource === "auspost"     ? `Shipping via AusPost${shippingService ? ` (${shippingService})` : ""}` :
+                                       `Shipping (calculated)`;
 
   return [
     `New Order Received — Awadini Fragrance Blends`,
