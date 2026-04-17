@@ -65,14 +65,12 @@ export default function CheckoutPage() {
 
   const total = items.reduce((sum, item) => sum + item.scent.price * item.quantity, 0);
 
-  // Validate a single field
   const validateField = (name: keyof CustomerForm, value: string) => {
     const error = validators[name](value);
     setErrors((prev) => ({ ...prev, [name]: error }));
     return !error;
   };
 
-  // Validate all fields — returns true if all pass
   const validateAll = (): boolean => {
     const newErrors: Partial<CustomerForm> = {};
     let valid = true;
@@ -141,11 +139,11 @@ export default function CheckoutPage() {
             </svg>
           </div>
           <h1 className="font-serif text-3xl text-cream mb-3">Order Placed</h1>
-          <p className="text-cream/80 text-sm mb-2">
-            Thank you for your order. Your fragrances are being freshly poured just for you.
+          <p className="text-cream/70 text-sm leading-7 mb-2">
+            Thank you for your order. Your fragrances are being handcrafted just for you.
           </p>
-          <p className="text-cream/60 text-xs mb-8">
-            We&apos;ll start preparing your order right away and dispatch within 1–2 business days.
+          <p className="text-cream/70 text-sm mb-8">
+            We&apos;ll dispatch within 1–2 business days.
           </p>
           <button onClick={() => router.push("/")} className="btn-outline">
             Continue Shopping
@@ -181,9 +179,7 @@ export default function CheckoutPage() {
             <div className="rounded-xl border border-white/10 bg-charcoal p-6 sm:p-8">
               <div className="flex items-center gap-3 mb-6">
                 <span className="w-6 h-6 rounded-full bg-gold/15 border border-gold/30 flex items-center justify-center text-gold text-xs font-bold">1</span>
-                <h2 className="text-sm font-medium tracking-[0.2em] uppercase text-cream">
-                  Delivery Details
-                </h2>
+                <h2 className="text-base font-medium text-cream">Delivery Details</h2>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -196,7 +192,7 @@ export default function CheckoutPage() {
                     onChange={handleField} onBlur={handleBlur}
                     error={errors.email} autoComplete="email" />
                   {!errors.email && (
-                    <p className="text-[10px] text-gold/60 mt-1 flex items-center gap-1">
+                    <p className="text-xs text-gold/70 mt-1 flex items-center gap-1">
                       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" className="w-3 h-3 flex-shrink-0">
                         <path d="M2.5 3A1.5 1.5 0 0 0 1 4.5v.793c.026.009.051.02.076.032L7.674 8.51c.206.1.446.1.652 0l6.598-3.185A.755.755 0 0 1 15 5.293V4.5A1.5 1.5 0 0 0 13.5 3h-11Z" />
                         <path d="M15 6.954 8.978 9.86a2.25 2.25 0 0 1-1.956 0L1 6.954V11.5A1.5 1.5 0 0 0 2.5 13h11a1.5 1.5 0 0 0 1.5-1.5V6.954Z" />
@@ -226,7 +222,7 @@ export default function CheckoutPage() {
 
                 {/* State select */}
                 <div>
-                  <label className="block text-xs font-medium tracking-wider uppercase text-cream mb-2">
+                  <label className="block text-sm font-medium text-cream/70 mb-2">
                     State
                   </label>
                   <select
@@ -257,14 +253,12 @@ export default function CheckoutPage() {
             <div className="rounded-xl border border-white/10 bg-charcoal p-6 sm:p-8">
               <div className="flex items-center gap-3 mb-6">
                 <span className="w-6 h-6 rounded-full bg-gold/15 border border-gold/30 flex items-center justify-center text-gold text-xs font-bold">2</span>
-                <h2 className="text-sm font-medium tracking-[0.2em] uppercase text-cream">
-                  Payment Details
-                </h2>
+                <h2 className="text-base font-medium text-cream">Payment Details</h2>
                 <div className="ml-auto flex items-center gap-1.5">
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-3.5 h-3.5 text-gold/60">
                     <path fillRule="evenodd" d="M10 1a4.5 4.5 0 0 0-4.5 4.5V9H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2h-.5V5.5A4.5 4.5 0 0 0 10 1Zm3 8V5.5a3 3 0 1 0-6 0V9h6Z" clipRule="evenodd" />
                   </svg>
-                  <span className="text-[10px] text-cream/50 tracking-wide">Secured by Square</span>
+                  <span className="text-xs text-cream/70">Secured by Square</span>
                 </div>
               </div>
 
@@ -283,9 +277,7 @@ export default function CheckoutPage() {
           {/* ── Right: Order Summary ── */}
           <div className="lg:col-span-2">
             <div className="rounded-xl border border-white/10 bg-charcoal p-6 sticky top-24">
-              <h2 className="text-xs font-medium tracking-[0.2em] uppercase text-cream mb-5">
-                Order Summary
-              </h2>
+              <h2 className="text-base font-medium text-cream mb-5">Order Summary</h2>
 
               <ul className="space-y-4 mb-5">
                 {items.map((item) => (
@@ -295,7 +287,7 @@ export default function CheckoutPage() {
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="text-sm text-cream font-medium truncate">{item.scent.name}</p>
-                      <p className="text-xs text-cream/60 mt-0.5">Qty {item.quantity}</p>
+                      <p className="text-xs text-cream/70 mt-0.5">Qty {item.quantity}</p>
                     </div>
                     <p className="text-sm text-gold font-medium flex-shrink-0">
                       {formatCurrency(item.scent.price * item.quantity)}
@@ -314,20 +306,20 @@ export default function CheckoutPage() {
                   <span className="text-gold font-medium">Free</span>
                 </div>
                 <div className="flex justify-between items-center pt-2 border-t border-white/8">
-                  <span className="text-sm font-medium text-cream uppercase tracking-wider">Total</span>
+                  <span className="text-sm font-medium text-cream">Total</span>
                   <span className="font-serif text-2xl text-gold">{formatCurrency(total)}</span>
                 </div>
               </div>
 
-              <p className="text-[10px] text-cream/50 mt-4 leading-relaxed">
-                Freshly poured upon payment. Estimated dispatch: 1–2 business days. Free shipping Australia wide.
+              <p className="text-xs text-cream/70 mt-4 leading-6">
+                Handcrafted to order in Sydney. Estimated dispatch: 1–2 business days. Free shipping Australia wide.
               </p>
 
               {/* Trust badges */}
               <div className="mt-4 pt-4 border-t border-white/8 flex items-center justify-center gap-4">
                 {["Secure Payment", "Free Shipping", "Made to Order"].map((badge) => (
                   <div key={badge} className="text-center">
-                    <p className="text-[9px] text-cream/40 uppercase tracking-wider">{badge}</p>
+                    <p className="text-xs text-cream/70">{badge}</p>
                   </div>
                 ))}
               </div>
@@ -357,7 +349,7 @@ interface FieldProps {
 function Field({ label, name, value, onChange, onBlur, type = "text", error, autoComplete, colSpan = "", maxLength, placeholder }: FieldProps) {
   return (
     <div className={colSpan}>
-      <label htmlFor={name} className="block text-xs font-medium tracking-wider uppercase text-cream mb-2">
+      <label htmlFor={name} className="block text-sm font-medium text-cream/70 mb-2">
         {label}
       </label>
       <input
