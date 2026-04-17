@@ -9,7 +9,7 @@ import type { Scent } from "@/types";
 
 const allScents = scentsData as Scent[];
 
-// Order: Duo | Collection (Most Popular, middle) | Trio
+// Order: Duo | Trio | Collection — price drops left to right ($11 → $10 → $9)
 const BUNDLES = [
   {
     id: "duo",
@@ -17,6 +17,16 @@ const BUNDLES = [
     subtitle: "Any 2 scents",
     qty: 2,
     unitPrice: 11,
+    basePrice: 12,
+    badge: undefined as string | undefined,
+    highlight: false,
+  },
+  {
+    id: "trio",
+    name: "The Trio",
+    subtitle: "Any 3 scents",
+    qty: 3,
+    unitPrice: 10,
     basePrice: 12,
     badge: undefined as string | undefined,
     highlight: false,
@@ -30,16 +40,6 @@ const BUNDLES = [
     basePrice: 12,
     badge: "Most Popular",
     highlight: true,
-  },
-  {
-    id: "trio",
-    name: "The Trio",
-    subtitle: "Any 3 scents",
-    qty: 3,
-    unitPrice: 10,
-    basePrice: 12,
-    badge: "Best Value",
-    highlight: false,
   },
 ];
 
@@ -103,7 +103,7 @@ export function BundleSection({ preselectedSlug }: { preselectedSlug?: string } 
           <p className="text-cream/70 text-base mt-3 max-w-sm mx-auto leading-7">
             {preselectedSlug
               ? `${allScents.find((s) => s.slug === preselectedSlug)?.name} is already in your bundle — pick the rest below.`
-              : "Mix and match any blends. The more you explore, the more you save."}
+              : "Stock your car, give as a gift, or mix scents across different vehicles. The more you bundle, the more you save."}
           </p>
         </motion.div>
 
@@ -254,7 +254,7 @@ export function BundleSection({ preselectedSlug }: { preselectedSlug?: string } 
           transition={{ delay: 0.4 }}
           className="text-center text-cream/70 text-sm mt-10"
         >
-          Free shipping &middot; Freshly poured upon order &middot; Ships within 1–2 business days
+          Free shipping &middot; Handcrafted to order &middot; Ships within 1–2 business days
         </motion.p>
       </div>
     </section>

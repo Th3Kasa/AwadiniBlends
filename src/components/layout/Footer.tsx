@@ -16,8 +16,8 @@ export function Footer() {
               Fragrance Blends
             </p>
             <p className="text-sm text-cream/70 leading-7">
-              100% homemade, high-concentration perfume oils. Freshly poured in
-              small batches in Sydney, Australia.
+              Handcrafted car fragrance oils, poured in small batches in
+              Sydney, Australia.
             </p>
           </div>
 

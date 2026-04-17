@@ -17,8 +17,8 @@ export function ProductGrid({ scents }: ProductGridProps) {
             Artisanal Scent Library
           </h2>
           <p className="text-cream/70 text-base mt-4 max-w-xl mx-auto leading-7">
-            Each fragrance is freshly poured upon order using high-concentration
-            perfume oils, crafted to melt into the skin and last all day.
+            Eight handcrafted car fragrance oils, each poured to order in
+            Sydney. Long-lasting scents designed to fill your cabin and hold.
           </p>
         </div>
 

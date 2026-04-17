@@ -86,18 +86,18 @@ export default function ProductPage({ params }: Props) {
             </div>
 
             {/* Details */}
-            <div className="flex items-center gap-6 mb-8 text-xs text-cream/65 uppercase tracking-wider">
+            <div className="flex items-center gap-6 mb-8 text-xs text-cream/70">
               <span>{scent.weight}</span>
               <span className="w-1 h-1 rounded-full bg-cream/40" />
-              <span>Oil-Based</span>
+              <span>Car Fragrance Oil</span>
               <span className="w-1 h-1 rounded-full bg-cream/40" />
-              <span>Made to Order</span>
+              <span>Poured to Order</span>
             </div>
 
             <AddToCartButton scent={scent} />
 
-            <p className="text-xs text-cream/60 mt-4 text-center lg:text-left">
-              Free shipping Australia wide &middot; Freshly poured upon your order
+            <p className="text-sm text-cream/70 mt-4 text-center lg:text-left">
+              Free shipping Australia wide &middot; Handcrafted to order in Sydney
             </p>
           </div>
         </div>

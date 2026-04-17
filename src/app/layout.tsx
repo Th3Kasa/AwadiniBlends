@@ -26,34 +26,34 @@ export const metadata: Metadata = {
     process.env.NEXT_PUBLIC_SITE_URL || "https://awadini.com.au"
   ),
   title: {
-    default: "Awadini Fragrance Blends | Luxury Artisanal Perfume Oils",
-    template: "%s | Awadini Fragrance Blends",
+    default: "Awadini | Handcrafted Car Fragrance Oils",
+    template: "%s | Awadini",
   },
   description:
-    "100% homemade, high-concentration perfume oils engineered for longevity. Freshly poured in small batches in Sydney, Australia. Made to order — melts into the skin.",
+    "Handcrafted car fragrance oils, poured in small batches in Sydney, Australia. Long-lasting scents for your vehicle, made to order.",
   keywords: [
-    "perfume oil",
-    "fragrance",
-    "artisanal",
-    "handmade",
-    "Australian",
-    "luxury",
-    "scent",
-    "oil-based perfume",
+    "car fragrance",
+    "car scent",
+    "car fragrance oil",
+    "vehicle fragrance",
+    "car diffuser oil",
+    "artisanal car scent",
+    "Australian car fragrance",
+    "handcrafted fragrance",
   ],
   openGraph: {
     type: "website",
     locale: "en_AU",
-    siteName: "Awadini Fragrance Blends",
-    title: "Awadini Fragrance Blends | Luxury Artisanal Perfume Oils",
+    siteName: "Awadini",
+    title: "Awadini | Handcrafted Car Fragrance Oils",
     description:
-      "100% homemade, high-concentration perfume oils freshly poured in Sydney. Made to order.",
+      "Handcrafted car fragrance oils, poured in small batches in Sydney. Long-lasting scents made to order.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Awadini Fragrance Blends",
+    title: "Awadini",
     description:
-      "Luxury artisanal perfume oils, freshly poured in small batches in Australia.",
+      "Handcrafted car fragrance oils, poured in small batches in Sydney, Australia.",
   },
   robots: {
     index: true,
