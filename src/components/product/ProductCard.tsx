@@ -66,7 +66,7 @@ export function ProductCard({ scent, index }: ProductCardProps) {
               </p>
             </div>
             <p className="text-xs text-gold/60 mt-3">
-              {scent.weight} &middot; Car Fragrance Oil
+              {scent.weight} &middot; Hanging Diffuser Oil
             </p>
           </div>
         </div>

@@ -43,8 +43,8 @@ export function Hero() {
           transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
           className="text-cream/70 text-base sm:text-lg max-w-xl mx-auto mb-10 leading-7"
         >
-          Handcrafted fragrance oils for your car. Small-batch, long-lasting,
-          poured to order in Sydney.
+          Handcrafted oils for your hanging car diffuser. Small-batch,
+          long-lasting, poured to order in Sydney.
         </motion.p>
 
         <motion.div
