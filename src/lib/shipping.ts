@@ -6,64 +6,46 @@
  * Get a free key at: https://developers.auspost.com.au/
  *
  * Env var required: AUSPOST_API_KEY
- * Falls back to flat state-based rates if key is absent or API call fails.
+ *
+ * If the key is absent or the API call fails, shipping defaults to FREE ($0).
+ * Product prices at $12 already include the shipping margin per business model.
  */
 
 const FROM_POSTCODE = "2170"; // Liverpool NSW — David's dispatch address
 
-/**
- * Package spec for one Awadini 8ml perfume oil bottle with gift packaging.
- * Adjust if packaging dimensions change.
- */
+/** Package spec for one Awadini 8ml car-fragrance bottle with sleeve packaging. */
 const PACKAGE = {
-  weight: 0.15,  // kg  — bottle + cap + cardboard sleeve
-  length: 12,    // cm
-  width: 6,      // cm
-  height: 6,     // cm
+  weight: 0.15, // kg
+  length: 12,   // cm
+  width:  6,    // cm
+  height: 6,    // cm
 };
 
-/** Flat-rate fallback by state when API key is not configured or API is down. */
-const FALLBACK_RATES: Record<string, number> = {
-  NSW: 9.95,
-  VIC: 9.95,
-  ACT: 9.95,
-  QLD: 12.95,
-  SA: 12.95,
-  TAS: 12.95,
-  WA: 15.95,
-  NT: 15.95,
-};
-
-export type ShippingSource = "auspost" | "estimated";
+export type ShippingSource = "auspost" | "free";
 
 export interface ShippingQuote {
-  cost: number;
-  source: ShippingSource;
+  cost:         number;
+  source:       ShippingSource;
   /** Service description returned by AusPost, e.g. "Parcel Post" */
-  service?: string;
+  service?:     string;
   /** Estimated delivery window returned by AusPost, e.g. "3 business days" */
   deliveryTime?: string;
 }
 
-/** Returns a flat-rate fallback cost for the given Australian state. */
-export function getShippingFallback(state: string): number {
-  return FALLBACK_RATES[state.trim().toUpperCase()] ?? 12.95;
-}
-
 /**
- * Fetches a real postage quote from Australia Post Postage Calculator API.
+ * Fetches a live postage quote from the Australia Post Postage Calculator API.
  *
- * Uses the domestic parcel calculate endpoint which returns the cheapest
- * available regular service for the given dimensions and postcodes.
+ * Returns null when:
+ *  - AUSPOST_API_KEY is not configured
+ *  - The postcode is invalid / unserviceable
+ *  - Any network or parse error occurs
  *
- * Returns null if the API key is missing, the postcode is unserviceable,
- * or any network/parse error occurs — caller should fall back gracefully.
+ * Caller should treat null as "use free shipping fallback".
  */
 export async function fetchAusPostRate(toPostcode: string): Promise<ShippingQuote | null> {
   const apiKey = process.env.AUSPOST_API_KEY;
   if (!apiKey) return null;
 
-  // Guard against obviously invalid postcodes before hitting the API
   if (!/^\d{4}$/.test(toPostcode.trim())) return null;
 
   try {
@@ -81,9 +63,8 @@ export async function fetchAusPostRate(toPostcode: string): Promise<ShippingQuot
       {
         headers: {
           "AUTH-KEY": apiKey,
-          Accept: "application/json",
+          Accept:     "application/json",
         },
-        // Tight timeout so a slow API never blocks checkout rendering
         signal: AbortSignal.timeout(5_000),
       }
     );
@@ -95,48 +76,41 @@ export async function fetchAusPostRate(toPostcode: string): Promise<ShippingQuot
 
     const data = await res.json();
 
-    // The API wraps results in postage_result. It may be a single object or
-    // an array when multiple services are available — handle both shapes.
+    // API may return a single object or an array when multiple services exist
     const result = Array.isArray(data?.postage_result)
       ? data.postage_result[0]
       : data?.postage_result;
 
     if (!result) return null;
 
-    // total_cost is the authoritative field; fall back to cost if absent
     const rawCost = result.total_cost ?? result.cost;
-    const cost = parseFloat(rawCost);
-
+    const cost    = parseFloat(rawCost);
     if (isNaN(cost) || cost <= 0) return null;
 
     return {
       cost,
-      source: "auspost",
-      service:      result.service ?? undefined,
+      source:       "auspost",
+      service:      result.service       ?? undefined,
       deliveryTime: result.delivery_time ?? undefined,
     };
   } catch (err) {
-    // AbortError = timeout; TypeError = network fail — both are non-critical
-    console.warn("[AusPost] Shipping API unavailable, using fallback:", (err as Error).message);
+    console.warn("[AusPost] Shipping API unavailable:", (err as Error).message);
     return null;
   }
 }
 
 /**
- * Primary entry point — returns a full ShippingQuote for a given destination.
+ * Primary shipping entry point.
  *
- * Attempts a live AusPost rate first. If unavailable for any reason, returns
- * the flat-rate estimate keyed by state so checkout is never blocked.
+ * Tries a live AusPost rate first. If unavailable for any reason, returns
+ * FREE shipping ($0) — consistent with the "Free Shipping Australia Wide"
+ * banner and the $12 price point which includes a shipping margin.
  *
- * @param toPostcode  4-digit Australian postcode (destination)
- * @param state       Australian state abbreviation, e.g. "NSW"
+ * @param toPostcode  4-digit Australian destination postcode
  */
-export async function getShippingCost(toPostcode: string, state: string): Promise<ShippingQuote> {
+export async function getShippingCost(toPostcode: string): Promise<ShippingQuote> {
   const live = await fetchAusPostRate(toPostcode);
   if (live) return live;
 
-  return {
-    cost:   getShippingFallback(state),
-    source: "estimated",
-  };
+  return { cost: 0, source: "free" };
 }

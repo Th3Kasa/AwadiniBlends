@@ -47,9 +47,8 @@ export async function POST(request: NextRequest) {
   let totalCents = 0;
   const lineItems: { name: string; quantity: number; unitPrice: number }[] = [];
   // Authoritative server-side shipping cost — uses live AusPost API when key
-  // is configured, falls back to flat state-based rate. Never trust the
-  // client-supplied amount.
-  const shippingQuote = await getShippingCost(customer.postcode, customer.state);
+  // is configured, otherwise FREE ($0). Product prices include shipping margin.
+  const shippingQuote = await getShippingCost(customer.postcode);
   const shippingCost  = shippingQuote.cost;
   const shippingCents = Math.round(shippingCost * 100);
 
@@ -190,7 +189,7 @@ function buildOrderMessage(
 
   const shippingLabel = shippingSource === "auspost"
     ? `Shipping via AusPost${shippingService ? ` (${shippingService})` : ""}`
-    : `Shipping — ${customer.state} (estimated)`;
+    : `Shipping`;
 
   return [
     `New Order Received — Awadini Fragrance Blends`,
