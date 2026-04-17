@@ -1,20 +1,33 @@
 /**
- * GET /api/address-search?q=12+Main+Street+Liverpool
+ * GET /api/address-search?q=21+Alderson+Ave+Liverpool
  *
- * Proxies address autocomplete queries to OpenStreetMap Nominatim —
- * the most accurate free geocoder for Australian addresses, no API key needed.
+ * Dual-engine Australian address autocomplete proxy:
  *
- * Results are filtered to AU only and normalised into
- * { addressLine1, city, state, postcode } for direct form auto-fill.
+ *  1. Geoapify  (GEOAPIFY_API_KEY set)
+ *     → Uses Australia's G-NAF dataset — official government address file.
+ *       Near-complete coverage of every Australian address.
+ *       Free tier: 3,000 req/day — sign up at https://myprojects.geoapify.com
  *
- * Nominatim policy: max 1 req/sec, valid User-Agent required.
- * We proxy server-side to attach the User-Agent the browser cannot set.
+ *  2. Nominatim (no key — automatic fallback)
+ *     → OpenStreetMap data. Good for suburbs/streets but many residential
+ *       street numbers are missing from the OSM AU dataset.
+ *
+ * Server-side proxy adds required User-Agent header and keeps API keys secret.
  */
 
 import { NextRequest, NextResponse } from "next/server";
 
 export const runtime = "nodejs";
 
+export interface AddressSuggestion {
+  displayName:  string;
+  addressLine1: string;
+  city:         string;
+  state:        string;
+  postcode:     string;
+}
+
+// ── State name → abbreviation ──────────────────────────────────────────────────
 const STATE_ABBR: Record<string, string> = {
   "new south wales":              "NSW",
   "victoria":                     "VIC",
@@ -25,104 +38,121 @@ const STATE_ABBR: Record<string, string> = {
   "northern territory":           "NT",
   "australian capital territory": "ACT",
 };
-
-function toStateAbbr(raw: string): string {
+function abbr(raw = ""): string {
   return STATE_ABBR[raw.trim().toLowerCase()] ?? raw.trim().toUpperCase().slice(0, 3);
 }
 
-export interface AddressSuggestion {
-  displayName:  string;
-  addressLine1: string;
-  city:         string;
-  state:        string;
-  postcode:     string;
+// ── De-duplicate helper ────────────────────────────────────────────────────────
+function dedupe(results: AddressSuggestion[]): AddressSuggestion[] {
+  const seen = new Set<string>();
+  return results.filter((r) => {
+    const key = `${r.addressLine1.toLowerCase()}|${r.postcode}`;
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
 }
 
-interface NominatimAddress {
-  house_number?: string;
-  road?:         string;
-  suburb?:       string;
-  town?:         string;
-  village?:      string;
-  city?:         string;
-  state?:        string;
-  postcode?:     string;
-  country_code?: string;
+// ── Geoapify engine ────────────────────────────────────────────────────────────
+async function fromGeoapify(q: string, apiKey: string): Promise<AddressSuggestion[]> {
+  const params = new URLSearchParams({
+    text:        q,
+    "filter":    "countrycode:au",
+    format:      "json",
+    limit:       "6",
+    lang:        "en",
+    apiKey,
+  });
+
+  const res = await fetch(
+    `https://api.geoapify.com/v1/geocode/autocomplete?${params}`,
+    { signal: AbortSignal.timeout(5_000) }
+  );
+  if (!res.ok) return [];
+
+  const data = await res.json();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const results: AddressSuggestion[] = (data.results ?? []).map((r: any) => {
+    const num    = r.housenumber ?? "";
+    const street = r.street      ?? "";
+    // Geoapify uses "city" for suburb in AU context; fall back through district/county
+    const city   = r.city ?? r.district ?? r.county ?? "";
+    const state  = r.state_code ? abbr(r.state_code) : abbr(r.state ?? "");
+    const post   = r.postcode ?? "";
+
+    const addressLine1 = [num, street].filter(Boolean).join(" ");
+    const displayName  = [addressLine1, city, state, post].filter(Boolean).join(", ");
+
+    return { displayName, addressLine1, city, state, postcode: post };
+  }).filter((r: AddressSuggestion) => r.addressLine1.length > 0 && r.postcode.length === 4);
+
+  return results;
 }
 
-interface NominatimResult {
-  display_name: string;
-  address:      NominatimAddress;
+// ── Nominatim engine (fallback) ────────────────────────────────────────────────
+async function fromNominatim(q: string): Promise<AddressSuggestion[]> {
+  const params = new URLSearchParams({
+    q,
+    format:         "json",
+    countrycodes:   "au",
+    addressdetails: "1",
+    limit:          "6",
+    dedupe:         "1",
+  });
+
+  const res = await fetch(
+    `https://nominatim.openstreetmap.org/search?${params}`,
+    {
+      headers: {
+        "User-Agent":      "AwadiniFragranceBlends/1.0 (awadini.vercel.app checkout)",
+        "Accept-Language": "en-AU,en;q=0.9",
+        Accept:            "application/json",
+      },
+      signal: AbortSignal.timeout(5_000),
+    }
+  );
+  if (!res.ok) return [];
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const data: any[] = await res.json();
+
+  return data
+    .filter((item) => item.address?.country_code === "au")
+    .map((item) => {
+      const a = item.address;
+      const num    = a.house_number ?? "";
+      const road   = a.road ?? "";
+      const city   = a.suburb ?? a.town ?? a.village ?? a.city ?? "";
+      const state  = abbr(a.state ?? "");
+      const post   = a.postcode ?? "";
+
+      const addressLine1 = [num, road].filter(Boolean).join(" ");
+      const displayName  = [addressLine1, city, state, post].filter(Boolean).join(", ");
+
+      return { displayName, addressLine1, city, state, postcode: post };
+    })
+    .filter((r) => r.addressLine1.length > 0 && r.city.length > 0 && r.postcode.length === 4);
 }
 
+// ── Route handler ──────────────────────────────────────────────────────────────
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const q = (searchParams.get("q") ?? "").trim();
 
-  if (q.length < 4) {
-    return NextResponse.json({ results: [] });
-  }
+  if (q.length < 4) return NextResponse.json({ results: [] });
 
   try {
-    const params = new URLSearchParams({
-      q:              q,
-      format:         "json",
-      countrycodes:   "au",
-      addressdetails: "1",
-      limit:          "6",
-      dedupe:         "1",
-    });
+    const geoapifyKey = process.env.GEOAPIFY_API_KEY;
 
-    const res = await fetch(
-      `https://nominatim.openstreetmap.org/search?${params}`,
-      {
-        headers: {
-          // Nominatim requires a descriptive User-Agent — cannot be set by browsers
-          "User-Agent":      "AwadiniFragranceBlends/1.0 (awadini.vercel.app checkout)",
-          "Accept-Language": "en-AU,en;q=0.9",
-          "Accept":          "application/json",
-        },
-        signal: AbortSignal.timeout(5_000),
-      }
-    );
+    const raw = geoapifyKey
+      ? await fromGeoapify(q, geoapifyKey)
+      : await fromNominatim(q);
 
-    if (!res.ok) return NextResponse.json({ results: [] });
+    const results = dedupe(raw).slice(0, 5);
+    const engine  = geoapifyKey ? "geoapify" : "nominatim";
 
-    const data: NominatimResult[] = await res.json();
-
-    const results: AddressSuggestion[] = data
-      .filter((item) => item.address?.country_code === "au")
-      .map((item) => {
-        const a = item.address;
-        const num    = a.house_number ?? "";
-        const road   = a.road ?? "";
-        // Suburb fallback chain — Nominatim uses different keys by area type
-        const suburb = a.suburb ?? a.town ?? a.village ?? a.city ?? "";
-        const state  = a.state ? toStateAbbr(a.state) : "";
-        const post   = a.postcode ?? "";
-
-        const addressLine1 = [num, road].filter(Boolean).join(" ");
-
-        // Build a clean display name from structured parts rather than Nominatim's verbose one
-        const parts = [addressLine1, suburb, state, post].filter(Boolean);
-        const displayName = parts.join(", ");
-
-        return { displayName, addressLine1, city: suburb, state, postcode: post };
-      })
-      // Require at least a road name and a suburb — drop pure POI/area results
-      .filter((r) => r.addressLine1.length > 0 && r.city.length > 0 && r.postcode.length === 4);
-
-    // De-duplicate by road + postcode
-    const seen    = new Set<string>();
-    const deduped = results.filter((r) => {
-      const key = `${r.addressLine1}|${r.postcode}`;
-      if (seen.has(key)) return false;
-      seen.add(key);
-      return true;
-    });
-
-    return NextResponse.json({ results: deduped.slice(0, 5) });
+    return NextResponse.json({ results, engine });
   } catch {
-    return NextResponse.json({ results: [] });
+    return NextResponse.json({ results: [], engine: "error" });
   }
 }
