@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { CheckoutSchema } from "@/lib/schemas";
 import { getSquareClient, squareLocationId } from "@/lib/square";
 import { getShippingCost } from "@/lib/shipping";
+import { getBundleUnitPrice } from "@/lib/utils";
 import scents from "@/data/scents.json";
 import type { Scent } from "@/types";
 
@@ -27,23 +28,10 @@ export async function POST(request: NextRequest) {
 
   const { sourceId, customer, items } = parsed.data;
 
-  // 2. Server-side price recalculation with bundle tier pricing
-  // Tiers (based on total quantity ordered):
-  //   1 item  → $12 each
-  //   2 items → $11 each (Duo)
-  //   3–4     → $10 each (Trio)
-  //   5+      → $9  each (Collection)
-  const BASE_PRICE = 12; // matches scents.json
-  const totalQty = items.reduce((sum, i) => sum + i.quantity, 0);
-
-  function getBundleUnitPrice(): number {
-    if (totalQty >= 5) return 9;
-    if (totalQty >= 3) return 10;
-    if (totalQty >= 2) return 11;
-    return BASE_PRICE;
-  }
-
-  const unitPrice = getBundleUnitPrice();
+  // 2. Server-side price recalculation — mirrors getBundleUnitPrice() in utils.ts
+  //   1 item   → $12  |  2 items → $11  |  3–4 → $10  |  5+ → $9
+  const totalQty  = items.reduce((sum, i) => sum + i.quantity, 0);
+  const unitPrice = getBundleUnitPrice(totalQty);
   let totalCents = 0;
   const lineItems: { name: string; quantity: number; unitPrice: number }[] = [];
 

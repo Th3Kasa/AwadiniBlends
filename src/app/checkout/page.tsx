@@ -7,7 +7,7 @@ import { useCartStore } from "@/store/cart";
 import { SquarePaymentForm } from "@/components/checkout/SquarePaymentForm";
 import { AddressAutocomplete } from "@/components/checkout/AddressAutocomplete";
 import type { AddressSuggestion } from "@/components/checkout/AddressAutocomplete";
-import { formatCurrency } from "@/lib/utils";
+import { formatCurrency, getBundleUnitPrice } from "@/lib/utils";
 
 // ── Types ──────────────────────────────────────────────────────────────────────
 
@@ -40,7 +40,7 @@ const initialForm: CustomerForm = {
 const validators: Record<keyof CustomerForm, (v: string) => string | undefined> = {
   name:         (v) => (!v || v.trim().length < 2 ? "Full name is required" : undefined),
   email:        (v) => (!v || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) ? "Enter a valid email address" : undefined),
-  phone:        (v) => (!v || !/^[\d\s+\-()\s]{8,15}$/.test(v.trim()) ? "Enter a valid phone number (8–15 digits)" : undefined),
+  phone:        (v) => (v.replace(/\D/g, "").length !== 10 ? "Enter a valid 10-digit Australian phone number" : undefined),
   addressLine1: (v) => (!v || v.trim().length < 3 ? "Street address is required" : undefined),
   addressLine2: ()  => undefined,
   city:         (v) => (!v || v.trim().length < 2 ? "City / suburb is required" : undefined),
@@ -71,8 +71,9 @@ export default function CheckoutPage() {
   useEffect(() => { setHydrated(true); }, []);
 
   // ── Derived values ─────────────────────────────────────────────────────────
-  const totalQty = items.reduce((sum, i) => sum + i.quantity, 0);
-  const subtotal = items.reduce((sum, i) => sum + i.scent.price * i.quantity, 0);
+  const totalQty    = items.reduce((sum, i) => sum + i.quantity, 0);
+  const unitPrice   = getBundleUnitPrice(totalQty);   // same logic as server + cart
+  const subtotal    = items.reduce((sum, i) => sum + unitPrice * i.quantity, 0);
   const isBundleFree = totalQty >= 3;
 
   // ── Shipping fetch (only needed for 1–2 items) ─────────────────────────────
@@ -381,21 +382,40 @@ export default function CheckoutPage() {
             <div className="rounded-xl border border-white/10 bg-charcoal p-6 sticky top-24">
               <h2 className="text-base font-medium text-cream mb-5">Order Summary</h2>
 
+              {/* Bundle tier badge */}
+              {totalQty >= 2 && (
+                <div className="mb-4 px-3 py-2 rounded-md bg-gold/8 border border-gold/20">
+                  <p className="text-xs text-gold font-medium">
+                    {totalQty >= 5 ? "✦ Collection — $9.00/scent + Free Shipping"
+                     : totalQty >= 3 ? "✦ Trio — $10.00/scent + Free Shipping"
+                     : "✦ Duo — $11.00/scent"}
+                  </p>
+                </div>
+              )}
+
               <ul className="space-y-4 mb-5">
-                {items.map((item) => (
-                  <li key={item.scent.slug} className="flex gap-3 items-center">
-                    <div className="relative w-14 h-14 rounded-lg overflow-hidden bg-smoke flex-shrink-0 border border-white/8">
-                      <Image src={item.scent.image} alt={item.scent.name} fill className="object-cover" sizes="56px" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm text-cream font-medium truncate">{item.scent.name}</p>
-                      <p className="text-xs text-cream/50 mt-0.5">Qty {item.quantity}</p>
-                    </div>
-                    <p className="text-sm text-gold font-medium flex-shrink-0">
-                      {formatCurrency(item.scent.price * item.quantity)}
-                    </p>
-                  </li>
-                ))}
+                {items.map((item) => {
+                  const lineTotal = unitPrice * item.quantity;
+                  const wasTotal  = item.scent.price * item.quantity;
+                  const saving    = wasTotal - lineTotal;
+                  return (
+                    <li key={item.scent.slug} className="flex gap-3 items-center">
+                      <div className="relative w-14 h-14 rounded-lg overflow-hidden bg-smoke flex-shrink-0 border border-white/8">
+                        <Image src={item.scent.image} alt={item.scent.name} fill className="object-cover" sizes="56px" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm text-cream font-medium truncate">{item.scent.name}</p>
+                        <p className="text-xs text-cream/50 mt-0.5">Qty {item.quantity} × {formatCurrency(unitPrice)}</p>
+                      </div>
+                      <div className="text-right flex-shrink-0">
+                        <p className="text-sm text-gold font-medium">{formatCurrency(lineTotal)}</p>
+                        {saving > 0 && (
+                          <p className="text-xs text-cream/35 line-through">{formatCurrency(wasTotal)}</p>
+                        )}
+                      </div>
+                    </li>
+                  );
+                })}
               </ul>
 
               <div className="border-t border-white/8 pt-4 space-y-2.5">
