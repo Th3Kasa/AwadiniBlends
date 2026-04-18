@@ -88,13 +88,16 @@ export function SquarePaymentForm({ onTokenReceived, isSubmitting }: Props) {
     async function init() {
       try {
         await loadSquareSDK();
+        console.log("[Square] SDK loaded, appId:", appId, "locationId:", locationId);
 
         // Bail if unmounted or already initialised
         if (!mounted || !containerRef.current || cardRef.current) return;
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const payments = (window.Square as any).payments(appId, locationId);
+        console.log("[Square] payments() created, creating card...");
         const card     = await payments.card({ style: CARD_STYLE });
+        console.log("[Square] card created, attaching...");
 
         // Bail if component unmounted while card was being created
         if (!mounted || !containerRef.current) {
