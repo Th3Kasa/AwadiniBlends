@@ -21,6 +21,8 @@ interface Props {
 const SCRIPT_ID  = "awadini-square-sdk";
 const SCRIPT_SRC = "https://web.squarecdn.com/v1/square.js";
 
+// Square's card element only supports a limited subset of CSS properties.
+// Stick to: color, backgroundColor, borderColor, borderRadius, fontSize (on input only), fontFamily (specific stack).
 const CARD_STYLE = {
   ".input-container": {
     borderColor:  "rgba(255,255,255,0.15)",
@@ -28,19 +30,17 @@ const CARD_STYLE = {
   },
   ".input-container.is-focus": {
     borderColor: "#c9a86c",
-    boxShadow:   "0 0 0 3px rgba(201,168,108,0.15)",
   },
   ".input-container.is-error": {
     borderColor: "rgba(248,113,113,0.6)",
   },
-  ".message-text":  { color: "rgba(245,240,232,0.55)", fontSize: "11px" },
+  ".message-text":  { color: "rgba(245,240,232,0.55)" },
   ".message-icon":  { color: "rgba(245,240,232,0.45)" },
   input: {
     backgroundColor: "#1c1c1c",
     color:           "#f5f0e8",
     fontSize:        "14px",
-    fontFamily:      "ui-sans-serif, system-ui, sans-serif",
-    caretColor:      "#c9a86c",
+    fontFamily:      "helvetica neue, sans-serif",
   },
   "input::placeholder": { color: "rgba(245,240,232,0.28)" },
 };
