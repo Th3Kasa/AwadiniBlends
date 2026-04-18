@@ -109,8 +109,9 @@ export function SquarePaymentForm({ onTokenReceived, isSubmitting }: Props) {
         cardRef.current = card;
         setCardReady(true);
       } catch (err) {
+        const msg = err instanceof Error ? err.message : String(err);
         console.error("[Square] init error:", err);
-        if (mounted) setCardError("Payment form failed to load. Please refresh the page.");
+        if (mounted) setCardError(`Payment form failed to load: ${msg}`);
       }
     }
 
