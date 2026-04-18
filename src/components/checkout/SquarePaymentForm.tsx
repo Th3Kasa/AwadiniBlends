@@ -3,26 +3,23 @@
 /**
  * Square Web Payments SDK — vanilla implementation.
  *
- * We use the vanilla Square JS SDK (loaded via <Script>) rather than the
- * React wrapper so we have full control over the card iframe styling and
- * the Pay Now button. This eliminates the "gray box" issue caused by the
- * React wrapper not forwarding background styles into the iframe.
+ * Uses a manual script-tag loader instead of Next.js <Script> so we control
+ * exactly when initialisation runs and avoid the onLoad timing issues that
+ * caused "Payment form failed to load" on navigations.
  */
 
-import { useEffect, useRef, useState, useCallback } from "react";
-import Script from "next/script";
+import { useEffect, useRef, useState } from "react";
 
-declare global {
-  interface Window {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    Square?: any;
-  }
-}
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+declare global { interface Window { Square?: any } }
 
 interface Props {
   onTokenReceived: (token: string) => void;
   isSubmitting:    boolean;
 }
+
+const SCRIPT_ID  = "awadini-square-sdk";
+const SCRIPT_SRC = "https://web.squarecdn.com/v1/square.js";
 
 const CARD_STYLE = {
   ".input-container": {
@@ -36,13 +33,8 @@ const CARD_STYLE = {
   ".input-container.is-error": {
     borderColor: "rgba(248,113,113,0.6)",
   },
-  ".message-text": {
-    color:    "rgba(245,240,232,0.55)",
-    fontSize: "11px",
-  },
-  ".message-icon": {
-    color: "rgba(245,240,232,0.45)",
-  },
+  ".message-text":  { color: "rgba(245,240,232,0.55)", fontSize: "11px" },
+  ".message-icon":  { color: "rgba(245,240,232,0.45)" },
   input: {
     backgroundColor: "#1c1c1c",
     color:           "#f5f0e8",
@@ -50,70 +42,105 @@ const CARD_STYLE = {
     fontFamily:      "ui-sans-serif, system-ui, sans-serif",
     caretColor:      "#c9a86c",
   },
-  "input::placeholder": {
-    color: "rgba(245,240,232,0.28)",
-  },
+  "input::placeholder": { color: "rgba(245,240,232,0.28)" },
 };
 
+/** Injects the Square CDN script once and resolves when window.Square is ready. */
+function loadSquareSDK(): Promise<void> {
+  return new Promise((resolve, reject) => {
+    // Already loaded
+    if (window.Square) { resolve(); return; }
+
+    const existing = document.getElementById(SCRIPT_ID) as HTMLScriptElement | null;
+    if (existing) {
+      // Tag injected but not yet finished loading — wait for it
+      existing.addEventListener("load",  () => resolve(), { once: true });
+      existing.addEventListener("error", () => reject(new Error("Square SDK script failed")), { once: true });
+      return;
+    }
+
+    const s    = document.createElement("script");
+    s.id       = SCRIPT_ID;
+    s.src      = SCRIPT_SRC;
+    s.async    = true;
+    s.onload   = () => resolve();
+    s.onerror  = () => reject(new Error("Failed to load Square SDK — check network / CSP"));
+    document.head.appendChild(s);
+  });
+}
+
 export function SquarePaymentForm({ onTokenReceived, isSubmitting }: Props) {
-  const cardContainerRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const cardRef          = useRef<any>(null);
-  const [cardReady, setCardReady]   = useState(false);
+  const cardRef      = useRef<any>(null);
+
+  const [cardReady,  setCardReady]  = useState(false);
   const [tokenizing, setTokenizing] = useState(false);
-  const [cardError, setCardError]   = useState("");
+  const [cardError,  setCardError]  = useState("");
 
   const appId      = process.env.NEXT_PUBLIC_SQUARE_APP_ID      ?? "";
   const locationId = process.env.NEXT_PUBLIC_SQUARE_LOCATION_ID ?? "";
 
-  // ── Initialise Square card ───────────────────────────────────────────────────
-  const initCard = useCallback(async () => {
-    if (!window.Square || !cardContainerRef.current || cardRef.current) return;
+  // ── Initialise Square card ─────────────────────────────────────────────────
+  useEffect(() => {
+    let mounted = true;
 
-    try {
-      const payments = window.Square.payments(appId, locationId);
-      const card = await payments.card({ style: CARD_STYLE });
-      await card.attach(cardContainerRef.current);
-      cardRef.current = card;
-      setCardReady(true);
-    } catch (err) {
-      console.error("[Square] Card init failed:", err);
-      setCardError("Payment form failed to load. Please refresh the page.");
+    async function init() {
+      try {
+        await loadSquareSDK();
+
+        // Bail if unmounted or already initialised
+        if (!mounted || !containerRef.current || cardRef.current) return;
+
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const payments = (window.Square as any).payments(appId, locationId);
+        const card     = await payments.card({ style: CARD_STYLE });
+
+        // Bail if component unmounted while card was being created
+        if (!mounted || !containerRef.current) {
+          card.destroy?.().catch(() => {});
+          return;
+        }
+
+        await card.attach(containerRef.current);
+
+        if (!mounted) { card.destroy?.().catch(() => {}); return; }
+
+        cardRef.current = card;
+        setCardReady(true);
+      } catch (err) {
+        console.error("[Square] init error:", err);
+        if (mounted) setCardError("Payment form failed to load. Please refresh the page.");
+      }
     }
-  }, [appId, locationId]);
 
-  // If the Square script is already cached / loaded (e.g. SPA navigation), init immediately
-  useEffect(() => {
-    if (window.Square) initCard();
-  }, [initCard]);
+    init();
 
-  // Cleanup card on unmount to avoid double-attach on hot-reload
-  useEffect(() => {
     return () => {
+      mounted = false;
       if (cardRef.current) {
-        try { cardRef.current.destroy?.(); } catch {}
+        cardRef.current.destroy?.().catch(() => {});
         cardRef.current = null;
       }
     };
+    // appId / locationId are build-time constants — effect intentionally runs once
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // ── Tokenise and pay ─────────────────────────────────────────────────────────
+  // ── Tokenise card ──────────────────────────────────────────────────────────
   const handlePay = async () => {
     if (!cardRef.current || tokenizing || isSubmitting) return;
     setCardError("");
     setTokenizing(true);
-
     try {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const result: any = await cardRef.current.tokenize();
-
       if (result.status === "OK" && result.token) {
         onTokenReceived(result.token);
       } else {
         const msgs = (result.errors ?? [])
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          .map((e: any) => e.message as string)
-          .join(" ");
+          .map((e: any) => e.message as string).join(" ");
         setCardError(msgs || "Please check your card details and try again.");
       }
     } catch {
@@ -127,16 +154,9 @@ export function SquarePaymentForm({ onTokenReceived, isSubmitting }: Props) {
 
   return (
     <>
-      {/* Square Web Payments SDK — production CDN */}
-      <Script
-        src="https://web.squarecdn.com/v1/square.js"
-        strategy="afterInteractive"
-        onLoad={initCard}
-      />
-
-      {/* Card input — Square attaches its iframe into this div */}
+      {/* Card input — Square attaches its iframe here */}
       <div
-        ref={cardContainerRef}
+        ref={containerRef}
         className="rounded-md overflow-hidden bg-[#1c1c1c] border border-white/15"
         style={{ minHeight: "56px" }}
       />
@@ -149,12 +169,21 @@ export function SquarePaymentForm({ onTokenReceived, isSubmitting }: Props) {
       )}
 
       {cardError && (
-        <p className="mt-3 text-red-400 text-xs flex items-center gap-1.5">
-          <span>⚠</span> {cardError}
-        </p>
+        <div className="mt-3 p-3 rounded-md bg-red-500/10 border border-red-500/20">
+          <p className="text-red-400 text-xs flex items-center gap-1.5">
+            <span>⚠</span> {cardError}
+          </p>
+          <button
+            type="button"
+            onClick={() => window.location.reload()}
+            className="mt-2 text-xs text-gold/70 underline underline-offset-2 hover:text-gold"
+          >
+            Refresh page
+          </button>
+        </div>
       )}
 
-      {/* Pay Now — full Tailwind control, no Square default button */}
+      {/* Pay Now — full Tailwind control */}
       <button
         type="button"
         onClick={handlePay}
@@ -162,9 +191,9 @@ export function SquarePaymentForm({ onTokenReceived, isSubmitting }: Props) {
         className={[
           "mt-5 w-full py-4 rounded-md",
           "text-xs font-semibold tracking-[0.15em] uppercase",
-          "transition-all duration-200 focus-visible:outline-none",
-          "focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2",
-          "focus-visible:ring-offset-charcoal",
+          "transition-all duration-200",
+          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold",
+          "focus-visible:ring-offset-2 focus-visible:ring-offset-charcoal",
           !cardReady || isBusy
             ? "bg-gold/25 text-obsidian/40 cursor-not-allowed"
             : "bg-gold text-obsidian hover:bg-gold-light active:scale-[0.99] cursor-pointer",
