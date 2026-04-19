@@ -6,6 +6,8 @@
  * Uses a manual script-tag loader instead of Next.js <Script> so we control
  * exactly when initialisation runs and avoid the onLoad timing issues that
  * caused "Payment form failed to load" on navigations.
+ *
+ * Includes Google Pay button (auto-hides if device/browser doesn't support it).
  */
 
 import { useEffect, useRef, useState } from "react";
@@ -16,13 +18,12 @@ declare global { interface Window { Square?: any } }
 interface Props {
   onTokenReceived: (token: string) => void;
   isSubmitting:    boolean;
+  totalAmount:     number; // in dollars e.g. 32.00 — needed for Google Pay
 }
 
 const SCRIPT_ID  = "awadini-square-sdk";
 const SCRIPT_SRC = "https://web.squarecdn.com/v1/square.js";
 
-// Square's card element only supports a limited subset of CSS properties.
-// Stick to: color, backgroundColor, borderColor, borderRadius, fontSize (on input only), fontFamily (specific stack).
 const CARD_STYLE = {
   ".input-container": {
     borderColor:  "rgba(255,255,255,0.15)",
@@ -48,12 +49,10 @@ const CARD_STYLE = {
 /** Injects the Square CDN script once and resolves when window.Square is ready. */
 function loadSquareSDK(): Promise<void> {
   return new Promise((resolve, reject) => {
-    // Already loaded
     if (window.Square) { resolve(); return; }
 
     const existing = document.getElementById(SCRIPT_ID) as HTMLScriptElement | null;
     if (existing) {
-      // Tag injected but not yet finished loading — wait for it
       existing.addEventListener("load",  () => resolve(), { once: true });
       existing.addEventListener("error", () => reject(new Error("Square SDK script failed")), { once: true });
       return;
@@ -69,52 +68,67 @@ function loadSquareSDK(): Promise<void> {
   });
 }
 
-export function SquarePaymentForm({ onTokenReceived, isSubmitting }: Props) {
-  const containerRef = useRef<HTMLDivElement>(null);
+export function SquarePaymentForm({ onTokenReceived, isSubmitting, totalAmount }: Props) {
+  const cardContainerRef   = useRef<HTMLDivElement>(null);
+  const googlePayRef       = useRef<HTMLDivElement>(null);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const cardRef      = useRef<any>(null);
+  const cardRef            = useRef<any>(null);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const googlePayButtonRef = useRef<any>(null);
 
-  const [cardReady,  setCardReady]  = useState(false);
-  const [tokenizing, setTokenizing] = useState(false);
-  const [cardError,  setCardError]  = useState("");
+  const [cardReady,       setCardReady]       = useState(false);
+  const [googlePayReady,  setGooglePayReady]  = useState(false);
+  const [tokenizing,      setTokenizing]      = useState(false);
+  const [cardError,       setCardError]       = useState("");
 
   const appId      = process.env.NEXT_PUBLIC_SQUARE_APP_ID      ?? "";
   const locationId = process.env.NEXT_PUBLIC_SQUARE_LOCATION_ID ?? "";
 
-  // ── Initialise Square card ─────────────────────────────────────────────────
+  // ── Initialise Square card + Google Pay ────────────────────────────────────
   useEffect(() => {
     let mounted = true;
 
     async function init() {
       try {
         await loadSquareSDK();
-        console.log("[Square] SDK loaded, appId:", appId, "locationId:", locationId);
-
-        // Bail if unmounted or already initialised
-        if (!mounted || !containerRef.current || cardRef.current) return;
+        if (!mounted || !cardContainerRef.current || cardRef.current) return;
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const payments = (window.Square as any).payments(appId, locationId);
-        console.log("[Square] payments() created, creating card...");
-        const card     = await payments.card({ style: CARD_STYLE });
-        console.log("[Square] card created, attaching...");
 
-        // Bail if component unmounted while card was being created
-        if (!mounted || !containerRef.current) {
-          card.destroy?.().catch(() => {});
-          return;
-        }
-
-        await card.attach(containerRef.current);
-
+        // ── Card ──────────────────────────────────────────────────────────────
+        const card = await payments.card({ style: CARD_STYLE });
+        if (!mounted || !cardContainerRef.current) { card.destroy?.().catch(() => {}); return; }
+        await card.attach(cardContainerRef.current);
         if (!mounted) { card.destroy?.().catch(() => {}); return; }
-
         cardRef.current = card;
         setCardReady(true);
+
+        // ── Google Pay ────────────────────────────────────────────────────────
+        try {
+          const paymentRequest = payments.paymentRequest({
+            countryCode:  "AU",
+            currencyCode: "AUD",
+            total: {
+              amount: totalAmount.toFixed(2),
+              label:  "Awadini Fragrance Blends",
+            },
+          });
+
+          const googlePay = await payments.googlePay(paymentRequest);
+          if (!mounted || !googlePayRef.current) { googlePay.destroy?.().catch(() => {}); return; }
+          await googlePay.attach(googlePayRef.current);
+          if (!mounted) { googlePay.destroy?.().catch(() => {}); return; }
+          googlePayButtonRef.current = googlePay;
+          setGooglePayReady(true);
+        } catch {
+          // Google Pay not supported on this device/browser — silently hide it
+          setGooglePayReady(false);
+        }
+
       } catch (err) {
-        const msg = err instanceof Error ? err.message : String(err);
         console.error("[Square] init error:", err);
-        if (mounted) setCardError(`Payment form failed to load: ${msg}`);
+        if (mounted) setCardError("Payment form failed to load. Please refresh the page.");
       }
     }
 
@@ -122,12 +136,11 @@ export function SquarePaymentForm({ onTokenReceived, isSubmitting }: Props) {
 
     return () => {
       mounted = false;
-      if (cardRef.current) {
-        cardRef.current.destroy?.().catch(() => {});
-        cardRef.current = null;
-      }
+      cardRef.current?.destroy?.().catch(() => {});
+      cardRef.current = null;
+      googlePayButtonRef.current?.destroy?.().catch(() => {});
+      googlePayButtonRef.current = null;
     };
-    // appId / locationId are build-time constants — effect intentionally runs once
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -154,13 +167,53 @@ export function SquarePaymentForm({ onTokenReceived, isSubmitting }: Props) {
     }
   };
 
+  // ── Tokenise Google Pay ────────────────────────────────────────────────────
+  const handleGooglePay = async () => {
+    if (!googlePayButtonRef.current || tokenizing || isSubmitting) return;
+    setCardError("");
+    setTokenizing(true);
+    try {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const result: any = await googlePayButtonRef.current.tokenize();
+      if (result.status === "OK" && result.token) {
+        onTokenReceived(result.token);
+      } else {
+        const msgs = (result.errors ?? [])
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          .map((e: any) => e.message as string).join(" ");
+        setCardError(msgs || "Google Pay could not complete. Please try card payment.");
+      }
+    } catch {
+      setCardError("Google Pay failed. Please try card payment below.");
+    } finally {
+      setTokenizing(false);
+    }
+  };
+
   const isBusy = tokenizing || isSubmitting;
 
   return (
     <>
-      {/* Card input — Square attaches its iframe here */}
+      {/* ── Google Pay button ── */}
+      {googlePayReady && (
+        <div className="mb-4">
+          <div
+            ref={googlePayRef}
+            onClick={handleGooglePay}
+            className="w-full rounded-md overflow-hidden cursor-pointer"
+            style={{ minHeight: "48px" }}
+          />
+          <div className="flex items-center gap-3 mt-4 mb-4">
+            <div className="flex-1 h-px bg-white/10" />
+            <span className="text-xs text-cream/30 tracking-widest uppercase">or pay by card</span>
+            <div className="flex-1 h-px bg-white/10" />
+          </div>
+        </div>
+      )}
+
+      {/* ── Card input ── */}
       <div
-        ref={containerRef}
+        ref={cardContainerRef}
         className="rounded-md overflow-hidden bg-[#1c1c1c] border border-white/15"
         style={{ minHeight: "56px" }}
       />
@@ -187,7 +240,7 @@ export function SquarePaymentForm({ onTokenReceived, isSubmitting }: Props) {
         </div>
       )}
 
-      {/* Pay Now — full Tailwind control */}
+      {/* ── Pay Now (card) ── */}
       <button
         type="button"
         onClick={handlePay}

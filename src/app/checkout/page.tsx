@@ -367,7 +367,7 @@ export default function CheckoutPage() {
                 </div>
               </div>
 
-              <SquarePaymentForm onTokenReceived={handlePaymentToken} isSubmitting={isSubmitting} />
+              <SquarePaymentForm onTokenReceived={handlePaymentToken} isSubmitting={isSubmitting} totalAmount={total} />
 
               {submitError && (
                 <div className="mt-4 p-3 rounded-md bg-red-500/10 border border-red-500/20">
