@@ -265,7 +265,7 @@ export async function POST(request: NextRequest) {
           },
           body: JSON.stringify({
             access_key: accessKey,
-            subject: `New Order — ${customer.name} — A$${(grandTotalCents / 100).toFixed(2)}`,
+            subject: `🧴 New Order — ${customer.name} — A$${(grandTotalCents / 100).toFixed(2)}`,
             from_name: "Awadini Orders",
             replyto: customer.email,
             message: buildOrderMessage(customer, lineItems, totalCents / 100, shippingCost, grandTotalCents / 100, payment.id!, shippingSource, shippingService),
@@ -300,35 +300,98 @@ function buildOrderMessage(
   shippingSource: "auspost" | "bundle_free" | "calculated" = "calculated",
   shippingService?: string,
 ): string {
-  const itemList = items
-    .map((i) => `  - ${i.name} x ${i.quantity} = A$${(i.unitPrice * i.quantity).toFixed(2)}`)
-    .join("\n");
+  const itemRows = items
+    .map(
+      (i) => `
+      <tr>
+        <td style="padding:10px 14px;border-bottom:1px solid #e5e7eb;font-size:15px;color:#111827;">${i.name}</td>
+        <td style="padding:10px 14px;border-bottom:1px solid #e5e7eb;font-size:15px;color:#111827;text-align:center;">${i.quantity}</td>
+        <td style="padding:10px 14px;border-bottom:1px solid #e5e7eb;font-size:15px;color:#111827;text-align:right;font-weight:600;">A$${(i.unitPrice * i.quantity).toFixed(2)}</td>
+      </tr>`
+    )
+    .join("");
 
   const shippingLabel =
-    shippingSource === "bundle_free" ? `Shipping (FREE — bundle discount)` :
-    shippingSource === "auspost"     ? `Shipping via AusPost${shippingService ? ` (${shippingService})` : ""}` :
-                                       `Shipping (calculated)`;
+    shippingSource === "bundle_free" ? "FREE — Bundle Discount 🎁" :
+    shippingSource === "auspost"     ? `A$${shipping.toFixed(2)} via AusPost${shippingService ? ` (${shippingService})` : ""}` :
+                                       `A$${shipping.toFixed(2)}`;
 
-  return [
-    `New Order Received — Awadini Fragrance Blends`,
-    ``,
-    `Customer:  ${customer.name}`,
-    `Email:     ${customer.email}`,
-    `Phone:     ${customer.phone}`,
-    ``,
-    `Deliver to:`,
-    `  ${customer.addressLine1}${customer.addressLine2 ? ", " + customer.addressLine2 : ""}`,
-    `  ${customer.city} ${customer.state} ${customer.postcode}`,
-    ``,
-    `Dispatch from: Liverpool NSW 2170`,
-    ``,
-    `Items ordered:`,
-    itemList,
-    ``,
-    `Subtotal:  A$${subtotal.toFixed(2)}`,
-    `${shippingLabel}: A$${shipping.toFixed(2)}`,
-    `TOTAL:     A$${grandTotal.toFixed(2)}`,
-    ``,
-    `Square Payment ID: ${paymentId}`,
-  ].join("\n");
+  return `
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"></head>
+<body style="margin:0;padding:0;background:#f3f4f6;font-family:ui-sans-serif,system-ui,sans-serif;">
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#f3f4f6;padding:32px 16px;">
+  <tr><td align="center">
+    <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background:#ffffff;border-radius:10px;overflow:hidden;border:1px solid #e5e7eb;">
+
+      <!-- Header -->
+      <tr><td style="background:#111827;padding:24px 32px;">
+        <h1 style="margin:0;font-size:20px;color:#f9fafb;font-weight:600;">🧴 New Order Received</h1>
+        <p style="margin:6px 0 0;font-size:13px;color:#9ca3af;">Awadini Fragrance Blends — Liverpool NSW 2170</p>
+      </td></tr>
+
+      <!-- Customer -->
+      <tr><td style="padding:24px 32px;border-bottom:1px solid #e5e7eb;">
+        <p style="margin:0 0 4px;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#6b7280;">Customer</p>
+        <p style="margin:0;font-size:16px;font-weight:600;color:#111827;">${customer.name}</p>
+        <p style="margin:4px 0 0;font-size:14px;color:#374151;">
+          <a href="mailto:${customer.email}" style="color:#2563eb;">${customer.email}</a> &nbsp;·&nbsp;
+          <a href="tel:${customer.phone}" style="color:#2563eb;">${customer.phone}</a>
+        </p>
+      </td></tr>
+
+      <!-- Items to make -->
+      <tr><td style="padding:24px 32px 0;">
+        <p style="margin:0 0 12px;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#6b7280;">Items to Prepare</p>
+        <table width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #e5e7eb;border-radius:6px;overflow:hidden;">
+          <tr style="background:#f9fafb;">
+            <th style="padding:8px 14px;text-align:left;font-size:11px;color:#6b7280;font-weight:500;letter-spacing:0.06em;">FRAGRANCE</th>
+            <th style="padding:8px 14px;text-align:center;font-size:11px;color:#6b7280;font-weight:500;letter-spacing:0.06em;">QTY</th>
+            <th style="padding:8px 14px;text-align:right;font-size:11px;color:#6b7280;font-weight:500;letter-spacing:0.06em;">PRICE</th>
+          </tr>
+          ${itemRows}
+          <tr style="background:#f9fafb;">
+            <td colspan="2" style="padding:10px 14px;font-size:13px;color:#6b7280;">Shipping</td>
+            <td style="padding:10px 14px;text-align:right;font-size:13px;color:#374151;">${shippingLabel}</td>
+          </tr>
+          <tr style="background:#111827;">
+            <td colspan="2" style="padding:12px 14px;font-size:14px;color:#f9fafb;font-weight:600;">TOTAL CHARGED</td>
+            <td style="padding:12px 14px;text-align:right;font-size:16px;color:#fbbf24;font-weight:700;">A$${grandTotal.toFixed(2)}</td>
+          </tr>
+        </table>
+      </td></tr>
+
+      <!-- Deliver to -->
+      <tr><td style="padding:24px 32px;border-bottom:1px solid #e5e7eb;">
+        <p style="margin:0 0 8px;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#6b7280;">📦 Ship To</p>
+        <p style="margin:0;font-size:14px;color:#111827;line-height:1.7;">
+          ${customer.addressLine1}${customer.addressLine2 ? ", " + customer.addressLine2 : ""}<br>
+          ${customer.city} ${customer.state} ${customer.postcode}<br>
+          <strong>Australia</strong>
+        </p>
+      </td></tr>
+
+      <!-- Actions -->
+      <tr><td style="padding:24px 32px;text-align:center;border-bottom:1px solid #e5e7eb;">
+        <a href="https://web3forms.com/dashboard"
+           style="display:inline-block;background:#111827;color:#ffffff;font-size:13px;font-weight:600;
+                  padding:12px 24px;border-radius:6px;text-decoration:none;letter-spacing:0.05em;">
+          View All Orders on Web3Forms →
+        </a>
+      </td></tr>
+
+      <!-- Footer -->
+      <tr><td style="padding:20px 32px;text-align:center;">
+        <p style="margin:0;font-size:12px;color:#9ca3af;">
+          Square Payment ID: ${paymentId}<br>
+          Subtotal A$${subtotal.toFixed(2)} + Shipping — Dispatched from Liverpool NSW 2170
+        </p>
+      </td></tr>
+
+    </table>
+  </td></tr>
+</table>
+</body>
+</html>`;
 }
