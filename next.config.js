@@ -22,9 +22,10 @@ const nextConfig = {
                 + " https://pci-connect.squareupsandbox.com"
                 + " https://api.web3forms.com"
                 + " https://api.geoapify.com"
-                + " https://nominatim.openstreetmap.org",
-              "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
-              "font-src 'self' https://fonts.gstatic.com",
+                + " https://nominatim.openstreetmap.org"
+                + " https://o160250.ingest.sentry.io",
+              "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://web.squarecdn.com https://sandbox.web.squarecdn.com",
+              "font-src 'self' https://fonts.gstatic.com https://web.squarecdn.com https://sandbox.web.squarecdn.com",
               "img-src 'self' data: blob: https://web.squarecdn.com",
             ].join("; "),
           },
