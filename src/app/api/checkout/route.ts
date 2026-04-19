@@ -242,7 +242,7 @@ export async function POST(request: NextRequest) {
             "api-key": brevoKey,
           },
           body: JSON.stringify({
-            sender: { name: "Awadini Fragrance Blends", email: "orders@awadini.com.au" },
+            sender: { name: "Awadini Fragrance Blends", email: "awaddavid65@gmail.com" },
             to: [{ email: customer.email, name: customer.name }],
             subject: `Your Awadini Order is Confirmed — A$${(grandTotalCents / 100).toFixed(2)}`,
             htmlContent: htmlBody,
