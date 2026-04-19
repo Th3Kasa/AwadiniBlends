@@ -137,7 +137,123 @@ export async function POST(request: NextRequest) {
       console.error("Brevo subscriber failed (non-critical):", brevoErr);
     }
 
-    // 6. Notify business via Web3Forms
+    // 6. Send order confirmation email to customer via Brevo transactional
+    try {
+      const brevoKey = process.env.BREVO_API_KEY;
+      if (brevoKey) {
+        const itemRows = lineItems
+          .map(
+            (i) =>
+              `<tr>
+                <td style="padding:8px 12px;border-bottom:1px solid #2a2a2a;color:#f5f0e8;">${i.name}</td>
+                <td style="padding:8px 12px;border-bottom:1px solid #2a2a2a;color:#f5f0e8;text-align:center;">${i.quantity}</td>
+                <td style="padding:8px 12px;border-bottom:1px solid #2a2a2a;color:#c9a86c;text-align:right;">A$${(i.unitPrice * i.quantity).toFixed(2)}</td>
+              </tr>`
+          )
+          .join("");
+
+        const shippingLabel =
+          shippingSource === "bundle_free"
+            ? "Free — Bundle Discount 🎁"
+            : shippingSource === "auspost"
+            ? `A$${shippingCost.toFixed(2)} via Australia Post`
+            : `A$${shippingCost.toFixed(2)}`;
+
+        const htmlBody = `
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
+<body style="margin:0;padding:0;background:#0d0d0d;font-family:ui-sans-serif,system-ui,sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background:#0d0d0d;padding:40px 16px;">
+    <tr><td align="center">
+      <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background:#141414;border-radius:12px;overflow:hidden;border:1px solid #2a2a2a;">
+
+        <!-- Header -->
+        <tr><td style="background:#1a1a1a;padding:32px;text-align:center;border-bottom:1px solid #2a2a2a;">
+          <h1 style="margin:0;font-size:24px;letter-spacing:0.15em;color:#c9a86c;font-weight:300;">AWADINI</h1>
+          <p style="margin:8px 0 0;color:#f5f0e8;opacity:0.5;font-size:12px;letter-spacing:0.1em;">FRAGRANCE BLENDS</p>
+        </td></tr>
+
+        <!-- Thank you -->
+        <tr><td style="padding:32px;text-align:center;border-bottom:1px solid #2a2a2a;">
+          <h2 style="margin:0 0 12px;font-size:20px;color:#f5f0e8;font-weight:400;">Order Confirmed ✓</h2>
+          <p style="margin:0;color:#f5f0e8;opacity:0.6;font-size:14px;line-height:1.6;">
+            Thank you, ${customer.name.split(" ")[0]}! Your order has been received and payment confirmed.<br>
+            We'll dispatch your fragrances from Liverpool NSW shortly.
+          </p>
+        </td></tr>
+
+        <!-- Items -->
+        <tr><td style="padding:24px 32px;">
+          <p style="margin:0 0 16px;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#c9a86c;">Your Order</p>
+          <table width="100%" cellpadding="0" cellspacing="0">
+            <tr style="background:#1a1a1a;">
+              <th style="padding:8px 12px;text-align:left;font-size:11px;color:#f5f0e8;opacity:0.4;font-weight:400;letter-spacing:0.08em;">FRAGRANCE</th>
+              <th style="padding:8px 12px;text-align:center;font-size:11px;color:#f5f0e8;opacity:0.4;font-weight:400;letter-spacing:0.08em;">QTY</th>
+              <th style="padding:8px 12px;text-align:right;font-size:11px;color:#f5f0e8;opacity:0.4;font-weight:400;letter-spacing:0.08em;">PRICE</th>
+            </tr>
+            ${itemRows}
+            <tr>
+              <td colspan="2" style="padding:8px 12px;color:#f5f0e8;opacity:0.5;font-size:13px;">Shipping</td>
+              <td style="padding:8px 12px;text-align:right;color:#f5f0e8;opacity:0.7;font-size:13px;">${shippingLabel}</td>
+            </tr>
+            <tr style="background:#1a1a1a;">
+              <td colspan="2" style="padding:12px;font-size:14px;color:#f5f0e8;font-weight:600;">Total</td>
+              <td style="padding:12px;text-align:right;font-size:16px;color:#c9a86c;font-weight:600;">A$${(grandTotalCents / 100).toFixed(2)}</td>
+            </tr>
+          </table>
+        </td></tr>
+
+        <!-- Delivery address -->
+        <tr><td style="padding:0 32px 24px;">
+          <p style="margin:0 0 10px;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#c9a86c;">Delivering To</p>
+          <p style="margin:0;font-size:14px;color:#f5f0e8;opacity:0.7;line-height:1.7;">
+            ${customer.addressLine1}${customer.addressLine2 ? ", " + customer.addressLine2 : ""}<br>
+            ${customer.city} ${customer.state} ${customer.postcode}
+          </p>
+        </td></tr>
+
+        <!-- Payment ref -->
+        <tr><td style="padding:0 32px 32px;">
+          <p style="margin:0;font-size:11px;color:#f5f0e8;opacity:0.3;">
+            Payment ref: ${payment.id}
+          </p>
+        </td></tr>
+
+        <!-- Footer -->
+        <tr><td style="background:#1a1a1a;padding:24px 32px;text-align:center;border-top:1px solid #2a2a2a;">
+          <p style="margin:0;font-size:12px;color:#f5f0e8;opacity:0.35;line-height:1.6;">
+            Questions? Reply to this email and we'll get back to you.<br>
+            © Awadini Fragrance Blends · Liverpool NSW 2170 · Australia
+          </p>
+        </td></tr>
+
+      </table>
+    </td></tr>
+  </table>
+</body>
+</html>`;
+
+        await fetch("https://api.brevo.com/v3/smtp/email", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            "api-key": brevoKey,
+          },
+          body: JSON.stringify({
+            sender: { name: "Awadini Fragrance Blends", email: "orders@awadini.com.au" },
+            to: [{ email: customer.email, name: customer.name }],
+            subject: `Your Awadini Order is Confirmed — A$${(grandTotalCents / 100).toFixed(2)}`,
+            htmlContent: htmlBody,
+          }),
+        });
+      }
+    } catch (confirmErr) {
+      console.error("Customer confirmation email failed (non-critical):", confirmErr);
+    }
+
+    // 8. Notify business via Web3Forms
     try {
       const accessKey = process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY;
       if (accessKey) {
