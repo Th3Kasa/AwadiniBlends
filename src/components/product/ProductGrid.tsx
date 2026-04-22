@@ -16,7 +16,7 @@ export function ProductGrid({ scents }: ProductGridProps) {
     <section id="collection" className="pt-4 pb-12 sm:pb-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
-          <div className="inline-block bg-[#e8dfc8] px-8 py-6 rounded-sm mb-6">
+          <div className="bg-[#e8dfc8] px-8 py-8 mb-6">
             <span className="block text-gold text-xs tracking-[0.3em] uppercase mb-3">
               The Collection
             </span>
