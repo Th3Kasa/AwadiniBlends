@@ -71,13 +71,17 @@ function loadSquareSDK(): Promise<void> {
 export function SquarePaymentForm({ onTokenReceived, isSubmitting, totalAmount }: Props) {
   const cardContainerRef   = useRef<HTMLDivElement>(null);
   const googlePayRef       = useRef<HTMLDivElement>(null);
+  const applePayRef        = useRef<HTMLDivElement>(null);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const cardRef            = useRef<any>(null);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const googlePayButtonRef = useRef<any>(null);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const applePayButtonRef  = useRef<any>(null);
 
   const [cardReady,       setCardReady]       = useState(false);
   const [googlePayReady,  setGooglePayReady]  = useState(false);
+  const [applePayReady,   setApplePayReady]   = useState(false);
   const [tokenizing,      setTokenizing]      = useState(false);
   const [cardError,       setCardError]       = useState("");
 
@@ -104,17 +108,18 @@ export function SquarePaymentForm({ onTokenReceived, isSubmitting, totalAmount }
         cardRef.current = card;
         setCardReady(true);
 
+        // Shared payment request for digital wallets
+        const paymentRequest = payments.paymentRequest({
+          countryCode:  "AU",
+          currencyCode: "AUD",
+          total: {
+            amount: totalAmount.toFixed(2),
+            label:  "Awadini Fragrance Blends",
+          },
+        });
+
         // ── Google Pay ────────────────────────────────────────────────────────
         try {
-          const paymentRequest = payments.paymentRequest({
-            countryCode:  "AU",
-            currencyCode: "AUD",
-            total: {
-              amount: totalAmount.toFixed(2),
-              label:  "Awadini Fragrance Blends",
-            },
-          });
-
           const googlePay = await payments.googlePay(paymentRequest);
           if (!mounted || !googlePayRef.current) { googlePay.destroy?.().catch(() => {}); return; }
           await googlePay.attach(googlePayRef.current);
@@ -124,6 +129,19 @@ export function SquarePaymentForm({ onTokenReceived, isSubmitting, totalAmount }
         } catch {
           // Google Pay not supported on this device/browser — silently hide it
           setGooglePayReady(false);
+        }
+
+        // ── Apple Pay ─────────────────────────────────────────────────────────
+        try {
+          const applePay = await payments.applePay(paymentRequest);
+          if (!mounted || !applePayRef.current) { applePay.destroy?.().catch(() => {}); return; }
+          await applePay.attach(applePayRef.current);
+          if (!mounted) { applePay.destroy?.().catch(() => {}); return; }
+          applePayButtonRef.current = applePay;
+          setApplePayReady(true);
+        } catch {
+          // Apple Pay not supported on this device/browser — silently hide it
+          setApplePayReady(false);
         }
 
       } catch (err) {
@@ -140,6 +158,8 @@ export function SquarePaymentForm({ onTokenReceived, isSubmitting, totalAmount }
       cardRef.current = null;
       googlePayButtonRef.current?.destroy?.().catch(() => {});
       googlePayButtonRef.current = null;
+      applePayButtonRef.current?.destroy?.().catch(() => {});
+      applePayButtonRef.current = null;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -162,6 +182,29 @@ export function SquarePaymentForm({ onTokenReceived, isSubmitting, totalAmount }
       }
     } catch {
       setCardError("Payment failed. Please try again.");
+    } finally {
+      setTokenizing(false);
+    }
+  };
+
+  // ── Tokenise Apple Pay ────────────────────────────────────────────────────
+  const handleApplePay = async () => {
+    if (!applePayButtonRef.current || tokenizing || isSubmitting) return;
+    setCardError("");
+    setTokenizing(true);
+    try {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const result: any = await applePayButtonRef.current.tokenize();
+      if (result.status === "OK" && result.token) {
+        onTokenReceived(result.token);
+      } else {
+        const msgs = (result.errors ?? [])
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          .map((e: any) => e.message as string).join(" ");
+        setCardError(msgs || "Apple Pay could not complete. Please try card payment.");
+      }
+    } catch {
+      setCardError("Apple Pay failed. Please try card payment below.");
     } finally {
       setTokenizing(false);
     }
@@ -194,20 +237,32 @@ export function SquarePaymentForm({ onTokenReceived, isSubmitting, totalAmount }
 
   return (
     <>
+      {/* ── Apple Pay button ── */}
+      {applePayReady && (
+        <div
+          ref={applePayRef}
+          onClick={handleApplePay}
+          className="w-full rounded-md overflow-hidden cursor-pointer mb-3"
+          style={{ minHeight: "48px" }}
+        />
+      )}
+
       {/* ── Google Pay button ── */}
       {googlePayReady && (
-        <div className="mb-4">
-          <div
-            ref={googlePayRef}
-            onClick={handleGooglePay}
-            className="w-full rounded-md overflow-hidden cursor-pointer"
-            style={{ minHeight: "48px" }}
-          />
-          <div className="flex items-center gap-3 mt-4 mb-4">
-            <div className="flex-1 h-px bg-white/10" />
-            <span className="text-xs text-cream/30 tracking-widest uppercase">or pay by card</span>
-            <div className="flex-1 h-px bg-white/10" />
-          </div>
+        <div
+          ref={googlePayRef}
+          onClick={handleGooglePay}
+          className="w-full rounded-md overflow-hidden cursor-pointer mb-3"
+          style={{ minHeight: "48px" }}
+        />
+      )}
+
+      {/* Divider — only shown when at least one wallet button is visible */}
+      {(applePayReady || googlePayReady) && (
+        <div className="flex items-center gap-3 mb-4">
+          <div className="flex-1 h-px bg-white/10" />
+          <span className="text-xs text-cream/30 tracking-widest uppercase">or pay by card</span>
+          <div className="flex-1 h-px bg-white/10" />
         </div>
       )}
 
