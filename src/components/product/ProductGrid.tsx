@@ -32,11 +32,29 @@ export function ProductGrid({ scents }: ProductGridProps) {
           </div>
         </div>
 
-        {/* Flex-wrap centered — last row always centered regardless of count */}
+        {/* Featured scent — centered solo at the top */}
+        {featured.length > 0 && (
+          <div className="flex justify-center mb-8">
+            <div className="w-full sm:w-80">
+              <ProductCard scent={featured[0]} index={0} />
+            </div>
+          </div>
+        )}
+
+        {/* Divider */}
+        {featured.length > 0 && rest.length > 0 && (
+          <div className="flex items-center gap-4 mb-8">
+            <div className="flex-1 h-px bg-mahogany/10" />
+            <span className="text-mahogany/30 text-xs tracking-[0.3em] uppercase">Collection</span>
+            <div className="flex-1 h-px bg-mahogany/10" />
+          </div>
+        )}
+
+        {/* Remaining scents — flex-wrap centered */}
         <div className="flex flex-wrap justify-center gap-6">
-          {ordered.map((scent, index) => (
+          {rest.map((scent, index) => (
             <div key={scent.slug} className="w-full sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)]">
-              <ProductCard scent={scent} index={index} />
+              <ProductCard scent={scent} index={index + 1} />
             </div>
           ))}
         </div>
