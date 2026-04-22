@@ -9,6 +9,7 @@ export interface Scent {
   name: string;
   price: number;
   tier: "core" | "premium";
+  featured?: boolean;
   tagline: string;
   description: string;
   notes: ScentNotes;

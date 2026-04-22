@@ -30,21 +30,31 @@ export function Hero() {
           transition={{ duration: 0.8, delay: 0.15, ease: "easeOut" }}
           className="font-serif text-5xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tight text-cream leading-[1.05] mb-8"
         >
-          The Drive,
+          Your car should
           <br />
-          <span className="gold-gradient italic">Scored in</span>
+          <span className="gold-gradient italic">smell this</span>
           <br />
-          Scent
+          good.
         </motion.h1>
 
         <motion.p
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
-          className="text-cream/70 text-base sm:text-lg max-w-xl mx-auto mb-10 leading-7"
+          className="text-cream/70 text-base sm:text-lg max-w-xl mx-auto mb-4 leading-7"
         >
           Handcrafted oils for your hanging car diffuser. Small-batch,
           long-lasting, poured to order in Sydney.
+        </motion.p>
+
+        {/* Social proof */}
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.38, ease: "easeOut" }}
+          className="text-gold/80 text-sm mb-10 tracking-wide"
+        >
+          ★★★★★ &nbsp;Loved by 1,000+ drivers across Sydney
         </motion.p>
 
         <motion.div

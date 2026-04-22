@@ -15,6 +15,8 @@ const config: Config = {
         obsidian: "#0a0a0a",
         smoke: "#2a2a2a",
         mist: "#e0d6c8",
+        ivory:    "#FDFAF3",
+        mahogany: "#332419",
       },
       fontFamily: {
         serif: ["var(--font-cormorant)", "Georgia", "serif"],

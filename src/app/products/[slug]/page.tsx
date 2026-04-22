@@ -93,7 +93,7 @@ export default function ProductPage({ params }: Props) {
               <p className="text-sm text-cream/70 leading-7">
                 Add a few drops to your hanging car diffuser and hang from your
                 rear-view mirror. Reapply as needed — a little goes a long way.
-                Each 10ml bottle delivers weeks of fragrance.
+                Each 8ml bottle delivers weeks of fragrance.
               </p>
             </div>
 

@@ -1,0 +1,25 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(rm -f src/lib/cloudinary.ts src/lib/mailer.ts src/lib/turnstile.ts src/components/shared/TurnstileWidget.tsx)",
+      "Bash(rm -rf src/app/api/contact)",
+      "Bash(rmdir src/components/shared)",
+      "Bash(mkdir -p public/images/scents)",
+      "Bash(node -e \"const fs=require\\('fs'\\);const b64='/9j/4AAQSkZJRgABAQEASABIAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjL/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwA/wA//2Q==';const buf=Buffer.from\\(b64,'base64'\\);const names=['green-apple','strawberry-rose','vanilla','musk','tea-rose','honeysuckle','rose-geranium','forget-me-not'];for\\(const n of names\\)fs.writeFileSync\\('public/images/scents/'+n+'.jpg',buf\\);console.log\\('done',names.length\\);\")",
+      "Bash(powershell -ExecutionPolicy Bypass -File _gen.ps1)",
+      "Bash(rm _gen.ps1)",
+      "Bash(npm install:*)",
+      "Read(//usr/local/bin/**)",
+      "Bash(command -v node)",
+      "Bash(powershell -Command \"where.exe npm node\")",
+      "Bash(powershell -Command \"Get-Command npm -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Source; Get-Command node -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Source\")",
+      "Bash(powershell -Command \"ls 'C:\\\\Program Files\\\\nodejs\\\\npm.cmd' 2>null; ls 'C:\\\\Users\\\\hanan\\\\AppData\\\\Roaming\\\\nvm' 2>null; ls 'C:\\\\nvm' 2>null; [System.Environment]::GetEnvironmentVariable\\('PATH','Machine'\\) -split ';' | Select-String -Pattern 'node|nvm'\")",
+      "Bash(powershell -Command \"Get-ChildItem 'C:\\\\Program Files\\\\nodejs' -ErrorAction SilentlyContinue | Select Name; Get-ChildItem 'C:\\\\Users\\\\hanan\\\\AppData\\\\Local\\\\Programs' -ErrorAction SilentlyContinue | Select Name\")",
+      "Bash(powershell -Command \"Test-Path 'C:\\\\Program Files\\\\nodejs\\\\npm.cmd'\")",
+      "Bash(powershell -Command \"Test-Path 'C:\\\\Users\\\\hanan\\\\AppData\\\\Roaming\\\\nvm'; Test-Path 'C:\\\\nvm'; Test-Path 'C:\\\\nodejs'\")",
+      "Bash(ls \"C:\\\\Users\\\\hanan\\\\OneDrive\\\\Documents\\\\Awadini\\\\.env\"*)",
+      "Bash(powershell -Command \"Get-Content 'C:\\\\Users\\\\hanan\\\\OneDrive\\\\Documents\\\\Awadini\\\\.gitignore'\")",
+      "Bash(powershell -Command \"Test-Path 'C:\\\\Users\\\\hanan\\\\OneDrive\\\\Documents\\\\Awadini\\\\.env.local'\")"
+    ]
+  }
+}
