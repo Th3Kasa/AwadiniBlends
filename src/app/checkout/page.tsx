@@ -424,6 +424,17 @@ export default function CheckoutPage() {
                   <span>{formatCurrency(subtotal)}</span>
                 </div>
 
+                {/* Local pickup note */}
+                <div className="rounded-md bg-mahogany/5 border border-mahogany/10 px-3 py-2.5 text-xs text-mahogany/70 leading-relaxed">
+                  <span className="font-medium text-mahogany">Prefer local pickup?</span> DM us on{" "}
+                  <a href="https://www.instagram.com/awadini.au" target="_blank" rel="noopener noreferrer"
+                    className="text-gold hover:underline font-medium">Instagram</a>{" "}
+                  or{" "}
+                  <a href="https://www.tiktok.com/@awadini.au" target="_blank" rel="noopener noreferrer"
+                    className="text-gold hover:underline font-medium">TikTok</a>{" "}
+                  to arrange collection in Sydney — no shipping cost.
+                </div>
+
                 {/* Shipping row */}
                 <div className="flex justify-between items-start text-sm text-mahogany/60">
                   <div>

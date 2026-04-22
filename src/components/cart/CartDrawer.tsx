@@ -204,12 +204,23 @@ export function CartDrawer() {
                 </div>
 
                 {/* Shipping line */}
-                <div className="flex items-center justify-between text-xs text-mahogany/50">
+                <div className="flex items-start justify-between text-xs text-mahogany/50">
                   <span>Shipping</span>
                   {isBundleFree
                     ? <span className="text-gold font-medium">Free ✓</span>
-                    : <span>Calculated at checkout via Australia Post</span>
+                    : <span className="text-right">Calculated at checkout via Australia Post</span>
                   }
+                </div>
+
+                {/* Local pickup callout */}
+                <div className="rounded-md bg-mahogany/5 border border-mahogany/10 px-3 py-2.5 text-xs text-mahogany/70 leading-relaxed">
+                  <span className="font-medium text-mahogany">Prefer local pickup?</span> DM us on{" "}
+                  <a href="https://www.instagram.com/awadini.au" target="_blank" rel="noopener noreferrer"
+                    className="text-gold hover:underline font-medium">Instagram</a>{" "}
+                  or{" "}
+                  <a href="https://www.tiktok.com/@awadini.au" target="_blank" rel="noopener noreferrer"
+                    className="text-gold hover:underline font-medium">TikTok</a>{" "}
+                  to arrange collection in Sydney.
                 </div>
 
                 <Link
