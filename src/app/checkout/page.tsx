@@ -40,7 +40,12 @@ const initialForm: CustomerForm = {
 const validators: Record<keyof CustomerForm, (v: string) => string | undefined> = {
   name:         (v) => (!v || v.trim().length < 2 ? "Full name is required" : undefined),
   email:        (v) => (!v || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) ? "Enter a valid email address" : undefined),
-  phone:        (v) => (v.replace(/\D/g, "").length !== 10 ? "Enter a valid 10-digit Australian phone number" : undefined),
+  phone:        (v) => {
+    const digits = v.replace(/\D/g, "");
+    // Accept 04xxxxxxxx (10 digits) or +61 4xxxxxxxx (11 digits starting with 61)
+    const valid = digits.length === 10 || (digits.length === 11 && digits.startsWith("61"));
+    return valid ? undefined : "Enter a valid Australian phone number (e.g. 0412 345 678 or +61 412 345 678)";
+  },
   addressLine1: (v) => (!v || v.trim().length < 3 ? "Street address is required" : undefined),
   addressLine2: ()  => undefined,
   city:         (v) => (!v || v.trim().length < 2 ? "City / suburb is required" : undefined),
