@@ -241,7 +241,7 @@ export async function POST(request: NextRequest) {
 </body>
 </html>`;
 
-        await fetch("https://api.brevo.com/v3/smtp/email", {
+        const customerEmailRes = await fetch("https://api.brevo.com/v3/smtp/email", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -255,16 +255,23 @@ export async function POST(request: NextRequest) {
             htmlContent: htmlBody,
           }),
         });
+        if (!customerEmailRes.ok) {
+          const errBody = await customerEmailRes.text();
+          console.error("Brevo customer receipt FAILED:", customerEmailRes.status, errBody);
+        } else {
+          const { messageId } = await customerEmailRes.json().catch(() => ({}));
+          console.log("Brevo customer receipt sent. messageId:", messageId);
+        }
       }
     } catch (confirmErr) {
       console.error("Customer confirmation email failed (non-critical):", confirmErr);
     }
 
-    // 8. Notify David via Brevo — same reliable path as the customer receipt
+    // 8. Notify David via Brevo — BCC to personal Gmail as fallback for self-send filtering
     try {
       const brevoKeyNotify = process.env.BREVO_API_KEY;
       if (brevoKeyNotify) {
-        await fetch("https://api.brevo.com/v3/smtp/email", {
+        const davidEmailRes = await fetch("https://api.brevo.com/v3/smtp/email", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -274,14 +281,21 @@ export async function POST(request: NextRequest) {
           body: JSON.stringify({
             sender: { name: "Awadini Orders", email: "contact.awadini@gmail.com" },
             to: [{ email: "contact.awadini@gmail.com", name: "Awadini Orders" }],
+            bcc: [{ email: "awaddavid65@gmail.com", name: "David" }],
             replyTo: { email: customer.email, name: customer.name },
             subject: `🧴 New Order — ${customer.name} — A$${(grandTotalCents / 100).toFixed(2)}`,
             htmlContent: buildOrderMessage(customer, lineItems, totalCents / 100, shippingCost, grandTotalCents / 100, payment.id!, shippingSource, shippingService, freeGift?.name),
           }),
         });
+        if (!davidEmailRes.ok) {
+          const errBody = await davidEmailRes.text();
+          console.error("Brevo David notification FAILED:", davidEmailRes.status, errBody);
+        } else {
+          const { messageId } = await davidEmailRes.json().catch(() => ({}));
+          console.log("Brevo David notification sent. messageId:", messageId);
+        }
       }
     } catch (emailErr) {
-      // Log but don't fail the request — payment already succeeded
       console.error("Order notification email failed:", emailErr);
     }
 
