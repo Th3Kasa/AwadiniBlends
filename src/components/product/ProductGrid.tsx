@@ -32,10 +32,12 @@ export function ProductGrid({ scents }: ProductGridProps) {
           </div>
         </div>
 
-        {/* 3×3 unified grid — perfect for 9 scents, all cards equal */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch">
+        {/* Flex-wrap centered — last row always centered regardless of count */}
+        <div className="flex flex-wrap justify-center gap-6">
           {ordered.map((scent, index) => (
-            <ProductCard key={scent.slug} scent={scent} index={index} />
+            <div key={scent.slug} className="w-full sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)]">
+              <ProductCard scent={scent} index={index} />
+            </div>
           ))}
         </div>
       </div>
