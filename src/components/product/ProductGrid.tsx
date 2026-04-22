@@ -22,7 +22,7 @@ export function ProductGrid({ scents }: ProductGridProps) {
             <span className="block text-gold text-xs tracking-[0.3em] uppercase mb-3">
               The Collection
             </span>
-            <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl text-mahogany tracking-tight">
+            <h2 className="font-sans font-bold text-2xl sm:text-3xl md:text-4xl text-mahogany tracking-wider uppercase">
               Artisanal Scent Library
             </h2>
             <p className="text-mahogany/70 text-base mt-3 max-w-xl mx-auto leading-7">

@@ -65,7 +65,7 @@ export function DispatchCountdown() {
               <p className="text-gold text-[10px] tracking-[0.3em] uppercase">
                 Order before
               </p>
-              <p className="font-serif text-cream text-lg leading-tight">2 PM AEST</p>
+              <p className="font-sans font-semibold text-cream text-lg leading-tight tracking-wider">2 PM AEST</p>
               <p className="text-cream/85 text-[10px] tracking-wider uppercase">
                 same-day dispatch
               </p>
@@ -103,7 +103,7 @@ function TimeBlock({ value, label }: { value: number; label: string }) {
   return (
     <div className="flex flex-col items-center">
       <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-md bg-smoke border border-white/8 flex items-center justify-center">
-        <span className="font-serif text-xl sm:text-2xl text-cream">
+        <span className="font-sans font-semibold text-xl sm:text-2xl text-cream">
           {value.toString().padStart(2, "0")}
         </span>
       </div>

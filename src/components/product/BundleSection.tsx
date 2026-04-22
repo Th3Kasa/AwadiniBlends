@@ -99,7 +99,7 @@ export function BundleSection({ preselectedSlug }: { preselectedSlug?: string } 
           <p className="text-gold text-xs tracking-[0.3em] uppercase mb-3">
             Bundle &amp; Save
           </p>
-          <h2 className="font-serif text-3xl sm:text-4xl text-mahogany tracking-tight">
+          <h2 className="font-sans font-bold text-2xl sm:text-3xl md:text-4xl text-mahogany tracking-wider uppercase">
             Build Your Scent Collection
           </h2>
           <p className="text-mahogany/70 text-base mt-3 max-w-sm mx-auto leading-7">
@@ -147,10 +147,10 @@ export function BundleSection({ preselectedSlug }: { preselectedSlug?: string } 
                 <div className="p-5 sm:p-6 flex flex-col flex-1">
                   {/* Price header */}
                   <div className="mb-5 pr-16">
-                    <h3 className="font-serif text-xl text-mahogany mb-1">{bundle.name}</h3>
+                    <h3 className="font-sans font-bold text-lg text-mahogany mb-1 tracking-wider uppercase">{bundle.name}</h3>
                     <div className="flex items-end gap-2">
                       <span
-                        className={`font-serif text-2xl leading-none ${
+                        className={`font-sans font-semibold text-2xl leading-none ${
                           bundle.highlight ? "text-gold" : "text-mahogany"
                         }`}
                       >

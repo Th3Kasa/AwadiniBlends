@@ -15,7 +15,7 @@ export default function RefundPolicyPage() {
           <p className="text-gold text-xs tracking-[0.3em] uppercase mb-4">
             Legal
           </p>
-          <h1 className="font-serif text-3xl sm:text-4xl text-cream mb-2">
+          <h1 className="font-sans font-bold text-2xl sm:text-3xl md:text-4xl text-cream mb-2 tracking-wider uppercase">
             Refund Policy
           </h1>
           <p className="text-cream/85 text-sm">
@@ -197,7 +197,7 @@ function PolicySection({
 }) {
   return (
     <div>
-      <h2 className="font-serif text-lg text-cream mb-3">{title}</h2>
+      <h2 className="font-sans font-semibold text-base text-cream mb-3 tracking-wider uppercase">{title}</h2>
       <div className="text-cream/85 text-sm leading-relaxed">{children}</div>
     </div>
   );

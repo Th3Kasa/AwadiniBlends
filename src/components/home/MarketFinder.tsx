@@ -38,7 +38,7 @@ export function MarketFinder() {
           <p className="text-gold text-xs tracking-[0.3em] uppercase mb-4">
             Find Us
           </p>
-          <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl text-mahogany tracking-tight">
+          <h2 className="font-sans font-bold text-2xl sm:text-3xl md:text-4xl text-mahogany tracking-wider uppercase">
             Visit in Person
           </h2>
           <p className="text-mahogany/90 text-sm sm:text-base mt-4 max-w-xl mx-auto">
@@ -99,7 +99,7 @@ export function MarketFinder() {
                 </svg>
               </div>
               <div>
-                <h3 className="font-serif text-xl sm:text-2xl text-mahogany">
+                <h3 className="font-sans font-bold text-lg sm:text-xl text-mahogany tracking-wider uppercase">
                   {markets[activeIndex].name}
                 </h3>
                 <p className="text-mahogany/90 text-sm mt-1">
@@ -147,7 +147,7 @@ export function MarketFinder() {
                   : "border-mahogany/10 hover:border-mahogany/15"
               }`}
             >
-              <h4 className="font-serif text-sm text-mahogany mb-1">
+              <h4 className="font-sans font-semibold text-sm text-mahogany mb-1 tracking-wider uppercase">
                 {market.name}
               </h4>
               <p className="text-xs text-mahogany/85">{market.address}</p>

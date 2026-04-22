@@ -200,7 +200,7 @@ export function CartDrawer() {
               <div className="px-6 py-5 border-t border-mahogany/10 space-y-3">
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-mahogany/70">Subtotal</span>
-                  <span className="font-serif text-xl text-gold">{formatCurrency(subtotal)}</span>
+                  <span className="font-sans font-semibold text-xl text-gold">{formatCurrency(subtotal)}</span>
                 </div>
 
                 {/* Shipping line */}

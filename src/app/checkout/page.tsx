@@ -204,7 +204,7 @@ export default function CheckoutPage() {
               <path fillRule="evenodd" d="M16.704 4.153a.75.75 0 0 1 .143 1.052l-8 10.5a.75.75 0 0 1-1.127.075l-4.5-4.5a.75.75 0 0 1 1.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 0 1 1.05-.143Z" clipRule="evenodd" />
             </svg>
           </div>
-          <h1 className="font-serif text-3xl text-mahogany mb-3">Order Placed</h1>
+          <h1 className="font-sans font-bold text-2xl sm:text-3xl text-mahogany mb-3 tracking-wider uppercase">Order Placed</h1>
           <p className="text-mahogany/70 text-sm leading-7 mb-8">
             Thank you for your order. Your fragrances are being handcrafted just for you and will be dispatched within 1–2 business days.
           </p>
@@ -218,7 +218,7 @@ export default function CheckoutPage() {
     return (
       <div className="min-h-screen flex items-center justify-center px-4">
         <div className="text-center">
-          <h1 className="font-serif text-3xl text-mahogany mb-4">Your bag is empty</h1>
+          <h1 className="font-sans font-bold text-2xl sm:text-3xl text-mahogany mb-4 tracking-wider uppercase">Your bag is empty</h1>
           <button onClick={() => router.push("/")} className="btn-primary">Explore Collection</button>
         </div>
       </div>
@@ -229,7 +229,7 @@ export default function CheckoutPage() {
   return (
     <section className="py-12 sm:py-20">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h1 className="font-serif text-3xl sm:text-4xl text-mahogany mb-10 text-center">Checkout</h1>
+        <h1 className="font-sans font-bold text-2xl sm:text-3xl md:text-4xl text-mahogany mb-10 text-center tracking-wider uppercase">Checkout</h1>
 
         {/* Bundle free-shipping nudge — shown when 1–2 items in cart */}
         {!isBundleFree && (
@@ -471,7 +471,7 @@ export default function CheckoutPage() {
                 {/* Total */}
                 <div className="flex justify-between items-center pt-2.5 border-t border-mahogany/10">
                   <span className="text-sm font-medium text-mahogany">Total</span>
-                  <span className="font-serif text-2xl text-gold">
+                  <span className="font-sans font-semibold text-2xl text-gold">
                     {(isBundleFree || shippingQuote)
                       ? formatCurrency(total)
                       : (

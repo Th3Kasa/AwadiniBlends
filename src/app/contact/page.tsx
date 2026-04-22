@@ -15,7 +15,7 @@ export default function ContactPage() {
           <p className="text-gold text-xs tracking-[0.3em] uppercase mb-4">
             Get in Touch
           </p>
-          <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl text-mahogany tracking-tight mb-4">
+          <h1 className="font-sans font-bold text-2xl sm:text-3xl md:text-4xl text-mahogany tracking-wider uppercase mb-4">
             Contact Us
           </h1>
           <p className="text-mahogany/90 text-sm leading-relaxed">
@@ -50,7 +50,7 @@ export default function ContactPage() {
                   />
                 </svg>
               </div>
-              <h3 className="font-serif text-sm text-mahogany">Based In</h3>
+              <h3 className="font-sans font-semibold text-sm text-mahogany tracking-wider uppercase">Based In</h3>
             </div>
             <p className="text-mahogany/90 text-sm">
               Liverpool, NSW 2170
@@ -77,7 +77,7 @@ export default function ContactPage() {
                   />
                 </svg>
               </div>
-              <h3 className="font-serif text-sm text-mahogany">Response Time</h3>
+              <h3 className="font-sans font-semibold text-sm text-mahogany tracking-wider uppercase">Response Time</h3>
             </div>
             <p className="text-mahogany/90 text-sm">
               We respond within 24–48 hours

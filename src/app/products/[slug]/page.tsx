@@ -63,13 +63,13 @@ export default function ProductPage({ params }: Props) {
           <div className="flex flex-col justify-center">
             <FreshlyPouredBadge className="mb-6" />
 
-            <h1 className="font-serif text-4xl sm:text-5xl text-mahogany tracking-tight mb-3">
+            <h1 className="font-sans font-semibold text-3xl sm:text-4xl text-mahogany tracking-wider uppercase mb-3">
               {scent.name}
             </h1>
 
             <p className="text-gold text-sm italic mb-6">{scent.tagline}</p>
 
-            <p className="text-3xl font-serif text-gold mb-8">
+            <p className="text-3xl font-sans font-semibold text-gold mb-8">
               {formatCurrency(scent.price)}
             </p>
 

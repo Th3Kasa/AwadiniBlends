@@ -97,7 +97,7 @@ export function ContactForm() {
             />
           </svg>
         </div>
-        <h3 className="font-serif text-xl text-mahogany mb-2">
+        <h3 className="font-sans font-bold text-lg text-mahogany mb-2 tracking-wider uppercase">
           Message Received
         </h3>
         <p className="text-mahogany/70 text-sm">
