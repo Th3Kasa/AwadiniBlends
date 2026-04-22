@@ -33,15 +33,16 @@ export function ProductCard({ scent, index }: ProductCardProps) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-50px" }}
       transition={{ duration: 0.5, delay: index * 0.1, ease: "easeOut" }}
+      className="h-full"
     >
-      <Link href={`/products/${scent.slug}`} className="group block">
-        <div className={`glass-card overflow-hidden transition-all duration-500 hover:shadow-xl ${
+      <Link href={`/products/${scent.slug}`} className="group block h-full">
+        <div className={`glass-card overflow-hidden transition-all duration-500 hover:shadow-xl h-full flex flex-col ${
           scent.featured
             ? "border-gold/40 hover:border-gold/70 hover:shadow-gold/10 ring-1 ring-gold/20"
             : "hover:border-gold/20 hover:shadow-gold/5"
         }`}>
           {/* Image */}
-          <div className={`relative overflow-hidden bg-gradient-to-b ${gradient} ${scent.featured ? "aspect-[4/3]" : "aspect-square"}`}>
+          <div className={`relative overflow-hidden bg-gradient-to-b ${gradient} aspect-square`}>
             {/* Featured glow */}
             {scent.featured && (
               <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(201,168,108,0.15)_0%,transparent_65%)]" />
@@ -72,7 +73,7 @@ export function ProductCard({ scent, index }: ProductCardProps) {
           </div>
 
           {/* Info */}
-          <div className="p-5">
+          <div className="p-5 flex flex-col flex-1">
             <div className="flex items-start justify-between gap-2">
               <div>
                 <h3 className={`font-sans font-medium text-base transition-colors duration-300 ${

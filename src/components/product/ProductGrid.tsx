@@ -30,8 +30,8 @@ export function ProductGrid({ scents }: ProductGridProps) {
           </div>
         </div>
 
-        {/* Unified luxury grid — all scents equal, bestseller marked by badge */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        {/* 3×3 unified grid — perfect for 9 scents, all cards equal */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch">
           {ordered.map((scent, index) => (
             <ProductCard key={scent.slug} scent={scent} index={index} />
           ))}
