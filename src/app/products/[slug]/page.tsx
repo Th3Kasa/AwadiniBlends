@@ -44,7 +44,11 @@ export default function ProductPage({ params }: Props) {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16">
           {/* Image */}
-          <div className="relative aspect-square rounded-2xl overflow-hidden bg-smoke">
+          <div className={`relative aspect-square rounded-2xl overflow-hidden ${
+            scent.slug === "oud-essence"
+              ? "bg-gradient-to-b from-[#2a1a08] via-[#1a0f05] to-[#0d0803]"
+              : "bg-[#e8e2d8]"
+          }`}>
             <Image
               src={scent.image}
               alt={scent.name}

@@ -19,7 +19,7 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 bg-ivory/90 backdrop-blur-md border-b border-mahogany/10">
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16 sm:h-20">
+        <div className="relative flex items-center justify-between h-16 sm:h-20">
           {/* Logo */}
           <Link href="/" className="flex-shrink-0">
             <h1 className="font-serif text-xl sm:text-2xl tracking-wider text-mahogany">
@@ -30,8 +30,8 @@ export function Header() {
             </p>
           </Link>
 
-          {/* Desktop Nav */}
-          <div className="hidden md:flex items-center gap-8">
+          {/* Desktop Nav — absolutely centered */}
+          <div className="hidden md:flex items-center gap-8 absolute left-1/2 -translate-x-1/2">
             <Link
               href="/"
               className="text-sm text-mahogany/70 hover:text-gold transition-colors duration-300 focus-visible:outline-none focus-visible:text-gold"

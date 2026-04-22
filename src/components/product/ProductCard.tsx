@@ -72,21 +72,21 @@ export function ProductCard({ scent, index }: ProductCardProps) {
           </div>
 
           {/* Info */}
-          <div className={`p-5 ${scent.featured ? "bg-gradient-to-b from-[#1a1008]/60 to-transparent" : ""}`}>
+          <div className="p-5">
             <div className="flex items-start justify-between gap-2">
               <div>
                 <h3 className={`font-sans font-medium text-base transition-colors duration-300 ${
-                  scent.featured ? "text-gold group-hover:text-gold-light" : "text-cream group-hover:text-gold"
+                  scent.featured ? "text-gold group-hover:text-gold/80" : "text-mahogany group-hover:text-gold"
                 }`}>
                   {scent.name}
                 </h3>
-                <p className="text-sm text-cream/70 mt-1 leading-normal">{scent.tagline}</p>
+                <p className="text-sm text-mahogany/60 mt-1 leading-normal">{scent.tagline}</p>
               </div>
               <p className="text-gold font-medium text-sm flex-shrink-0 pt-0.5">
                 {formatCurrency(scent.price)}
               </p>
             </div>
-            <p className="text-xs text-gold/60 mt-3">
+            <p className="text-xs text-mahogany/40 mt-3">
               {scent.weight} &middot; Hanging Diffuser Oil
             </p>
           </div>
