@@ -120,27 +120,31 @@ export function SquarePaymentForm({ onTokenReceived, isSubmitting, totalAmount }
 
         // ── Google Pay ────────────────────────────────────────────────────────
         try {
+          console.log("[Square] Initialising Google Pay, amount:", totalAmount.toFixed(2));
           const googlePay = await payments.googlePay(paymentRequest);
           if (!mounted || !googlePayRef.current) { googlePay.destroy?.().catch(() => {}); return; }
           await googlePay.attach(googlePayRef.current);
           if (!mounted) { googlePay.destroy?.().catch(() => {}); return; }
           googlePayButtonRef.current = googlePay;
           setGooglePayReady(true);
-        } catch {
-          // Google Pay not supported on this device/browser — silently hide it
+          console.log("[Square] Google Pay ready ✓");
+        } catch (gpErr) {
+          console.warn("[Square] Google Pay unavailable:", gpErr);
           setGooglePayReady(false);
         }
 
         // ── Apple Pay ─────────────────────────────────────────────────────────
         try {
+          console.log("[Square] Initialising Apple Pay…");
           const applePay = await payments.applePay(paymentRequest);
           if (!mounted || !applePayRef.current) { applePay.destroy?.().catch(() => {}); return; }
           await applePay.attach(applePayRef.current);
           if (!mounted) { applePay.destroy?.().catch(() => {}); return; }
           applePayButtonRef.current = applePay;
           setApplePayReady(true);
-        } catch {
-          // Apple Pay not supported on this device/browser — silently hide it
+          console.log("[Square] Apple Pay ready ✓");
+        } catch (apErr) {
+          console.warn("[Square] Apple Pay unavailable:", apErr);
           setApplePayReady(false);
         }
 
