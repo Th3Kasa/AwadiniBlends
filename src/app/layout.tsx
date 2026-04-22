@@ -1,24 +1,24 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, DM_Sans } from "next/font/google";
+import { Cinzel, Montserrat } from "next/font/google";
 import "./globals.css";
 import { ShippingBanner } from "@/components/layout/ShippingBanner";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { CartDrawer } from "@/components/cart/CartDrawer";
 
-const cormorant = Cormorant_Garamond({
+const cinzel = Cinzel({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
+  variable: "--font-cinzel",
+});
+
+const montserrat = Montserrat({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700"],
   style: ["normal", "italic"],
   display: "swap",
-  variable: "--font-cormorant",
-});
-
-const dmSans = DM_Sans({
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
-  display: "swap",
-  variable: "--font-dm-sans",
+  variable: "--font-montserrat",
 });
 
 export const metadata: Metadata = {
@@ -67,8 +67,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${cormorant.variable} ${dmSans.variable}`}>
-      <body className="bg-obsidian text-cream font-sans antialiased">
+    <html lang="en" className={`${cinzel.variable} ${montserrat.variable}`}>
+      <body className="bg-ivory text-mahogany font-sans antialiased">
         {/* Ensure content is visible if JS is disabled */}
         <noscript>
           <style>{`* { opacity: 1 !important; transform: none !important; }`}</style>

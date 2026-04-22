@@ -127,7 +127,7 @@ export function BundleSection({ preselectedSlug }: { preselectedSlug?: string } 
                 transition={{ duration: 0.45, delay: i * 0.1 }}
                 className={`relative rounded-xl border flex flex-col overflow-hidden transition-shadow duration-300 ${
                   bundle.highlight
-                    ? "border-gold/40 bg-gradient-to-b from-[#1c1810] to-charcoal shadow-xl shadow-gold/10 sm:scale-[1.02]"
+                    ? "border-gold/50 bg-gradient-to-b from-[#fdf6e8] to-[#fdfaf3] shadow-xl shadow-gold/15 sm:scale-[1.02]"
                     : "border-mahogany/15 bg-white/70"
                 }`}
               >

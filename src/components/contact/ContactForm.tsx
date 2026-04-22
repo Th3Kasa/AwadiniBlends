@@ -97,10 +97,10 @@ export function ContactForm() {
             />
           </svg>
         </div>
-        <h3 className="font-serif text-xl text-cream mb-2">
+        <h3 className="font-serif text-xl text-mahogany mb-2">
           Message Received
         </h3>
-        <p className="text-cream/80 text-sm">
+        <p className="text-mahogany/70 text-sm">
           Thank you for reaching out. We'll get back to you shortly.
         </p>
       </div>
@@ -113,7 +113,7 @@ export function ContactForm() {
         <div>
           <label
             htmlFor="name"
-            className="block text-[11px] tracking-wider uppercase text-cream/90 mb-2"
+            className="block text-[11px] tracking-wider uppercase text-mahogany/70 mb-2"
           >
             Your Name
           </label>
@@ -124,8 +124,8 @@ export function ContactForm() {
             value={form.name}
             onChange={handleChange}
             autoComplete="name"
-            className={`w-full bg-smoke border rounded-sm px-4 py-3 text-sm text-cream placeholder:text-cream/80 focus:outline-none focus:border-gold transition-colors ${
-              errors.name ? "border-red-500/50" : "border-white/10"
+            className={`w-full bg-white border rounded-sm px-4 py-3 text-sm text-mahogany placeholder:text-mahogany/30 focus:outline-none focus:border-gold transition-colors ${
+              errors.name ? "border-red-400/60" : "border-mahogany/20"
             }`}
           />
           {errors.name && (
@@ -135,7 +135,7 @@ export function ContactForm() {
         <div>
           <label
             htmlFor="email"
-            className="block text-[11px] tracking-wider uppercase text-cream/90 mb-2"
+            className="block text-[11px] tracking-wider uppercase text-mahogany/70 mb-2"
           >
             Email Address
           </label>
@@ -146,8 +146,8 @@ export function ContactForm() {
             value={form.email}
             onChange={handleChange}
             autoComplete="email"
-            className={`w-full bg-smoke border rounded-sm px-4 py-3 text-sm text-cream placeholder:text-cream/80 focus:outline-none focus:border-gold transition-colors ${
-              errors.email ? "border-red-500/50" : "border-white/10"
+            className={`w-full bg-white border rounded-sm px-4 py-3 text-sm text-mahogany placeholder:text-mahogany/30 focus:outline-none focus:border-gold transition-colors ${
+              errors.email ? "border-red-400/60" : "border-mahogany/20"
             }`}
           />
           {errors.email && (
@@ -159,7 +159,7 @@ export function ContactForm() {
       <div>
         <label
           htmlFor="message"
-          className="block text-[11px] tracking-wider uppercase text-cream/90 mb-2"
+          className="block text-[11px] tracking-wider uppercase text-mahogany/70 mb-2"
         >
           Message
         </label>
@@ -169,14 +169,14 @@ export function ContactForm() {
           rows={6}
           value={form.message}
           onChange={handleChange}
-          className={`w-full bg-smoke border rounded-sm px-4 py-3 text-sm text-cream placeholder:text-cream/80 focus:outline-none focus:border-gold transition-colors resize-none ${
-            errors.message ? "border-red-500/50" : "border-white/10"
+          className={`w-full bg-white border rounded-sm px-4 py-3 text-sm text-mahogany placeholder:text-mahogany/30 focus:outline-none focus:border-gold transition-colors resize-none ${
+            errors.message ? "border-red-400/60" : "border-mahogany/20"
           }`}
         />
         {errors.message && (
           <p className="text-red-400 text-xs mt-1">{errors.message}</p>
         )}
-        <p className="text-[11px] text-cream/80 mt-1 text-right">
+        <p className="text-[11px] text-mahogany/40 mt-1 text-right">
           {form.message.length}/2000
         </p>
       </div>

@@ -19,8 +19,8 @@ const config: Config = {
         mahogany: "#332419",
       },
       fontFamily: {
-        serif: ["var(--font-cormorant)", "Georgia", "serif"],
-        sans: ["var(--font-dm-sans)", "system-ui", "sans-serif"],
+        serif: ["var(--font-cinzel)", "Georgia", "serif"],
+        sans:  ["var(--font-montserrat)", "system-ui", "sans-serif"],
       },
       animation: {
         "fade-up": "fadeUp 0.6s ease-out forwards",
