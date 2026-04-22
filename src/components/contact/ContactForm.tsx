@@ -47,16 +47,10 @@ export function ContactForm() {
     setSubmitError("");
 
     try {
-      const response = await fetch("https://api.web3forms.com/submit", {
+      const response = await fetch("/api/contact", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          access_key: process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY,
-          subject: "New Awadini contact message",
-          from_name: "Awadini Contact Form",
           name: form.name,
           email: form.email,
           message: form.message,
@@ -66,7 +60,7 @@ export function ContactForm() {
       const data = await response.json();
 
       if (!response.ok || !data.success) {
-        throw new Error(data.message || "Failed to send message.");
+        throw new Error(data.error || "Failed to send message.");
       }
 
       setSuccess(true);

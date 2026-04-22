@@ -249,7 +249,7 @@ export async function POST(request: NextRequest) {
             "api-key": brevoKey,
           },
           body: JSON.stringify({
-            sender: { name: "Awadini Fragrance Blends", email: "awaddavid65@gmail.com" },
+            sender: { name: "Awadini Fragrance Blends", email: "contact.awadini@gmail.com" },
             to: [{ email: customer.email, name: customer.name }],
             subject: `Your Awadini Order is Confirmed — A$${(grandTotalCents / 100).toFixed(2)}`,
             htmlContent: htmlBody,
@@ -260,22 +260,23 @@ export async function POST(request: NextRequest) {
       console.error("Customer confirmation email failed (non-critical):", confirmErr);
     }
 
-    // 8. Notify business via Web3Forms
+    // 8. Notify David via Brevo — same reliable path as the customer receipt
     try {
-      const accessKey = process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY;
-      if (accessKey) {
-        await fetch("https://api.web3forms.com/submit", {
+      const brevoKeyNotify = process.env.BREVO_API_KEY;
+      if (brevoKeyNotify) {
+        await fetch("https://api.brevo.com/v3/smtp/email", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
             Accept: "application/json",
+            "api-key": brevoKeyNotify,
           },
           body: JSON.stringify({
-            access_key: accessKey,
+            sender: { name: "Awadini Orders", email: "contact.awadini@gmail.com" },
+            to: [{ email: "contact.awadini@gmail.com", name: "Awadini Orders" }],
+            replyTo: { email: customer.email, name: customer.name },
             subject: `🧴 New Order — ${customer.name} — A$${(grandTotalCents / 100).toFixed(2)}`,
-            from_name: "Awadini Orders",
-            replyto: customer.email,
-            message: buildOrderMessage(customer, lineItems, totalCents / 100, shippingCost, grandTotalCents / 100, payment.id!, shippingSource, shippingService, freeGift?.name),
+            htmlContent: buildOrderMessage(customer, lineItems, totalCents / 100, shippingCost, grandTotalCents / 100, payment.id!, shippingSource, shippingService, freeGift?.name),
           }),
         });
       }
