@@ -89,20 +89,8 @@ export default function ProductPage({ params }: Props) {
               </div>
             </div>
 
-            {/* How to use */}
-            <div className="mb-8 p-4 rounded-lg border border-mahogany/10 bg-white/50">
-              <h3 className="text-xs tracking-[0.3em] uppercase text-gold mb-3">
-                How to Use
-              </h3>
-              <p className="text-sm text-mahogany/70 leading-7">
-                Add a few drops to your hanging car diffuser and hang from your
-                rear-view mirror. Reapply as needed — a little goes a long way.
-                Each 8ml bottle delivers weeks of fragrance.
-              </p>
-            </div>
-
             {/* Details */}
-            <div className="flex items-center gap-6 mb-8 text-xs text-mahogany/70">
+            <div className="flex items-center gap-3 mb-8 text-xs text-mahogany/70">
               <span>{scent.weight}</span>
               <span className="w-1 h-1 rounded-full bg-mahogany/40" />
               <span>Hanging Diffuser Oil</span>
