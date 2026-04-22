@@ -76,6 +76,13 @@ export async function POST(request: NextRequest) {
     });
   }
 
+  // 4a. Free surprise gift — included with every bundle (Duo+), not charged
+  //     Randomly assign one of the hidden/retiring scents; David packs it manually
+  const GIFT_SLUGS = ["green-apple", "musk"];
+  const freeGift = totalQty >= 2
+    ? allScents.find((s) => s.slug === GIFT_SLUGS[Math.floor(Math.random() * GIFT_SLUGS.length)])
+    : null;
+
   // 4. Create Square payment (items + shipping)
   const grandTotalCents = totalCents + shippingCents;
   const squareClient = getSquareClient();
@@ -268,7 +275,7 @@ export async function POST(request: NextRequest) {
             subject: `🧴 New Order — ${customer.name} — A$${(grandTotalCents / 100).toFixed(2)}`,
             from_name: "Awadini Orders",
             replyto: customer.email,
-            message: buildOrderMessage(customer, lineItems, totalCents / 100, shippingCost, grandTotalCents / 100, payment.id!, shippingSource, shippingService),
+            message: buildOrderMessage(customer, lineItems, totalCents / 100, shippingCost, grandTotalCents / 100, payment.id!, shippingSource, shippingService, freeGift?.name),
           }),
         });
       }
@@ -299,6 +306,7 @@ function buildOrderMessage(
   paymentId: string,
   shippingSource: "auspost" | "bundle_free" | "calculated" = "calculated",
   shippingService?: string,
+  freeGiftName?: string,
 ): string {
   const itemRows = items
     .map(
@@ -351,6 +359,12 @@ function buildOrderMessage(
             <th style="padding:8px 14px;text-align:right;font-size:11px;color:#6b7280;font-weight:500;letter-spacing:0.06em;">PRICE</th>
           </tr>
           ${itemRows}
+          ${freeGiftName ? `
+          <tr style="background:#fffbeb;">
+            <td style="padding:10px 14px;border-bottom:1px solid #e5e7eb;font-size:15px;color:#92400e;">🎁 ${freeGiftName} <span style="font-size:11px;color:#b45309;">(FREE SURPRISE GIFT — pack with order)</span></td>
+            <td style="padding:10px 14px;border-bottom:1px solid #e5e7eb;font-size:15px;text-align:center;color:#92400e;">1</td>
+            <td style="padding:10px 14px;border-bottom:1px solid #e5e7eb;font-size:15px;text-align:right;color:#92400e;font-weight:600;">FREE</td>
+          </tr>` : ""}
           <tr style="background:#f9fafb;">
             <td colspan="2" style="padding:10px 14px;font-size:13px;color:#6b7280;">Shipping</td>
             <td style="padding:10px 14px;text-align:right;font-size:13px;color:#374151;">${shippingLabel}</td>

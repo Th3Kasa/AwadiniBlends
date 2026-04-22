@@ -21,6 +21,7 @@
     "name": "Green Apple",
     "price": 12.00,
     "tier": "core",
+    "hidden": true,
     "tagline": "Clean air and open roads ahead",
     "description": "Crisp and invigorating, Green Apple transforms your cabin the moment you start the engine. A burst of orchard freshness cuts through city traffic and recalibrates your mood — turning the daily commute into something worth looking forward to. High-concentration formula that fills your car with clean, lasting freshness from the first drive to the last.",
     "notes": {
@@ -69,6 +70,7 @@
     "name": "Musk",
     "price": 12.00,
     "tier": "core",
+    "hidden": true,
     "tagline": "The scent your car was always meant to wear",
     "description": "There's a scent that doesn't announce itself — it's just there, like the car was always supposed to smell this way. Clean white musk with subtle woody depth: sophisticated, unobtrusive, and exactly right for the driver who doesn't need to try. Fills the cabin with quiet confidence that holds all day, every drive.",
     "notes": {

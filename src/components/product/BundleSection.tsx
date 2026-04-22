@@ -8,6 +8,8 @@ import scentsData from "@/data/scents.json";
 import type { Scent } from "@/types";
 
 const allScents = scentsData as Scent[];
+// Only show non-hidden scents in the picker — hidden scents are reserved as surprise gifts
+const pickableScents = allScents.filter((s) => !s.hidden);
 
 // Order: Duo | Trio | Collection — price drops left to right ($11 → $10 → $9)
 const BUNDLES = [
@@ -200,7 +202,7 @@ export function BundleSection({ preselectedSlug }: { preselectedSlug?: string } 
                                 } focus:outline-none focus:border-gold/60`}
                               >
                                 <option value="">— Pick a scent —</option>
-                                {allScents.map((scent) => (
+                                {pickableScents.map((scent) => (
                                   <option
                                     key={scent.slug}
                                     value={scent.slug}
@@ -247,15 +249,20 @@ export function BundleSection({ preselectedSlug }: { preselectedSlug?: string } 
           })}
         </div>
 
-        <motion.p
+        <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ delay: 0.4 }}
-          className="text-center text-mahogany/70 text-sm mt-10"
+          className="mt-10 text-center space-y-2"
         >
-          Handcrafted to order &middot; Ships via Australia Post &middot; 1–2 business days dispatch
-        </motion.p>
+          <p className="inline-flex items-center gap-2 bg-gold/10 border border-gold/25 text-gold text-xs px-4 py-2 rounded-full font-medium">
+            🎁 Every bundle ships with a complimentary surprise scent
+          </p>
+          <p className="text-mahogany/50 text-xs">
+            Handcrafted to order &middot; Ships via Australia Post &middot; 1–2 business days dispatch
+          </p>
+        </motion.div>
       </div>
     </section>
   );

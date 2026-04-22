@@ -6,8 +6,10 @@ interface ProductGridProps {
 }
 
 export function ProductGrid({ scents }: ProductGridProps) {
-  const featured = scents.filter((s) => s.featured);
-  const rest     = scents.filter((s) => !s.featured);
+  // Exclude hidden scents (retired / gift-only) from the public catalog
+  const visible  = scents.filter((s) => !s.hidden);
+  const featured = visible.filter((s) => s.featured);
+  const rest     = visible.filter((s) => !s.featured);
 
   // Unified grid — featured first, then rest. Bestseller distinguished by badge only.
   const ordered = [...featured, ...rest];
@@ -24,7 +26,7 @@ export function ProductGrid({ scents }: ProductGridProps) {
               Artisanal Scent Library
             </h2>
             <p className="text-mahogany/70 text-base mt-3 max-w-xl mx-auto leading-7">
-              Nine handcrafted car fragrance oils, each poured to order in
+              Seven handcrafted car fragrance oils, each poured to order in
               Sydney. Long-lasting scents designed to fill your cabin and hold.
             </p>
           </div>

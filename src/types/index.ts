@@ -10,6 +10,7 @@ export interface Scent {
   price: number;
   tier: "core" | "premium";
   featured?: boolean;
+  hidden?: boolean;
   tagline: string;
   description: string;
   notes: ScentNotes;

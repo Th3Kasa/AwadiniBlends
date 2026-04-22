@@ -82,7 +82,17 @@ export function CartDrawer() {
               </button>
             </div>
 
-            {/* Upsell nudge — only when 1–2 items */}
+            {/* Free surprise gift banner — shown when bundle (2+ items) */}
+            {totalQty >= 2 && (
+              <div className="mx-6 mt-4 px-4 py-3 rounded-md bg-gold/10 border border-gold/30 flex items-center gap-2">
+                <span className="text-base flex-shrink-0">🎁</span>
+                <p className="text-xs text-mahogany/80">
+                  <span className="text-gold font-medium">Free surprise scent included</span> — we&apos;ll add a complimentary fragrance to your order
+                </p>
+              </div>
+            )}
+
+            {/* Upsell nudge — only when 1 item */}
             {items.length > 0 && toNextFree > 0 && (
               <div className="mx-6 mt-4 px-4 py-3 rounded-md bg-gold/8 border border-gold/20 flex items-center gap-2">
                 <span className="text-gold text-sm flex-shrink-0">✦</span>
