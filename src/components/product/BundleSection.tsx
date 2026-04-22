@@ -11,14 +11,14 @@ const allScents = scentsData as Scent[];
 // Only show non-hidden scents in the picker — hidden scents are reserved as surprise gifts
 const pickableScents = allScents.filter((s) => !s.hidden);
 
-// Order: Trio | Collection (Most Popular, centre) | Duo
+// Order: Duo | Collection (Most Popular, centre) | Trio
 const BUNDLES = [
   {
-    id: "trio",
-    name: "The Trio",
-    subtitle: "Any 3 scents",
-    qty: 3,
-    unitPrice: 10,
+    id: "duo",
+    name: "The Duo",
+    subtitle: "Any 2 scents",
+    qty: 2,
+    unitPrice: 11,
     basePrice: 12,
     badge: undefined as string | undefined,
     highlight: false,
@@ -34,11 +34,11 @@ const BUNDLES = [
     highlight: true,
   },
   {
-    id: "duo",
-    name: "The Duo",
-    subtitle: "Any 2 scents",
-    qty: 2,
-    unitPrice: 11,
+    id: "trio",
+    name: "The Trio",
+    subtitle: "Any 3 scents",
+    qty: 3,
+    unitPrice: 10,
     basePrice: 12,
     badge: undefined as string | undefined,
     highlight: false,
