@@ -5,12 +5,12 @@
     "price": 12.00,
     "tier": "premium",
     "featured": true,
-    "tagline": "The scent David drives with every day",
-    "description": "There are fragrances, and then there is Oud Essence. Deep, rich, and unmistakably commanding — this is the scent that turns heads at the lights and lingers long after you've stepped out. A signature blend of aged oud, warm amber, and soft saffron that transforms your cabin into something extraordinary. Awadini's most talked-about fragrance, and the one David reaches for every single drive.",
+    "tagline": "Deep, commanding, unforgettable",
+    "description": "There are fragrances, and then there is Oud Essence. Deep, rich, and unmistakably commanding — this is the scent that turns heads at the lights and lingers long after you've stepped out. A signature blend of aged oud, warm amber, and soft saffron that transforms your cabin into something extraordinary. Awadini's most talked-about fragrance, poured to order.",
     "notes": {
       "top": ["Saffron", "Pink Pepper"],
       "heart": ["Oud Wood", "Rose"],
-      "base": ["Amber", "Sandalwood", "Vanilla"]
+      "base": ["Amber", "Sandalwood"]
     },
     "image": "/images/scents/oud-essence.jpg",
     "weight": "8ml",

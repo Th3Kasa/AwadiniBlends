@@ -5,7 +5,7 @@ import Link from "next/link";
 
 export function Hero() {
   return (
-    <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden">
+    <section className="relative min-h-[70vh] flex items-center justify-center overflow-hidden pt-16 pb-6">
       {/* Background */}
       <div className="absolute inset-0 bg-ivory" />
 
@@ -66,7 +66,7 @@ export function Hero() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1, delay: 0.8 }}
-          className="mt-16 flex items-center justify-center gap-8 text-mahogany/70 text-sm"
+          className="mt-10 flex items-center justify-center gap-8 text-mahogany/70 text-sm"
         >
           <span>Handcrafted</span>
           <span className="w-1 h-1 rounded-full bg-gold/50" />

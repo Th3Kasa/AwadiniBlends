@@ -79,13 +79,13 @@ export default function ProductPage({ params }: Props) {
 
             {/* Scent Notes */}
             <div className="mb-8">
-              <h3 className="text-xs tracking-[0.3em] uppercase text-gold mb-5">
+              <h3 className="text-xs tracking-[0.3em] uppercase text-gold mb-5 text-center">
                 Scent Profile
               </h3>
               <div className="grid grid-cols-3 gap-4">
-                <NoteColumn title="Top" notes={scent.notes.top} />
-                <NoteColumn title="Heart" notes={scent.notes.heart} />
-                <NoteColumn title="Base" notes={scent.notes.base} />
+                <NoteColumn title="Opening" subtitle="What you smell first" notes={scent.notes.top} />
+                <NoteColumn title="Middle" subtitle="The core of the scent" notes={scent.notes.heart} />
+                <NoteColumn title="Lingering" subtitle="What stays behind" notes={scent.notes.base} />
               </div>
             </div>
 
@@ -112,12 +112,13 @@ export default function ProductPage({ params }: Props) {
   );
 }
 
-function NoteColumn({ title, notes }: { title: string; notes: string[] }) {
+function NoteColumn({ title, subtitle, notes }: { title: string; subtitle: string; notes: string[] }) {
   return (
-    <div>
-      <p className="text-xs tracking-wider uppercase text-gold mb-3">
+    <div className="text-center">
+      <p className="text-xs tracking-wider uppercase text-gold mb-1">
         {title}
       </p>
+      <p className="text-[10px] text-mahogany/40 mb-3 leading-tight">{subtitle}</p>
       <div className="space-y-2">
         {notes.map((note) => (
           <span
