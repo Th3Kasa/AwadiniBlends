@@ -11,7 +11,7 @@ import { formatCurrency, getBundleUnitPrice } from "@/lib/utils";
 function getBundleLabel(totalQty: number): { label: string; colour: string } | null {
   if (totalQty >= 5) return { label: "Collection · $9/scent + Free Shipping", colour: "text-gold" };
   if (totalQty >= 3) return { label: "Trio · $10/scent + Free Shipping",       colour: "text-gold" };
-  if (totalQty >= 2) return { label: "Duo · $11/scent",                        colour: "text-cream/60" };
+  if (totalQty >= 2) return { label: "Duo · $11/scent",                        colour: "text-mahogany/60" };
   return null;
 }
 
@@ -58,12 +58,12 @@ export function CartDrawer() {
           <motion.div
             initial={{ x: "100%" }} animate={{ x: 0 }} exit={{ x: "100%" }}
             transition={{ type: "spring", damping: 30, stiffness: 300 }}
-            className="fixed top-0 right-0 z-50 h-full w-full max-w-md bg-charcoal border-l border-white/5 shadow-2xl flex flex-col"
+            className="fixed top-0 right-0 z-50 h-full w-full max-w-md bg-ivory border-l border-mahogany/10 shadow-2xl flex flex-col"
           >
             {/* Header */}
-            <div className="flex items-center justify-between px-6 py-5 border-b border-white/5">
+            <div className="flex items-center justify-between px-6 py-5 border-b border-mahogany/10">
               <div>
-                <h2 className="font-sans font-medium text-xl text-cream">Your Bag</h2>
+                <h2 className="font-sans font-medium text-xl text-mahogany">Your Bag</h2>
                 {bundleLabel && (
                   <p className={`text-xs mt-0.5 font-medium ${bundleLabel.colour}`}>
                     ✦ {bundleLabel.label}
@@ -72,7 +72,7 @@ export function CartDrawer() {
               </div>
               <button
                 onClick={closeCart}
-                className="p-2 text-cream/70 hover:text-cream transition-colors focus-visible:outline-none focus-visible:text-gold"
+                className="p-2 text-mahogany/70 hover:text-mahogany transition-colors focus-visible:outline-none focus-visible:text-gold"
                 aria-label="Close cart"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -86,7 +86,7 @@ export function CartDrawer() {
             {items.length > 0 && toNextFree > 0 && (
               <div className="mx-6 mt-4 px-4 py-3 rounded-md bg-gold/8 border border-gold/20 flex items-center gap-2">
                 <span className="text-gold text-sm flex-shrink-0">✦</span>
-                <p className="text-xs text-cream/80">
+                <p className="text-xs text-mahogany/80">
                   Add <span className="text-gold font-medium">{toNextFree} more {toNextFree === 1 ? "fragrance" : "fragrances"}</span> for{" "}
                   <span className="text-gold font-medium">free shipping + ${totalQty >= 2 ? "10" : "11"} → $10/scent</span>
                 </p>
@@ -98,12 +98,12 @@ export function CartDrawer() {
               {items.length === 0 ? (
                 <div className="flex flex-col items-center justify-center h-full text-center">
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                    strokeWidth={1} stroke="currentColor" className="w-16 h-16 text-cream/30 mb-4">
+                    strokeWidth={1} stroke="currentColor" className="w-16 h-16 text-mahogany/30 mb-4">
                     <path strokeLinecap="round" strokeLinejoin="round"
                       d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
                   </svg>
-                  <p className="text-cream text-sm mb-2">Your bag is empty</p>
-                  <p className="text-cream/50 text-sm">Discover our artisanal collection</p>
+                  <p className="text-mahogany text-sm mb-2">Your bag is empty</p>
+                  <p className="text-mahogany/50 text-sm">Discover our artisanal collection</p>
                 </div>
               ) : (
                 <ul className="space-y-5">
@@ -114,17 +114,17 @@ export function CartDrawer() {
 
                     return (
                       <li key={item.scent.slug}
-                        className="flex gap-4 pb-5 border-b border-white/5 last:border-0">
+                        className="flex gap-4 pb-5 border-b border-mahogany/10 last:border-0">
                         <div className="relative w-20 h-20 rounded-lg overflow-hidden bg-smoke flex-shrink-0">
                           <Image src={item.scent.image} alt={item.scent.name}
                             fill className="object-cover" sizes="80px" />
                         </div>
 
                         <div className="flex-1 min-w-0">
-                          <h3 className="font-sans font-medium text-sm text-cream truncate">
+                          <h3 className="font-sans font-medium text-sm text-mahogany truncate">
                             {item.scent.name}
                           </h3>
-                          <p className="text-xs text-cream/50 mt-0.5">{item.scent.weight}</p>
+                          <p className="text-xs text-mahogany/50 mt-0.5">{item.scent.weight}</p>
 
                           {/* Price — show discounted price and strikethrough if saving */}
                           <div className="flex items-baseline gap-2 mt-1">
@@ -133,7 +133,7 @@ export function CartDrawer() {
                             </span>
                             {saving > 0 && (
                               <>
-                                <span className="text-xs text-cream/35 line-through">
+                                <span className="text-xs text-mahogany/35 line-through">
                                   {formatCurrency(wasTotal)}
                                 </span>
                                 <span className="text-xs text-gold/70">
@@ -147,17 +147,17 @@ export function CartDrawer() {
                           <div className="flex items-center gap-3 mt-2">
                             <button
                               onClick={() => updateQuantity(item.scent.slug, item.quantity - 1)}
-                              className="w-7 h-7 rounded-sm border border-white/10 text-cream/70
+                              className="w-7 h-7 rounded-sm border border-mahogany/15 text-mahogany/70
                                 hover:border-gold hover:text-gold transition-colors flex items-center
                                 justify-center text-sm focus-visible:outline-none focus-visible:border-gold"
                               aria-label="Decrease quantity"
                             >
                               &minus;
                             </button>
-                            <span className="text-sm text-cream w-4 text-center">{item.quantity}</span>
+                            <span className="text-sm text-mahogany w-4 text-center">{item.quantity}</span>
                             <button
                               onClick={() => updateQuantity(item.scent.slug, item.quantity + 1)}
-                              className="w-7 h-7 rounded-sm border border-white/10 text-cream/70
+                              className="w-7 h-7 rounded-sm border border-mahogany/15 text-mahogany/70
                                 hover:border-gold hover:text-gold transition-colors flex items-center
                                 justify-center text-sm focus-visible:outline-none focus-visible:border-gold"
                               aria-label="Increase quantity"
@@ -166,7 +166,7 @@ export function CartDrawer() {
                             </button>
                             <button
                               onClick={() => removeItem(item.scent.slug)}
-                              className="ml-auto text-cream/40 hover:text-red-400 transition-colors
+                              className="ml-auto text-mahogany/40 hover:text-red-400 transition-colors
                                 focus-visible:outline-none focus-visible:text-red-400"
                               aria-label="Remove item"
                             >
@@ -187,14 +187,14 @@ export function CartDrawer() {
 
             {/* Footer */}
             {items.length > 0 && (
-              <div className="px-6 py-5 border-t border-white/5 space-y-3">
+              <div className="px-6 py-5 border-t border-mahogany/10 space-y-3">
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-cream/70">Subtotal</span>
+                  <span className="text-sm text-mahogany/70">Subtotal</span>
                   <span className="font-serif text-xl text-gold">{formatCurrency(subtotal)}</span>
                 </div>
 
                 {/* Shipping line */}
-                <div className="flex items-center justify-between text-xs text-cream/50">
+                <div className="flex items-center justify-between text-xs text-mahogany/50">
                   <span>Shipping</span>
                   {isBundleFree
                     ? <span className="text-gold font-medium">Free ✓</span>

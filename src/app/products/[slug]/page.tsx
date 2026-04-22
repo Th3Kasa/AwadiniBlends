@@ -59,7 +59,7 @@ export default function ProductPage({ params }: Props) {
           <div className="flex flex-col justify-center">
             <FreshlyPouredBadge className="mb-6" />
 
-            <h1 className="font-serif text-4xl sm:text-5xl text-cream tracking-tight mb-3">
+            <h1 className="font-serif text-4xl sm:text-5xl text-mahogany tracking-tight mb-3">
               {scent.name}
             </h1>
 
@@ -69,7 +69,7 @@ export default function ProductPage({ params }: Props) {
               {formatCurrency(scent.price)}
             </p>
 
-            <p className="text-cream/70 text-sm leading-7 mb-8">
+            <p className="text-mahogany/70 text-sm leading-7 mb-8">
               {scent.description}
             </p>
 
@@ -86,11 +86,11 @@ export default function ProductPage({ params }: Props) {
             </div>
 
             {/* How to use */}
-            <div className="mb-8 p-4 rounded-lg border border-white/8 bg-smoke/30">
+            <div className="mb-8 p-4 rounded-lg border border-mahogany/10 bg-white/50">
               <h3 className="text-xs tracking-[0.3em] uppercase text-gold mb-3">
                 How to Use
               </h3>
-              <p className="text-sm text-cream/70 leading-7">
+              <p className="text-sm text-mahogany/70 leading-7">
                 Add a few drops to your hanging car diffuser and hang from your
                 rear-view mirror. Reapply as needed — a little goes a long way.
                 Each 8ml bottle delivers weeks of fragrance.
@@ -98,17 +98,17 @@ export default function ProductPage({ params }: Props) {
             </div>
 
             {/* Details */}
-            <div className="flex items-center gap-6 mb-8 text-xs text-cream/70">
+            <div className="flex items-center gap-6 mb-8 text-xs text-mahogany/70">
               <span>{scent.weight}</span>
-              <span className="w-1 h-1 rounded-full bg-cream/40" />
+              <span className="w-1 h-1 rounded-full bg-mahogany/40" />
               <span>Hanging Diffuser Oil</span>
-              <span className="w-1 h-1 rounded-full bg-cream/40" />
+              <span className="w-1 h-1 rounded-full bg-mahogany/40" />
               <span>Poured to Order</span>
             </div>
 
             <AddToCartButton scent={scent} />
 
-            <p className="text-sm text-cream/70 mt-4 text-center lg:text-left">
+            <p className="text-sm text-mahogany/70 mt-4 text-center lg:text-left">
               Ships via Australia Post &middot; Handcrafted to order in Sydney
             </p>
           </div>
@@ -130,7 +130,7 @@ function NoteColumn({ title, notes }: { title: string; notes: string[] }) {
         {notes.map((note) => (
           <span
             key={note}
-            className="block text-xs text-cream/70 bg-smoke/50 border border-white/8 rounded-full px-3 py-1.5 text-center"
+            className="block text-xs text-mahogany/70 bg-white/70 border border-mahogany/10 rounded-full px-3 py-1.5 text-center"
           >
             {note}
           </span>

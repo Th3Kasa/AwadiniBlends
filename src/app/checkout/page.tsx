@@ -204,8 +204,8 @@ export default function CheckoutPage() {
               <path fillRule="evenodd" d="M16.704 4.153a.75.75 0 0 1 .143 1.052l-8 10.5a.75.75 0 0 1-1.127.075l-4.5-4.5a.75.75 0 0 1 1.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 0 1 1.05-.143Z" clipRule="evenodd" />
             </svg>
           </div>
-          <h1 className="font-serif text-3xl text-cream mb-3">Order Placed</h1>
-          <p className="text-cream/70 text-sm leading-7 mb-8">
+          <h1 className="font-serif text-3xl text-mahogany mb-3">Order Placed</h1>
+          <p className="text-mahogany/70 text-sm leading-7 mb-8">
             Thank you for your order. Your fragrances are being handcrafted just for you and will be dispatched within 1–2 business days.
           </p>
           <button onClick={() => router.push("/")} className="btn-outline">Continue Shopping</button>
@@ -218,7 +218,7 @@ export default function CheckoutPage() {
     return (
       <div className="min-h-screen flex items-center justify-center px-4">
         <div className="text-center">
-          <h1 className="font-serif text-3xl text-cream mb-4">Your bag is empty</h1>
+          <h1 className="font-serif text-3xl text-mahogany mb-4">Your bag is empty</h1>
           <button onClick={() => router.push("/")} className="btn-primary">Explore Collection</button>
         </div>
       </div>
@@ -229,13 +229,13 @@ export default function CheckoutPage() {
   return (
     <section className="py-12 sm:py-20">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h1 className="font-serif text-3xl sm:text-4xl text-cream mb-10 text-center">Checkout</h1>
+        <h1 className="font-serif text-3xl sm:text-4xl text-mahogany mb-10 text-center">Checkout</h1>
 
         {/* Bundle free-shipping nudge — shown when 1–2 items in cart */}
         {!isBundleFree && (
           <div className="mb-6 rounded-md border border-gold/20 bg-gold/5 px-4 py-3 flex items-center gap-3">
             <span className="text-gold text-base flex-shrink-0">✦</span>
-            <p className="text-sm text-cream/80">
+            <p className="text-sm text-mahogany/80">
               Add <span className="text-gold font-medium">{3 - totalQty} more {3 - totalQty === 1 ? "fragrance" : "fragrances"}</span> to unlock <span className="text-gold font-medium">free shipping</span> on your order.
             </p>
             <button
@@ -253,10 +253,10 @@ export default function CheckoutPage() {
           <div className="lg:col-span-3 space-y-6">
 
             {/* Delivery Details */}
-            <div className="rounded-xl border border-white/10 bg-charcoal p-6 sm:p-8">
+            <div className="rounded-xl border border-mahogany/15 bg-white/70 p-6 sm:p-8">
               <div className="flex items-center gap-3 mb-6">
                 <StepBadge n={1} />
-                <h2 className="text-base font-medium text-cream">Delivery Details</h2>
+                <h2 className="text-base font-medium text-mahogany">Delivery Details</h2>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -312,19 +312,19 @@ export default function CheckoutPage() {
 
                 {/* State */}
                 <div>
-                  <label className="block text-sm font-medium text-cream/70 mb-2">State</label>
+                  <label className="block text-sm font-medium text-mahogany/70 mb-2">State</label>
                   <select
                     name="state" value={form.state}
                     onChange={handleField} onBlur={handleBlur}
-                    className={`w-full bg-[#1c1c1c] border rounded-md px-4 py-3 text-sm text-cream
+                    className={`w-full bg-white border rounded-md px-4 py-3 text-sm text-mahogany
                       focus:outline-none focus:border-gold focus:ring-1 focus:ring-gold/20
                       transition-all appearance-none cursor-pointer ${
-                        errors.state ? "border-red-400/60" : "border-white/15 hover:border-white/30"
+                        errors.state ? "border-red-400/60" : "border-mahogany/20 hover:border-mahogany/35"
                       }`}
                   >
-                    <option value="" className="bg-charcoal">Select state</option>
+                    <option value="" className="bg-white">Select state</option>
                     {["NSW","VIC","QLD","SA","WA","TAS","NT","ACT"].map((s) => (
-                      <option key={s} value={s} className="bg-charcoal">{s}</option>
+                      <option key={s} value={s} className="bg-white">{s}</option>
                     ))}
                   </select>
                   {errors.state && (
@@ -340,7 +340,7 @@ export default function CheckoutPage() {
                     maxLength={4} placeholder="e.g. 2000" />
                   {/* Shipping lookup status — only relevant for <3 items */}
                   {!isBundleFree && !errors.postcode && /^\d{4}$/.test(form.postcode) && form.state && (
-                    <p className="text-xs text-cream/35 mt-1.5 flex items-center gap-1.5">
+                    <p className="text-xs text-mahogany/35 mt-1.5 flex items-center gap-1.5">
                       {shippingLoading
                         ? <><span className="inline-block w-3 h-3 border border-gold/30 border-t-gold rounded-full animate-spin" /> Looking up shipping rate…</>
                         : shippingQuote?.source === "auspost"
@@ -355,15 +355,15 @@ export default function CheckoutPage() {
             </div>
 
             {/* Payment */}
-            <div className="rounded-xl border border-white/10 bg-charcoal p-6 sm:p-8">
+            <div className="rounded-xl border border-mahogany/15 bg-white/70 p-6 sm:p-8">
               <div className="flex items-center gap-3 mb-6">
                 <StepBadge n={2} />
-                <h2 className="text-base font-medium text-cream">Payment Details</h2>
+                <h2 className="text-base font-medium text-mahogany">Payment Details</h2>
                 <div className="ml-auto flex items-center gap-1.5">
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-3.5 h-3.5 text-gold/60">
                     <path fillRule="evenodd" d="M10 1a4.5 4.5 0 0 0-4.5 4.5V9H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2h-.5V5.5A4.5 4.5 0 0 0 10 1Zm3 8V5.5a3 3 0 1 0-6 0V9h6Z" clipRule="evenodd" />
                   </svg>
-                  <span className="text-xs text-cream/50">Secured by Square</span>
+                  <span className="text-xs text-mahogany/50">Secured by Square</span>
                 </div>
               </div>
 
@@ -379,8 +379,8 @@ export default function CheckoutPage() {
 
           {/* ── Right: Order Summary ──────────────────────────────────────── */}
           <div className="lg:col-span-2">
-            <div className="rounded-xl border border-white/10 bg-charcoal p-6 sticky top-24">
-              <h2 className="text-base font-medium text-cream mb-5">Order Summary</h2>
+            <div className="rounded-xl border border-mahogany/15 bg-white/70 p-6 sticky top-24">
+              <h2 className="text-base font-medium text-mahogany mb-5">Order Summary</h2>
 
               {/* Bundle tier badge */}
               {totalQty >= 2 && (
@@ -400,17 +400,17 @@ export default function CheckoutPage() {
                   const saving    = wasTotal - lineTotal;
                   return (
                     <li key={item.scent.slug} className="flex gap-3 items-center">
-                      <div className="relative w-14 h-14 rounded-lg overflow-hidden bg-smoke flex-shrink-0 border border-white/8">
+                      <div className="relative w-14 h-14 rounded-lg overflow-hidden bg-smoke flex-shrink-0 border border-mahogany/10">
                         <Image src={item.scent.image} alt={item.scent.name} fill className="object-cover" sizes="56px" />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="text-sm text-cream font-medium truncate">{item.scent.name}</p>
-                        <p className="text-xs text-cream/50 mt-0.5">Qty {item.quantity} × {formatCurrency(unitPrice)}</p>
+                        <p className="text-sm text-mahogany font-medium truncate">{item.scent.name}</p>
+                        <p className="text-xs text-mahogany/50 mt-0.5">Qty {item.quantity} × {formatCurrency(unitPrice)}</p>
                       </div>
                       <div className="text-right flex-shrink-0">
                         <p className="text-sm text-gold font-medium">{formatCurrency(lineTotal)}</p>
                         {saving > 0 && (
-                          <p className="text-xs text-cream/35 line-through">{formatCurrency(wasTotal)}</p>
+                          <p className="text-xs text-mahogany/35 line-through">{formatCurrency(wasTotal)}</p>
                         )}
                       </div>
                     </li>
@@ -418,21 +418,21 @@ export default function CheckoutPage() {
                 })}
               </ul>
 
-              <div className="border-t border-white/8 pt-4 space-y-2.5">
-                <div className="flex justify-between items-center text-sm text-cream/60">
+              <div className="border-t border-mahogany/10 pt-4 space-y-2.5">
+                <div className="flex justify-between items-center text-sm text-mahogany/60">
                   <span>Subtotal</span>
                   <span>{formatCurrency(subtotal)}</span>
                 </div>
 
                 {/* Shipping row */}
-                <div className="flex justify-between items-start text-sm text-cream/60">
+                <div className="flex justify-between items-start text-sm text-mahogany/60">
                   <div>
                     <span>Shipping</span>
                     {shippingQuote?.service && (
-                      <p className="text-xs text-cream/35 mt-0.5">{shippingQuote.service}</p>
+                      <p className="text-xs text-mahogany/35 mt-0.5">{shippingQuote.service}</p>
                     )}
                     {shippingQuote?.deliveryTime && (
-                      <p className="text-xs text-cream/35">{shippingQuote.deliveryTime}</p>
+                      <p className="text-xs text-mahogany/35">{shippingQuote.deliveryTime}</p>
                     )}
                   </div>
 
@@ -440,34 +440,33 @@ export default function CheckoutPage() {
                   {isBundleFree ? (
                     <div className="text-right">
                       <span className="text-gold font-medium text-sm">Free</span>
-                      <p className="text-xs text-gold/50 mt-0.5">Bundle discount</p>
-                    </div>
+                      <p className="text-xs text-gold/50 mt-0.5">Bundle discount</p>                    </div>
                   ) : shippingLoading ? (
-                    <span className="flex items-center gap-1.5 text-cream/35 text-xs">
+                    <span className="flex items-center gap-1.5 text-mahogany/35 text-xs">
                       <span className="inline-block w-3 h-3 border border-gold/30 border-t-gold rounded-full animate-spin" />
                       Calculating…
                     </span>
                   ) : shippingQuote ? (
-                    <span className="text-cream font-medium text-sm">
+                    <span className="text-mahogany font-medium text-sm">
                       {formatCurrency(shippingQuote.cost)}
                     </span>
                   ) : (
-                    <span className="text-cream/30 italic text-xs">
+                    <span className="text-mahogany/30 italic text-xs">
                       {form.state ? "Enter postcode" : "Enter state & postcode"}
                     </span>
                   )}
                 </div>
 
                 {/* Total */}
-                <div className="flex justify-between items-center pt-2.5 border-t border-white/8">
-                  <span className="text-sm font-medium text-cream">Total</span>
+                <div className="flex justify-between items-center pt-2.5 border-t border-mahogany/10">
+                  <span className="text-sm font-medium text-mahogany">Total</span>
                   <span className="font-serif text-2xl text-gold">
                     {(isBundleFree || shippingQuote)
                       ? formatCurrency(total)
                       : (
                         <>
                           {formatCurrency(subtotal)}
-                          <span className="font-sans text-xs text-cream/30 ml-1">+ shipping</span>
+                          <span className="font-sans text-xs text-mahogany/30 ml-1">+ shipping</span>
                         </>
                       )
                     }
@@ -476,7 +475,7 @@ export default function CheckoutPage() {
               </div>
 
               {/* Trust badges */}
-              <div className="mt-5 pt-4 border-t border-white/8 flex items-center justify-around">
+              <div className="mt-5 pt-4 border-t border-mahogany/10 flex items-center justify-around">
                 {[
                   { icon: "🔒", label: "Secure Payment" },
                   { icon: "🇦🇺", label: "Made in Australia" },
@@ -484,7 +483,7 @@ export default function CheckoutPage() {
                 ].map(({ icon, label }) => (
                   <div key={label} className="text-center">
                     <p className="text-base mb-0.5">{icon}</p>
-                    <p className="text-xs text-cream/35">{label}</p>
+                    <p className="text-xs text-mahogany/35">{label}</p>
                   </div>
                 ))}
               </div>
@@ -524,16 +523,16 @@ interface FieldProps {
 function Field({ label, name, value, onChange, onBlur, type = "text", error, autoComplete, colSpan = "", maxLength, placeholder }: FieldProps) {
   return (
     <div className={colSpan}>
-      <label htmlFor={name} className="block text-sm font-medium text-cream/70 mb-2">{label}</label>
+      <label htmlFor={name} className="block text-sm font-medium text-mahogany/70 mb-2">{label}</label>
       <input
         id={name} name={name} type={type} value={value}
         onChange={onChange} onBlur={onBlur}
         autoComplete={autoComplete} maxLength={maxLength} placeholder={placeholder}
-        className={`w-full bg-[#1c1c1c] border rounded-md px-4 py-3 text-sm text-cream
-          placeholder:text-cream/25 focus:outline-none focus:ring-1 transition-all ${
+        className={`w-full bg-white border rounded-md px-4 py-3 text-sm text-mahogany
+          placeholder:text-mahogany/25 focus:outline-none focus:ring-1 transition-all ${
             error
               ? "border-red-400/60 focus:border-red-400 focus:ring-red-400/20"
-              : "border-white/15 hover:border-white/30 focus:border-gold focus:ring-gold/20"
+              : "border-mahogany/20 hover:border-mahogany/35 focus:border-gold focus:ring-gold/20"
           }`}
       />
       {error && (

@@ -32,16 +32,16 @@ export function MarketFinder() {
   const [activeIndex, setActiveIndex] = useState(0);
 
   return (
-    <section id="markets" className="py-20 sm:py-28 border-t border-white/5">
+    <section id="markets" className="py-20 sm:py-28 border-t border-mahogany/10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <p className="text-gold text-xs tracking-[0.3em] uppercase mb-4">
             Find Us
           </p>
-          <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl text-cream tracking-tight">
+          <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl text-mahogany tracking-tight">
             Visit in Person
           </h2>
-          <p className="text-cream/90 text-sm sm:text-base mt-4 max-w-xl mx-auto">
+          <p className="text-mahogany/90 text-sm sm:text-base mt-4 max-w-xl mx-auto">
             Experience our fragrances before you buy. Find us at these Sydney
             locations.
           </p>
@@ -56,7 +56,7 @@ export function MarketFinder() {
               className={`px-5 py-2.5 rounded-sm text-xs sm:text-sm tracking-wider uppercase transition-all duration-300 ${
                 activeIndex === index
                   ? "bg-gold text-obsidian"
-                  : "border border-white/10 text-cream/80 hover:border-gold/30 hover:text-cream"
+                  : "border border-mahogany/15 text-mahogany/80 hover:border-gold/30 hover:text-mahogany"
               }`}
             >
               {market.name.length > 25
@@ -99,10 +99,10 @@ export function MarketFinder() {
                 </svg>
               </div>
               <div>
-                <h3 className="font-serif text-xl sm:text-2xl text-cream">
+                <h3 className="font-serif text-xl sm:text-2xl text-mahogany">
                   {markets[activeIndex].name}
                 </h3>
-                <p className="text-cream/90 text-sm mt-1">
+                <p className="text-mahogany/90 text-sm mt-1">
                   {markets[activeIndex].address}
                 </p>
               </div>
@@ -124,11 +124,11 @@ export function MarketFinder() {
                     d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
                   />
                 </svg>
-                <span className="text-sm text-cream/85">
+                <span className="text-sm text-mahogany/85">
                   {markets[activeIndex].schedule}
                 </span>
               </div>
-              <p className="text-sm text-cream/80 leading-relaxed pl-7">
+              <p className="text-sm text-mahogany/80 leading-relaxed pl-7">
                 {markets[activeIndex].description}
               </p>
             </div>
@@ -144,13 +144,13 @@ export function MarketFinder() {
               className={`p-5 rounded-xl border text-left transition-all duration-300 ${
                 activeIndex === index
                   ? "border-gold/30 bg-gold/5"
-                  : "border-white/5 hover:border-white/10"
+                  : "border-mahogany/10 hover:border-mahogany/15"
               }`}
             >
-              <h4 className="font-serif text-sm text-cream mb-1">
+              <h4 className="font-serif text-sm text-mahogany mb-1">
                 {market.name}
               </h4>
-              <p className="text-xs text-cream/85">{market.address}</p>
+              <p className="text-xs text-mahogany/85">{market.address}</p>
             </button>
           ))}
         </div>

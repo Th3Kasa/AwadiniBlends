@@ -17,12 +17,12 @@ export function Header() {
   const itemCount = items.reduce((sum, item) => sum + item.quantity, 0);
 
   return (
-    <header className="sticky top-0 z-50 bg-obsidian/80 backdrop-blur-md border-b border-white/5">
+    <header className="sticky top-0 z-50 bg-ivory/90 backdrop-blur-md border-b border-mahogany/10">
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 sm:h-20">
           {/* Logo */}
           <Link href="/" className="flex-shrink-0">
-            <h1 className="font-serif text-xl sm:text-2xl tracking-wider text-cream">
+            <h1 className="font-serif text-xl sm:text-2xl tracking-wider text-mahogany">
               AWADINI
             </h1>
             <p className="text-xs tracking-[0.25em] text-gold uppercase -mt-1 hidden sm:block">
@@ -34,19 +34,19 @@ export function Header() {
           <div className="hidden md:flex items-center gap-8">
             <Link
               href="/"
-              className="text-sm text-cream/70 hover:text-gold transition-colors duration-300 focus-visible:outline-none focus-visible:text-gold"
+              className="text-sm text-mahogany/70 hover:text-gold transition-colors duration-300 focus-visible:outline-none focus-visible:text-gold"
             >
               Home
             </Link>
             <Link
               href="/#collection"
-              className="text-sm text-cream/70 hover:text-gold transition-colors duration-300 focus-visible:outline-none focus-visible:text-gold"
+              className="text-sm text-mahogany/70 hover:text-gold transition-colors duration-300 focus-visible:outline-none focus-visible:text-gold"
             >
               Collection
             </Link>
             <Link
               href="/contact"
-              className="text-sm text-cream/70 hover:text-gold transition-colors duration-300 focus-visible:outline-none focus-visible:text-gold"
+              className="text-sm text-mahogany/70 hover:text-gold transition-colors duration-300 focus-visible:outline-none focus-visible:text-gold"
             >
               Contact
             </Link>
@@ -56,7 +56,7 @@ export function Header() {
           <div className="flex items-center gap-4">
             <button
               onClick={openCart}
-              className="relative p-2 text-cream/70 hover:text-gold transition-colors duration-300 focus-visible:outline-none focus-visible:text-gold"
+              className="relative p-2 text-mahogany/70 hover:text-gold transition-colors duration-300 focus-visible:outline-none focus-visible:text-gold"
               aria-label="Open cart"
             >
               <svg
@@ -83,7 +83,7 @@ export function Header() {
             {/* Mobile Hamburger */}
             <button
               onClick={() => setMenuOpen(!menuOpen)}
-              className="md:hidden p-2 text-cream/70 hover:text-gold transition-colors duration-300"
+              className="md:hidden p-2 text-mahogany/70 hover:text-gold transition-colors duration-300"
               aria-label="Toggle menu"
             >
               <svg
@@ -114,25 +114,25 @@ export function Header() {
 
         {/* Mobile Menu */}
         {menuOpen && (
-          <div className="md:hidden border-t border-white/5 py-4 space-y-3">
+          <div className="md:hidden border-t border-mahogany/10 py-4 space-y-3">
             <Link
               href="/"
               onClick={() => setMenuOpen(false)}
-              className="block text-sm text-cream/70 hover:text-gold transition-colors duration-300 py-2"
+              className="block text-sm text-mahogany/70 hover:text-gold transition-colors duration-300 py-2"
             >
               Home
             </Link>
             <Link
               href="/#collection"
               onClick={() => setMenuOpen(false)}
-              className="block text-sm text-cream/70 hover:text-gold transition-colors duration-300 py-2"
+              className="block text-sm text-mahogany/70 hover:text-gold transition-colors duration-300 py-2"
             >
               Collection
             </Link>
             <Link
               href="/contact"
               onClick={() => setMenuOpen(false)}
-              className="block text-sm text-cream/70 hover:text-gold transition-colors duration-300 py-2"
+              className="block text-sm text-mahogany/70 hover:text-gold transition-colors duration-300 py-2"
             >
               Contact
             </Link>

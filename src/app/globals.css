@@ -4,19 +4,19 @@
 
 @layer base {
   body {
-    @apply bg-obsidian text-cream;
+    @apply bg-ivory text-mahogany;
   }
 
   p, li, td, th {
-    @apply text-cream/70;
+    @apply text-mahogany/70;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply text-cream;
+    @apply text-mahogany;
   }
 
   ::selection {
-    @apply bg-gold/30 text-cream;
+    @apply bg-gold/30 text-mahogany;
   }
 
   ::-webkit-scrollbar {
@@ -24,7 +24,7 @@
   }
 
   ::-webkit-scrollbar-track {
-    background: #1a1a1a;
+    background: #FDFAF3;
   }
 
   ::-webkit-scrollbar-thumb {
@@ -39,7 +39,7 @@
 
 @layer components {
   .glass-card {
-    @apply bg-smoke/40 backdrop-blur-md border border-white/10 rounded-xl;
+    @apply bg-white/70 backdrop-blur-md border border-mahogany/10 rounded-xl;
   }
 
   .gold-gradient {

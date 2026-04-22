@@ -15,10 +15,10 @@ export default function ContactPage() {
           <p className="text-gold text-xs tracking-[0.3em] uppercase mb-4">
             Get in Touch
           </p>
-          <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl text-cream tracking-tight mb-4">
+          <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl text-mahogany tracking-tight mb-4">
             Contact Us
           </h1>
-          <p className="text-cream/90 text-sm leading-relaxed">
+          <p className="text-mahogany/90 text-sm leading-relaxed">
             Questions about our collection, custom orders, or stockist
             enquiries? We'd love to hear from you.
           </p>
@@ -26,7 +26,7 @@ export default function ContactPage() {
 
         <ContactForm />
 
-        <div className="mt-12 pt-10 border-t border-white/5 grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <div className="mt-12 pt-10 border-t border-mahogany/10 grid grid-cols-1 sm:grid-cols-2 gap-6">
           <div className="glass-card p-6">
             <div className="flex items-center gap-3 mb-3">
               <div className="p-2 rounded-lg bg-gold/10">
@@ -50,9 +50,9 @@ export default function ContactPage() {
                   />
                 </svg>
               </div>
-              <h3 className="font-serif text-sm text-cream">Based In</h3>
+              <h3 className="font-serif text-sm text-mahogany">Based In</h3>
             </div>
-            <p className="text-cream/90 text-sm">
+            <p className="text-mahogany/90 text-sm">
               Liverpool, NSW 2170
               <br />
               South West Sydney, Australia
@@ -77,9 +77,9 @@ export default function ContactPage() {
                   />
                 </svg>
               </div>
-              <h3 className="font-serif text-sm text-cream">Response Time</h3>
+              <h3 className="font-serif text-sm text-mahogany">Response Time</h3>
             </div>
-            <p className="text-cream/90 text-sm">
+            <p className="text-mahogany/90 text-sm">
               We respond within 24–48 hours
               <br />
               Mon–Fri, AEST

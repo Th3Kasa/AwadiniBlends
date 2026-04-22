@@ -84,7 +84,7 @@ export function BundleSection({ preselectedSlug }: { preselectedSlug?: string } 
   };
 
   return (
-    <section id="bundles" className="py-16 sm:py-20 border-t border-white/5">
+    <section id="bundles" className="py-16 sm:py-20 border-t border-mahogany/10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <motion.div
@@ -97,10 +97,10 @@ export function BundleSection({ preselectedSlug }: { preselectedSlug?: string } 
           <p className="text-gold text-xs tracking-[0.3em] uppercase mb-3">
             Bundle &amp; Save
           </p>
-          <h2 className="font-serif text-3xl sm:text-4xl text-cream tracking-tight">
+          <h2 className="font-serif text-3xl sm:text-4xl text-mahogany tracking-tight">
             Build Your Scent Collection
           </h2>
-          <p className="text-cream/70 text-base mt-3 max-w-sm mx-auto leading-7">
+          <p className="text-mahogany/70 text-base mt-3 max-w-sm mx-auto leading-7">
             {preselectedSlug
               ? `${allScents.find((s) => s.slug === preselectedSlug)?.name} is already in your bundle — pick the rest below.`
               : "Stock your car, give as a gift, or mix scents across different vehicles. The more you bundle, the more you save."}
@@ -128,14 +128,14 @@ export function BundleSection({ preselectedSlug }: { preselectedSlug?: string } 
                 className={`relative rounded-xl border flex flex-col overflow-hidden transition-shadow duration-300 ${
                   bundle.highlight
                     ? "border-gold/40 bg-gradient-to-b from-[#1c1810] to-charcoal shadow-xl shadow-gold/10 sm:scale-[1.02]"
-                    : "border-white/10 bg-charcoal"
+                    : "border-mahogany/15 bg-white/70"
                 }`}
               >
                 {/* Badge */}
                 {bundle.badge && (
                   <div
                     className={`absolute top-0 right-0 text-[10px] tracking-widest uppercase font-medium px-3 py-1 rounded-bl-lg ${
-                      bundle.highlight ? "bg-gold text-obsidian" : "bg-white/10 text-cream/70"
+                      bundle.highlight ? "bg-gold text-obsidian" : "bg-mahogany/10 text-mahogany/70"
                     }`}
                   >
                     {bundle.badge}
@@ -145,16 +145,16 @@ export function BundleSection({ preselectedSlug }: { preselectedSlug?: string } 
                 <div className="p-5 sm:p-6 flex flex-col flex-1">
                   {/* Price header */}
                   <div className="mb-5 pr-16">
-                    <h3 className="font-serif text-xl text-cream mb-1">{bundle.name}</h3>
+                    <h3 className="font-serif text-xl text-mahogany mb-1">{bundle.name}</h3>
                     <div className="flex items-end gap-2">
                       <span
                         className={`font-serif text-2xl leading-none ${
-                          bundle.highlight ? "text-gold" : "text-cream"
+                          bundle.highlight ? "text-gold" : "text-mahogany"
                         }`}
                       >
                         {formatCurrency(total)}
                       </span>
-                      <span className="text-cream/35 text-sm line-through leading-none mb-0.5">
+                      <span className="text-mahogany/35 text-sm line-through leading-none mb-0.5">
                         {formatCurrency(rrp)}
                       </span>
                     </div>
@@ -167,7 +167,7 @@ export function BundleSection({ preselectedSlug }: { preselectedSlug?: string } 
                   <div className="flex-1 mb-4 space-y-2">
                     <p
                       className={`text-xs uppercase tracking-wider mb-3 font-medium ${
-                        isReady ? "text-gold" : "text-cream/70"
+                        isReady ? "text-gold" : "text-mahogany/70"
                       }`}
                     >
                       {isReady
@@ -193,10 +193,10 @@ export function BundleSection({ preselectedSlug }: { preselectedSlug?: string } 
                               <select
                                 value={value}
                                 onChange={(e) => setSlot(bundle.id, slotIndex, e.target.value)}
-                                className={`w-full px-3 py-2 rounded-md border text-xs appearance-none cursor-pointer transition-colors duration-150 bg-obsidian pr-7 ${
+                                className={`w-full px-3 py-2 rounded-md border text-xs appearance-none cursor-pointer transition-colors duration-150 bg-white pr-7 ${
                                   value
-                                    ? "border-gold/40 text-cream"
-                                    : "border-white/15 text-cream/40"
+                                    ? "border-gold/40 text-mahogany"
+                                    : "border-mahogany/20 text-mahogany/40"
                                 } focus:outline-none focus:border-gold/60`}
                               >
                                 <option value="">— Pick a scent —</option>
@@ -212,7 +212,7 @@ export function BundleSection({ preselectedSlug }: { preselectedSlug?: string } 
                                 ))}
                               </select>
                               <div className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2">
-                                <svg className="w-3 h-3 text-cream/40" fill="none" viewBox="0 0 12 12">
+                                <svg className="w-3 h-3 text-mahogany/40" fill="none" viewBox="0 0 12 12">
                                   <path d="M2 4l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                                 </svg>
                               </div>
@@ -234,7 +234,7 @@ export function BundleSection({ preselectedSlug }: { preselectedSlug?: string } 
                           : "bg-gold/25 text-obsidian/40 cursor-not-allowed"
                         : isReady
                           ? "border border-gold/40 text-gold hover:bg-gold/10"
-                          : "border border-white/8 text-cream/25 cursor-not-allowed"
+                          : "border border-mahogany/15 text-mahogany/25 cursor-not-allowed"
                     }`}
                   >
                     {isReady
@@ -252,7 +252,7 @@ export function BundleSection({ preselectedSlug }: { preselectedSlug?: string } 
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ delay: 0.4 }}
-          className="text-center text-cream/70 text-sm mt-10"
+          className="text-center text-mahogany/70 text-sm mt-10"
         >
           Handcrafted to order &middot; Ships via Australia Post &middot; 1–2 business days dispatch
         </motion.p>

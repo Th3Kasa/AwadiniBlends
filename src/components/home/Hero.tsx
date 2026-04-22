@@ -6,29 +6,20 @@ import Link from "next/link";
 export function Hero() {
   return (
     <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden">
-      {/* Background gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-obsidian via-obsidian/95 to-obsidian" />
+      {/* Background */}
+      <div className="absolute inset-0 bg-ivory" />
 
       {/* Decorative elements */}
       <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gold/5 rounded-full blur-3xl" />
       <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-gold/3 rounded-full blur-3xl" />
 
       <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-        >
-          <p className="text-gold text-xs tracking-[0.35em] uppercase mb-6">
-            Car Fragrance Oils &middot; Sydney, Australia
-          </p>
-        </motion.div>
 
         <motion.h1
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.15, ease: "easeOut" }}
-          className="font-serif text-5xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tight text-cream leading-[1.05] mb-8"
+          className="font-serif text-5xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tight text-mahogany leading-[1.05] mb-8"
         >
           Your car should
           <br />
@@ -41,7 +32,7 @@ export function Hero() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
-          className="text-cream/70 text-base sm:text-lg max-w-xl mx-auto mb-4 leading-7"
+          className="text-mahogany/70 text-base sm:text-lg max-w-xl mx-auto mb-4 leading-7"
         >
           Handcrafted oils for your hanging car diffuser. Small-batch,
           long-lasting, poured to order in Sydney.
@@ -75,7 +66,7 @@ export function Hero() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1, delay: 0.8 }}
-          className="mt-16 flex items-center justify-center gap-8 text-cream/70 text-sm"
+          className="mt-16 flex items-center justify-center gap-8 text-mahogany/70 text-sm"
         >
           <span>Handcrafted</span>
           <span className="w-1 h-1 rounded-full bg-gold/50" />
@@ -95,7 +86,7 @@ export function Hero() {
         <motion.div
           animate={{ y: [0, 8, 0] }}
           transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-          className="w-5 h-8 rounded-full border border-cream/20 flex items-start justify-center p-1.5"
+          className="w-5 h-8 rounded-full border border-mahogany/20 flex items-start justify-center p-1.5"
         >
           <div className="w-1 h-2 rounded-full bg-gold/60" />
         </motion.div>
