@@ -1,0 +1,146 @@
+# Awadini — Full Site Reference
+
+## Brand
+
+Awadini is an Australian luxury car fragrance brand based in Sydney. Every fragrance is handcrafted in small batches and poured to order, using high-concentration fragrance oils designed to last. Awadini's philosophy: your car's cabin is an extension of your personal style — it deserves something better than mass-produced chemical fresheners. Each 8ml bottle delivers a complex, evolving scent that fills the cabin on every drive.
+
+Founded in Sydney, Australia. Available for local pickup (Sydney) and nationwide Australian shipping.
+
+Website: https://awadini.vercel.app
+Contact: contact.awadini@gmail.com
+
+
+## Products
+
+All products are 8ml high-concentration fragrance oils priced at AUD $12.00 each. Designed for car diffusers. Poured to order.
+
+---
+
+### Oud Essence
+- Slug: oud-essence
+- URL: https://awadini.vercel.app/products/oud-essence
+- Tier: Premium
+- Tagline: Deep, commanding, unforgettable
+- Description: There are fragrances, and then there is Oud Essence. Deep, rich, and unmistakably commanding — this is the scent that turns heads at the lights and lingers long after you've stepped out. A signature blend of aged oud, warm amber, and soft saffron that transforms your cabin into something extraordinary. Awadini's most talked-about fragrance, poured to order.
+- Top notes: Saffron, Pink Pepper
+- Heart notes: Oud Wood, Rose
+- Base notes: Amber, Sandalwood
+- In stock: Yes
+
+---
+
+### Strawberry Rose
+- Slug: strawberry-rose
+- URL: https://awadini.vercel.app/products/strawberry-rose
+- Tier: Core
+- Tagline: Sweet and warm for the long way home
+- Description: Sun-ripened strawberries meet velvety rose petals in a scent that turns your car into somewhere you want to linger. Warm and softly fruity, this blend is the olfactory equivalent of a golden afternoon drive with nowhere urgent to be. A long-lasting formula that fills your cabin with richness that evolves beautifully over hours.
+- Top notes: Strawberry, Pink Pepper
+- Heart notes: Damascus Rose, Peony
+- Base notes: Vanilla Bean, Sandalwood
+- In stock: Yes
+
+---
+
+### Vanilla
+- Slug: vanilla
+- URL: https://awadini.vercel.app/products/vanilla
+- Tier: Core
+- Tagline: Warmth for wherever you're going
+- Description: Late nights, the city quieting down, leather seats and the soft glow of the dashboard. Vanilla wraps your cabin in creamy warmth — a scent so comforting it makes traffic bearable and every destination feel worth the journey. Madagascan vanilla settles into the air and stays there, long after you've parked.
+- Top notes: Vanilla Orchid, Bergamot
+- Heart notes: Caramel, Tonka Bean
+- Base notes: Amber, White Musk
+- In stock: Yes
+
+---
+
+### Tea Rose
+- Slug: tea-rose
+- URL: https://awadini.vercel.app/products/tea-rose
+- Tier: Core
+- Tagline: The coastal highway at dusk
+- Description: The long route through the hills on a Sunday. Tea Rose is delicate without being faint — a fresh floral that fills your car with a lightness that makes every destination feel earned. Heritage rose with soft green notes: the fragrance equivalent of windows down, somewhere beautiful ahead.
+- Top notes: Tea Rose, Green Leaf
+- Heart notes: Rose Absolute, Geranium
+- Base notes: Soft Musk, Cedarwood
+- In stock: Yes
+
+---
+
+### Honeysuckle
+- Slug: honeysuckle
+- URL: https://awadini.vercel.app/products/honeysuckle
+- Tier: Core
+- Tagline: Summer evenings with the windows down
+- Description: Golden hour. Windows down. The sweet, honey-like scent of honeysuckle drifting through the cabin, making you take the long way home just to stay in it a little longer. This luminous blend captures the warmth of a summer drive in its purest form — uplifting and effortless, from the first breath to the last turn.
+- Top notes: Honeysuckle, Lemon Verbena
+- Heart notes: Jasmine, Orange Blossom
+- Base notes: Honey, Soft Woods
+- In stock: Yes
+
+---
+
+### Rose Geranium
+- Slug: rose-geranium
+- URL: https://awadini.vercel.app/products/rose-geranium
+- Tier: Core
+- Tagline: Botanical depth for the thoughtful driver
+- Description: Right after rain, the gardens are at their best — green and earthy and alive. Rose Geranium brings that botanical richness into your cabin: a complex, layered scent that reveals something new with every drive. For the driver who wants something more interesting than fresh and more refined than floral.
+- Top notes: Rose Geranium, Mint
+- Heart notes: Rose, Lavender
+- Base notes: Patchouli, Vetiver
+- In stock: Yes
+
+---
+
+### Forget Me Not
+- Slug: forget-me-not
+- URL: https://awadini.vercel.app/products/forget-me-not
+- Tier: Core
+- Tagline: Light, lingering — every passenger will ask
+- Description: The scent you can't quite place but never want to leave. Forget Me Not is the softest fragrance in the collection — whisper-light and ethereal, but with staying power that surprises. It fills the car with an almost weightless freshness that lingers long after you've parked. The ultimate signature scent for your vehicle.
+- Top notes: Forget Me Not, Dewy Greens
+- Heart notes: Lily, Violet
+- Base notes: Sheer Musk, White Tea
+- In stock: Yes
+
+
+## Bundles
+
+Awadini offers curated bundles for gifting and for customers who want to try multiple scents. Bundle options are listed at https://awadini.vercel.app/bundles. Bundles make excellent gifts for car enthusiasts and fragrance lovers.
+
+
+## Shipping & Fulfilment
+
+- All orders are poured to order — fulfilment typically within 1–3 business days
+- Local pickup available in Sydney, NSW, Australia
+- Australia-wide shipping available
+- Fragrance oils are 8ml per bottle — lightweight, easy to ship
+
+
+## Policies
+
+- Refund Policy: https://awadini.vercel.app/refund-policy
+- Terms of Service: https://awadini.vercel.app/terms
+
+
+## Frequently Asked Questions
+
+**How long does the fragrance last?**
+Awadini uses high-concentration fragrance oils designed for longevity. Each 8ml bottle is formulated to last weeks with regular daily driving, depending on your diffuser and climate.
+
+**What diffuser do I need?**
+Awadini oils work with standard car vent diffusers (clip-on reed or pad style). Any diffuser compatible with fragrance oils will work.
+
+**Are the fragrances safe for cars?**
+Yes. Awadini fragrance oils are designed for use in enclosed cabin environments. They are not intended for skin application.
+
+**Can I get a custom scent?**
+Reach out via contact.awadini@gmail.com to enquire about custom blending or wholesale opportunities.
+
+**Do you ship internationally?**
+Currently Awadini ships within Australia only. International shipping may be available in the future — contact for enquiries.
+
+**What makes Awadini different from regular car air fresheners?**
+Standard car fresheners use low-grade synthetic fragrance compounds that fade within days. Awadini uses high-concentration oils with complex note structures — top, heart, and base — that evolve over time rather than simply diminishing. The result is a scent experience closer to fine perfumery than air freshening.

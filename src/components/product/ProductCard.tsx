@@ -65,7 +65,7 @@ export function ProductCard({ scent, index }: ProductCardProps) {
 
             <Image
               src={scent.image}
-              alt={scent.name}
+              alt={`${scent.name} luxury car fragrance oil by Awadini`}
               fill
               className="object-cover transition-transform duration-700 group-hover:scale-105"
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"

@@ -4,7 +4,14 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "Terms & Conditions",
   description:
-    "Terms and conditions for using the Awadini Fragrance Blends website and purchasing our products.",
+    "Terms and conditions for using the Awadini website and purchasing our handcrafted luxury car fragrance oils. Governed by NSW, Australia law.",
+  alternates: {
+    canonical: "https://awadini.vercel.app/terms",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function TermsPage() {

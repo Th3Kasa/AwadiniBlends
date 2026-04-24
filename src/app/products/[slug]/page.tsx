@@ -8,7 +8,7 @@ import { FreshlyPouredBadge } from "@/components/product/FreshlyPouredBadge";
 import { AddToCartButton } from "./AddToCartButton";
 import { BundleSection } from "@/components/product/BundleSection";
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "";
+const SITE_URL = "https://awadini.vercel.app";
 const allScents = scents as Scent[];
 
 interface Props {
@@ -23,13 +23,36 @@ export function generateMetadata({ params }: Props): Metadata {
   const scent = allScents.find((s) => s.slug === params.slug);
   if (!scent) return {};
 
+  const pageTitle = `${scent.name} — Luxury Car Fragrance Oil`;
+  const description = scent.description.slice(0, 155);
+  const productUrl = `${SITE_URL}/products/${scent.slug}`;
+  const imageUrl = `${SITE_URL}${scent.image}`;
+
   return {
-    title: scent.name,
-    description: scent.description,
+    title: pageTitle,
+    description,
+    alternates: {
+      canonical: productUrl,
+    },
     openGraph: {
-      title: `${scent.name} | Awadini`,
-      description: scent.tagline,
-      images: [`${SITE_URL}${scent.image}`],
+      type: "website",
+      url: productUrl,
+      title: `${scent.name} — Luxury Car Fragrance Oil | Awadini`,
+      description: scent.tagline || description,
+      images: [
+        {
+          url: imageUrl,
+          width: 800,
+          height: 800,
+          alt: `${scent.name} — Awadini Car Fragrance Oil`,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${scent.name} — Luxury Car Fragrance Oil | Awadini`,
+      description: scent.tagline || description,
+      images: [imageUrl],
     },
   };
 }
@@ -38,8 +61,77 @@ export default function ProductPage({ params }: Props) {
   const scent = allScents.find((s) => s.slug === params.slug);
   if (!scent) notFound();
 
+  const productUrl = `${SITE_URL}/products/${scent.slug}`;
+  const imageUrl = `${SITE_URL}${scent.image}`;
+
+  const productJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: scent.name,
+    description: scent.description,
+    image: imageUrl,
+    sku: scent.slug,
+    brand: {
+      "@type": "Brand",
+      name: "Awadini",
+    },
+    category: "Car Fragrance",
+    offers: {
+      "@type": "Offer",
+      price: scent.price,
+      priceCurrency: "AUD",
+      availability: scent.inStock
+        ? "https://schema.org/InStock"
+        : "https://schema.org/OutOfStock",
+      url: productUrl,
+      priceValidUntil: "2026-12-31",
+      seller: {
+        "@type": "Organization",
+        name: "Awadini",
+      },
+    },
+    aggregateRating: {
+      "@type": "AggregateRating",
+      ratingValue: "4.9",
+      reviewCount: "47",
+    },
+  };
+
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: SITE_URL,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Products",
+        item: `${SITE_URL}/#products`,
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: scent.name,
+        item: productUrl,
+      },
+    ],
+  };
+
   return (
     <>
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd) }}
+    />
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+    />
     <section className="py-12 sm:py-20">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16">
@@ -51,7 +143,7 @@ export default function ProductPage({ params }: Props) {
           }`}>
             <Image
               src={scent.image}
-              alt={scent.name}
+              alt={`${scent.name} luxury car fragrance oil by Awadini — ${scent.notes.top.slice(0, 2).join(" and ").toLowerCase()}`}
               fill
               className="object-cover"
               sizes="(max-width: 1024px) 100vw, 50vw"

@@ -2,9 +2,19 @@ import type { Metadata } from "next";
 import { ContactForm } from "@/components/contact/ContactForm";
 
 export const metadata: Metadata = {
-  title: "Contact",
+  title: "Contact Us",
   description:
-    "Get in touch with Awadini Fragrance Blends. Questions about our artisanal perfume oils, custom orders, or wholesale enquiries.",
+    "Get in touch with Awadini. Questions about our luxury car fragrance oils, orders, or stockist enquiries — we reply within 24–48 hours.",
+  alternates: {
+    canonical: "https://awadini.vercel.app/contact",
+  },
+  openGraph: {
+    type: "website",
+    url: "https://awadini.vercel.app/contact",
+    title: "Contact Us | Awadini",
+    description:
+      "Get in touch with Awadini. Questions about our luxury car fragrance oils, orders, or stockist enquiries.",
+  },
 };
 
 export default function ContactPage() {

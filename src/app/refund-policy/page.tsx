@@ -4,7 +4,14 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "Refund Policy",
   description:
-    "Awadini Fragrance Blends refund and returns policy for made-to-order perfume oils.",
+    "Awadini refund and returns policy for made-to-order luxury car fragrance oils. Your rights under Australian Consumer Law are fully preserved.",
+  alternates: {
+    canonical: "https://awadini.vercel.app/refund-policy",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function RefundPolicyPage() {

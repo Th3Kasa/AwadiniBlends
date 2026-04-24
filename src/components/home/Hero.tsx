@@ -26,6 +26,7 @@ export function Hero() {
           <span className="gold-gradient italic">smell this</span>
           <br />
           good.
+          <span className="sr-only"> — Australian luxury car fragrance by Awadini</span>
         </motion.h1>
 
         <motion.p

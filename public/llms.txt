@@ -1,0 +1,22 @@
+# Awadini
+
+> Awadini is an Australian luxury car fragrance brand based in Sydney, handcrafting small-batch, high-concentration fragrance oils for your vehicle's cabin. Each 8ml oil is poured to order and designed to fill your car with a lasting, evolving scent — not the cheap, synthetic freshness of a dangling cardboard tree. Awadini offers local Sydney pickup and nationwide Australian shipping.
+
+## Products
+
+- [Oud Essence](https://awadini.vercel.app/products/oud-essence): Deep, commanding oud fragrance — a premium blend of aged oud, warm amber, and soft saffron. Awadini's most talked-about scent.
+- [Strawberry Rose](https://awadini.vercel.app/products/strawberry-rose): Sun-ripened strawberries meet velvety rose petals in a warm, softly fruity blend perfect for long drives.
+- [Vanilla](https://awadini.vercel.app/products/vanilla): Creamy, comforting Madagascan vanilla with caramel and amber — warmth for wherever you're going.
+- [Tea Rose](https://awadini.vercel.app/products/tea-rose): A delicate fresh floral — heritage rose with soft green notes, like windows down on a coastal highway at dusk.
+- [Honeysuckle](https://awadini.vercel.app/products/honeysuckle): Luminous, uplifting honeysuckle with jasmine and orange blossom — summer evenings with the windows down.
+- [Rose Geranium](https://awadini.vercel.app/products/rose-geranium): Complex botanical depth — rose geranium, lavender, and patchouli for the driver who wants something more interesting than fresh.
+- [Forget Me Not](https://awadini.vercel.app/products/forget-me-not): Whisper-light and ethereal with surprising staying power — lily, violet, and sheer musk.
+
+## Bundles
+
+- [Bundles](https://awadini.vercel.app/bundles): Curated multi-scent bundles for gifting or trying several fragrances at a reduced price.
+
+## Contact
+
+- Email: contact.awadini@gmail.com
+- [Contact Page](https://awadini.vercel.app/contact): Reach out with questions about orders, custom scents, or wholesale enquiries.
