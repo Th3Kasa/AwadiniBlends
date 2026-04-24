@@ -22,10 +22,10 @@ export default function TermsPage() {
           <p className="text-gold text-xs tracking-[0.3em] uppercase mb-4">
             Legal
           </p>
-          <h1 className="font-sans font-bold text-2xl sm:text-3xl md:text-4xl text-cream mb-2 tracking-wider uppercase">
+          <h1 className="font-sans font-bold text-2xl sm:text-3xl md:text-4xl text-mahogany mb-2 tracking-wider uppercase">
             Terms &amp; Conditions
           </h1>
-          <p className="text-cream/85 text-sm">
+          <p className="text-mahogany/70 text-sm">
             Last updated:{" "}
             {new Date().toLocaleDateString("en-AU", {
               year: "numeric",
@@ -35,18 +35,18 @@ export default function TermsPage() {
           </p>
         </div>
 
-        <div className="space-y-8 text-cream/90 leading-relaxed">
+        <div className="space-y-8 text-mahogany leading-relaxed">
           <div className="glass-card p-6">
-            <p className="text-cream/90 text-sm leading-relaxed">
+            <p className="text-mahogany text-sm leading-relaxed">
               These Terms &amp; Conditions (&ldquo;Terms&rdquo;) govern your
               use of the Awadini Fragrance Blends website and your purchase of
               products from us. By accessing this website or placing an order,
               you agree to be bound by these Terms. These Terms are governed by
               the laws of New South Wales, Australia.
             </p>
-            <p className="text-cream/85 text-sm mt-3">
+            <p className="text-mahogany/80 text-sm mt-3">
               Operated by:{" "}
-              <strong className="text-cream">
+              <strong className="text-mahogany">
                 AWAD, DAVID MAHIR (Sole Trader)
               </strong>{" "}
               · ABN 60 669 962 543 · Liverpool NSW 2170

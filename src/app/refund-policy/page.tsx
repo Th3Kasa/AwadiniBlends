@@ -22,18 +22,18 @@ export default function RefundPolicyPage() {
           <p className="text-gold text-xs tracking-[0.3em] uppercase mb-4">
             Legal
           </p>
-          <h1 className="font-sans font-bold text-2xl sm:text-3xl md:text-4xl text-cream mb-2 tracking-wider uppercase">
+          <h1 className="font-sans font-bold text-2xl sm:text-3xl md:text-4xl text-mahogany mb-2 tracking-wider uppercase">
             Refund Policy
           </h1>
-          <p className="text-cream/85 text-sm">
+          <p className="text-mahogany/70 text-sm">
             Last updated: {new Date().toLocaleDateString("en-AU", { year: "numeric", month: "long", day: "numeric" })}
           </p>
         </div>
 
-        <div className="prose prose-invert prose-sm max-w-none space-y-8 text-cream/90 leading-relaxed">
+        <div className="prose prose-invert prose-sm max-w-none space-y-8 text-mahogany leading-relaxed">
 
           <div className="glass-card p-6">
-            <p className="text-cream/90 text-sm leading-relaxed">
+            <p className="text-mahogany text-sm leading-relaxed">
               This Refund Policy applies to all purchases made from Awadini
               Fragrance Blends, operated by{" "}
               <strong className="text-cream">AWAD, DAVID MAHIR</strong> (Sole
@@ -75,7 +75,7 @@ export default function RefundPolicyPage() {
             <p className="mt-3">
               A product failure may include (but is not limited to):
             </p>
-            <ul className="mt-2 ml-4 space-y-1 list-disc list-outside text-cream/85">
+            <ul className="mt-2 ml-4 space-y-1 list-disc list-outside text-mahogany">
               <li>The product is not of acceptable quality (e.g., contaminated, spoiled, or has an abnormal smell inconsistent with the product description).</li>
               <li>The product does not match its description on our website.</li>
               <li>The product arrives damaged due to a fault in packaging or transit handling on our part.</li>
