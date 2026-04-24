@@ -170,6 +170,24 @@ export function SquarePaymentForm({ onTokenReceived, isSubmitting, totalAmount }
         await googlePay.attach(googlePayRef.current);
         if (!mounted) { googlePay.destroy?.().catch(() => {}); return; }
         googlePayButtonRef.current = googlePay;
+        googlePay.addEventListener("click", async () => {
+          setCardError("");
+          setTokenizing(true);
+          try {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const result: any = await googlePay.tokenize();
+            if (result.status === "OK" && result.token) {
+              onTokenReceived(result.token);
+            } else {
+              const msgs = (result.errors ?? []).map((e: { message: string }) => e.message).join(" ");
+              setCardError(msgs || "Google Pay could not complete. Please try card payment.");
+            }
+          } catch {
+            setCardError("Google Pay failed. Please try card payment below.");
+          } finally {
+            setTokenizing(false);
+          }
+        });
         setGooglePayReady(true);
         console.log("[Square] Google Pay ready ✓");
       } catch (gpErr) {
@@ -190,6 +208,24 @@ export function SquarePaymentForm({ onTokenReceived, isSubmitting, totalAmount }
         await applePay.attach(applePayRef.current);
         if (!mounted) { applePay.destroy?.().catch(() => {}); return; }
         applePayButtonRef.current = applePay;
+        applePay.addEventListener("click", async () => {
+          setCardError("");
+          setTokenizing(true);
+          try {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const result: any = await applePay.tokenize();
+            if (result.status === "OK" && result.token) {
+              onTokenReceived(result.token);
+            } else {
+              const msgs = (result.errors ?? []).map((e: { message: string }) => e.message).join(" ");
+              setCardError(msgs || "Apple Pay could not complete. Please try card payment.");
+            }
+          } catch {
+            setCardError("Apple Pay failed. Please try card payment below.");
+          } finally {
+            setTokenizing(false);
+          }
+        });
         setApplePayReady(true);
         console.log("[Square] Apple Pay ready ✓");
       } catch (apErr) {
@@ -236,52 +272,6 @@ export function SquarePaymentForm({ onTokenReceived, isSubmitting, totalAmount }
     }
   };
 
-  // ── Tokenise Apple Pay ────────────────────────────────────────────────────
-  const handleApplePay = async () => {
-    if (!applePayButtonRef.current || tokenizing || isSubmitting) return;
-    setCardError("");
-    setTokenizing(true);
-    try {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const result: any = await applePayButtonRef.current.tokenize();
-      if (result.status === "OK" && result.token) {
-        onTokenReceived(result.token);
-      } else {
-        const msgs = (result.errors ?? [])
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          .map((e: any) => e.message as string).join(" ");
-        setCardError(msgs || "Apple Pay could not complete. Please try card payment.");
-      }
-    } catch {
-      setCardError("Apple Pay failed. Please try card payment below.");
-    } finally {
-      setTokenizing(false);
-    }
-  };
-
-  // ── Tokenise Google Pay ────────────────────────────────────────────────────
-  const handleGooglePay = async () => {
-    if (!googlePayButtonRef.current || tokenizing || isSubmitting) return;
-    setCardError("");
-    setTokenizing(true);
-    try {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const result: any = await googlePayButtonRef.current.tokenize();
-      if (result.status === "OK" && result.token) {
-        onTokenReceived(result.token);
-      } else {
-        const msgs = (result.errors ?? [])
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          .map((e: any) => e.message as string).join(" ");
-        setCardError(msgs || "Google Pay could not complete. Please try card payment.");
-      }
-    } catch {
-      setCardError("Google Pay failed. Please try card payment below.");
-    } finally {
-      setTokenizing(false);
-    }
-  };
-
   const isBusy = tokenizing || isSubmitting;
 
   return (
@@ -294,8 +284,7 @@ export function SquarePaymentForm({ onTokenReceived, isSubmitting, totalAmount }
       <div className="flex gap-3 mb-4">
         <div
           ref={applePayRef}
-          onClick={handleApplePay}
-          className="rounded-md overflow-hidden cursor-pointer"
+          className="rounded-md overflow-hidden"
           style={{
             flex:      applePayReady ? "1" : "0 0 0",
             minHeight: applePayReady ? "48px" : undefined,
@@ -304,8 +293,7 @@ export function SquarePaymentForm({ onTokenReceived, isSubmitting, totalAmount }
         />
         <div
           ref={googlePayRef}
-          onClick={handleGooglePay}
-          className="rounded-md overflow-hidden cursor-pointer"
+          className="rounded-md overflow-hidden"
           style={{
             flex:      googlePayReady ? "1" : "0 0 0",
             minHeight: googlePayReady ? "48px" : undefined,
