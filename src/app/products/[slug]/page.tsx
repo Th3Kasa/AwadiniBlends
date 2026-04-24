@@ -118,12 +118,12 @@ function NoteColumn({ title, subtitle, notes }: { title: string; subtitle: strin
       <p className="text-xs tracking-wider uppercase text-gold mb-1">
         {title}
       </p>
-      <p className="text-[10px] text-mahogany/40 mb-3 leading-tight">{subtitle}</p>
+      <p className="text-[10px] text-mahogany/60 mb-3 leading-tight">{subtitle}</p>
       <div className="space-y-2">
         {notes.map((note) => (
           <span
             key={note}
-            className="block text-xs text-mahogany/70 bg-white/70 border border-mahogany/10 rounded-full px-3 py-1.5 text-center"
+            className="block text-xs text-mahogany bg-mist/60 border border-mahogany/20 rounded-full px-3 py-1.5 text-center"
           >
             {note}
           </span>

@@ -75,6 +75,8 @@ export function SquarePaymentForm({ onTokenReceived, isSubmitting, totalAmount }
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const cardRef            = useRef<any>(null);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const paymentsRef        = useRef<any>(null); // Square payments instance, shared between effects
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const googlePayButtonRef = useRef<any>(null);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const applePayButtonRef  = useRef<any>(null);
@@ -88,85 +90,128 @@ export function SquarePaymentForm({ onTokenReceived, isSubmitting, totalAmount }
   const appId      = process.env.NEXT_PUBLIC_SQUARE_APP_ID      ?? "";
   const locationId = process.env.NEXT_PUBLIC_SQUARE_LOCATION_ID ?? "";
 
-  // ── Initialise Square card + Google Pay ────────────────────────────────────
+  // ── Effect 1: Init card (once only) ───────────────────────────────────────
+  // Card input doesn't depend on totalAmount so we keep it in its own effect
+  // and never re-init it — re-creating the card iframe is disruptive UX.
   useEffect(() => {
     let mounted = true;
 
-    async function init() {
+    async function initCard() {
       try {
         await loadSquareSDK();
         if (!mounted || !cardContainerRef.current || cardRef.current) return;
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const payments = (window.Square as any).payments(appId, locationId);
+        paymentsRef.current = payments;
 
-        // ── Card ──────────────────────────────────────────────────────────────
         const card = await payments.card({ style: CARD_STYLE });
         if (!mounted || !cardContainerRef.current) { card.destroy?.().catch(() => {}); return; }
         await card.attach(cardContainerRef.current);
         if (!mounted) { card.destroy?.().catch(() => {}); return; }
         cardRef.current = card;
         setCardReady(true);
-
-        // Shared payment request for digital wallets
-        const paymentRequest = payments.paymentRequest({
-          countryCode:  "AU",
-          currencyCode: "AUD",
-          total: {
-            amount: totalAmount.toFixed(2),
-            label:  "Awadini Fragrance Blends",
-          },
-        });
-
-        // ── Google Pay ────────────────────────────────────────────────────────
-        try {
-          console.log("[Square] Initialising Google Pay, amount:", totalAmount.toFixed(2));
-          const googlePay = await payments.googlePay(paymentRequest);
-          if (!mounted || !googlePayRef.current) { googlePay.destroy?.().catch(() => {}); return; }
-          await googlePay.attach(googlePayRef.current);
-          if (!mounted) { googlePay.destroy?.().catch(() => {}); return; }
-          googlePayButtonRef.current = googlePay;
-          setGooglePayReady(true);
-          console.log("[Square] Google Pay ready ✓");
-        } catch (gpErr) {
-          console.warn("[Square] Google Pay unavailable:", gpErr);
-          setGooglePayReady(false);
-        }
-
-        // ── Apple Pay ─────────────────────────────────────────────────────────
-        try {
-          console.log("[Square] Initialising Apple Pay…");
-          const applePay = await payments.applePay(paymentRequest);
-          if (!mounted || !applePayRef.current) { applePay.destroy?.().catch(() => {}); return; }
-          await applePay.attach(applePayRef.current);
-          if (!mounted) { applePay.destroy?.().catch(() => {}); return; }
-          applePayButtonRef.current = applePay;
-          setApplePayReady(true);
-          console.log("[Square] Apple Pay ready ✓");
-        } catch (apErr) {
-          console.warn("[Square] Apple Pay unavailable:", apErr);
-          setApplePayReady(false);
-        }
-
       } catch (err) {
-        console.error("[Square] init error:", err);
+        console.error("[Square] card init error:", err);
         if (mounted) setCardError("Payment form failed to load. Please refresh the page.");
       }
     }
 
-    init();
+    initCard();
 
     return () => {
       mounted = false;
       cardRef.current?.destroy?.().catch(() => {});
       cardRef.current = null;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // ── Effect 2: Init / re-init wallet buttons when totalAmount changes ───────
+  // Wallet payment requests must carry the correct charge amount. We wait until
+  // totalAmount > 0 (subtotal is always > 0, but for safety). If the amount
+  // changes after shipping resolves we destroy + re-create the wallet buttons
+  // so the Google/Apple Pay sheet shows the correct total.
+  //
+  // NOTE: wallet button containers are ALWAYS in the DOM (display:none when not
+  // ready) so the ref targets exist at attach() time — conditional rendering
+  // would orphan Square's iframe on the replaced node.
+  useEffect(() => {
+    if (totalAmount <= 0) return;
+    if (!paymentsRef.current) return; // card effect hasn't run yet — cardReady
+                                      // will trigger a re-run once it's set
+
+    let mounted = true;
+
+    async function initWallets() {
+      const payments = paymentsRef.current;
+
+      // Shared payment request for digital wallets
+      const paymentRequest = payments.paymentRequest({
+        countryCode:  "AU",
+        currencyCode: "AUD",
+        total: {
+          amount: totalAmount.toFixed(2),
+          label:  "Awadini Fragrance Blends",
+        },
+      });
+
+      // ── Google Pay ──────────────────────────────────────────────────────────
+      try {
+        // Destroy previous instance if amount changed
+        if (googlePayButtonRef.current) {
+          googlePayButtonRef.current.destroy?.().catch(() => {});
+          googlePayButtonRef.current = null;
+          setGooglePayReady(false);
+        }
+        console.log("[Square] Initialising Google Pay, amount:", totalAmount.toFixed(2));
+        const googlePay = await payments.googlePay(paymentRequest);
+        if (!mounted || !googlePayRef.current) { googlePay.destroy?.().catch(() => {}); return; }
+        await googlePay.attach(googlePayRef.current);
+        if (!mounted) { googlePay.destroy?.().catch(() => {}); return; }
+        googlePayButtonRef.current = googlePay;
+        setGooglePayReady(true);
+        console.log("[Square] Google Pay ready ✓");
+      } catch (gpErr) {
+        console.warn("[Square] Google Pay unavailable:", gpErr);
+        setGooglePayReady(false);
+      }
+
+      // ── Apple Pay ───────────────────────────────────────────────────────────
+      try {
+        if (applePayButtonRef.current) {
+          applePayButtonRef.current.destroy?.().catch(() => {});
+          applePayButtonRef.current = null;
+          setApplePayReady(false);
+        }
+        console.log("[Square] Initialising Apple Pay…");
+        const applePay = await payments.applePay(paymentRequest);
+        if (!mounted || !applePayRef.current) { applePay.destroy?.().catch(() => {}); return; }
+        await applePay.attach(applePayRef.current);
+        if (!mounted) { applePay.destroy?.().catch(() => {}); return; }
+        applePayButtonRef.current = applePay;
+        setApplePayReady(true);
+        console.log("[Square] Apple Pay ready ✓");
+      } catch (apErr) {
+        console.warn("[Square] Apple Pay unavailable:", apErr);
+        setApplePayReady(false);
+      }
+    }
+
+    initWallets();
+
+    return () => {
+      mounted = false;
       googlePayButtonRef.current?.destroy?.().catch(() => {});
       googlePayButtonRef.current = null;
       applePayButtonRef.current?.destroy?.().catch(() => {});
       applePayButtonRef.current = null;
     };
+    // cardReady is included so this effect re-runs once the card effect has
+    // set paymentsRef.current (without it the guard above would exit early on
+    // every render until the card finishes initialising).
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [totalAmount, cardReady]);
 
   // ── Tokenise card ──────────────────────────────────────────────────────────
   const handlePay = async () => {
@@ -241,25 +286,32 @@ export function SquarePaymentForm({ onTokenReceived, isSubmitting, totalAmount }
 
   return (
     <>
-      {/* ── Apple Pay button ── */}
-      {applePayReady && (
-        <div
-          ref={applePayRef}
-          onClick={handleApplePay}
-          className="w-full rounded-md overflow-hidden cursor-pointer mb-3"
-          style={{ minHeight: "48px" }}
-        />
-      )}
+      {/* ── Apple Pay button ──────────────────────────────────────────────────
+          The container is ALWAYS rendered so Square can inject its iframe into
+          the ref during init(). Visibility is toggled via CSS (not conditional
+          rendering) to avoid the ref-orphan bug where React replaces the node
+          after attach() has already run.
+      ── */}
+      <div
+        ref={applePayRef}
+        onClick={handleApplePay}
+        className="w-full rounded-md overflow-hidden cursor-pointer mb-3"
+        style={{
+          minHeight: applePayReady ? "48px" : undefined,
+          display:   applePayReady ? "block" : "none",
+        }}
+      />
 
       {/* ── Google Pay button ── */}
-      {googlePayReady && (
-        <div
-          ref={googlePayRef}
-          onClick={handleGooglePay}
-          className="w-full rounded-md overflow-hidden cursor-pointer mb-3"
-          style={{ minHeight: "48px" }}
-        />
-      )}
+      <div
+        ref={googlePayRef}
+        onClick={handleGooglePay}
+        className="w-full rounded-md overflow-hidden cursor-pointer mb-3"
+        style={{
+          minHeight: googlePayReady ? "48px" : undefined,
+          display:   googlePayReady ? "block" : "none",
+        }}
+      />
 
       {/* Divider — only shown when at least one wallet button is visible */}
       {(applePayReady || googlePayReady) && (

@@ -156,11 +156,11 @@ export function BundleSection({ preselectedSlug }: { preselectedSlug?: string } 
                       >
                         {formatCurrency(total)}
                       </span>
-                      <span className="text-mahogany/35 text-sm line-through leading-none mb-0.5">
+                      <span className="text-mahogany/50 text-sm line-through leading-none mb-0.5">
                         {formatCurrency(rrp)}
                       </span>
                     </div>
-                    <p className="text-xs text-gold/70 mt-0.5">
+                    <p className="text-xs text-gold mt-0.5">
                       Save {formatCurrency(saving)} &middot; {formatCurrency(bundle.unitPrice)} per scent
                     </p>
                   </div>
@@ -232,11 +232,11 @@ export function BundleSection({ preselectedSlug }: { preselectedSlug?: string } 
                     className={`w-full py-3 text-xs tracking-[0.15em] uppercase font-medium rounded-md transition-all duration-300 ${
                       bundle.highlight
                         ? isReady
-                          ? "bg-gold text-obsidian hover:bg-[#d4b87d]"
-                          : "bg-gold/25 text-obsidian/40 cursor-not-allowed"
+                          ? "bg-gold text-obsidian hover:bg-[#d4b87d] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2"
+                          : "bg-gold/30 text-obsidian/50 cursor-not-allowed"
                         : isReady
-                          ? "border border-gold/40 text-gold hover:bg-gold/10"
-                          : "border border-mahogany/15 text-mahogany/25 cursor-not-allowed"
+                          ? "border border-gold/60 text-gold hover:bg-gold/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold"
+                          : "border border-mahogany/20 text-mahogany/40 cursor-not-allowed"
                     }`}
                   >
                     {isReady
@@ -259,7 +259,7 @@ export function BundleSection({ preselectedSlug }: { preselectedSlug?: string } 
           <p className="inline-flex items-center gap-2 bg-gold/10 border border-gold/25 text-gold text-xs px-4 py-2 rounded-full font-medium">
             🎁 Every bundle ships with a complimentary surprise scent
           </p>
-          <p className="text-mahogany/50 text-xs">
+          <p className="text-mahogany/60 text-xs">
             Handcrafted to order &middot; Ships via Australia Post &middot; 1–2 business days dispatch
           </p>
         </motion.div>

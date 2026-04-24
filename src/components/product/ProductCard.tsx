@@ -35,7 +35,7 @@ export function ProductCard({ scent, index }: ProductCardProps) {
       transition={{ duration: 0.5, delay: index * 0.1, ease: "easeOut" }}
       className="h-full"
     >
-      <Link href={`/products/${scent.slug}`} className="group block h-full">
+      <Link href={`/products/${scent.slug}`} className="group block h-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-ivory rounded-xl">
         <div className={`glass-card overflow-hidden transition-all duration-500 hover:shadow-xl h-full flex flex-col ${
           scent.featured
             ? "border-gold/40 hover:border-gold/70 hover:shadow-gold/10 ring-1 ring-gold/20"
@@ -87,7 +87,7 @@ export function ProductCard({ scent, index }: ProductCardProps) {
                 {formatCurrency(scent.price)}
               </p>
             </div>
-            <p className="text-xs text-mahogany/40 mt-3">
+            <p className="text-xs text-mahogany/60 mt-3">
               {scent.weight} &middot; Hanging Diffuser Oil
             </p>
           </div>
