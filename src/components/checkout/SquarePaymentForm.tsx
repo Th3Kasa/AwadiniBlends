@@ -26,7 +26,7 @@ const SCRIPT_SRC = "https://web.squarecdn.com/v1/square.js";
 
 const CARD_STYLE = {
   ".input-container": {
-    borderColor:  "rgba(255,255,255,0.15)",
+    borderColor:  "rgba(61,35,20,0.2)",
     borderRadius: "6px",
   },
   ".input-container.is-focus": {
@@ -35,15 +35,15 @@ const CARD_STYLE = {
   ".input-container.is-error": {
     borderColor: "rgba(248,113,113,0.6)",
   },
-  ".message-text":  { color: "rgba(245,240,232,0.55)" },
-  ".message-icon":  { color: "rgba(245,240,232,0.45)" },
+  ".message-text":  { color: "rgba(61,35,20,0.5)" },
+  ".message-icon":  { color: "rgba(61,35,20,0.4)" },
   input: {
-    backgroundColor: "#1c1c1c",
-    color:           "#f5f0e8",
+    backgroundColor: "#ffffff",
+    color:           "#3d2314",
     fontSize:        "14px",
     fontFamily:      "helvetica neue, sans-serif",
   },
-  "input::placeholder": { color: "rgba(245,240,232,0.28)" },
+  "input::placeholder": { color: "rgba(61,35,20,0.35)" },
 };
 
 /** Injects the Square CDN script once and resolves when window.Square is ready. */
@@ -286,51 +286,64 @@ export function SquarePaymentForm({ onTokenReceived, isSubmitting, totalAmount }
 
   return (
     <>
-      {/* ── Apple Pay button ──────────────────────────────────────────────────
-          The container is ALWAYS rendered so Square can inject its iframe into
-          the ref during init(). Visibility is toggled via CSS (not conditional
-          rendering) to avoid the ref-orphan bug where React replaces the node
-          after attach() has already run.
+      {/* ── Wallet buttons — side by side ────────────────────────────────────
+          Containers are ALWAYS in the DOM (CSS display toggled, not conditional
+          rendering) to avoid the ref-orphan bug. Flex row naturally collapses
+          hidden items so a single visible button spans full width.
       ── */}
-      <div
-        ref={applePayRef}
-        onClick={handleApplePay}
-        className="w-full rounded-md overflow-hidden cursor-pointer mb-3"
-        style={{
-          minHeight: applePayReady ? "48px" : undefined,
-          display:   applePayReady ? "block" : "none",
-        }}
-      />
+      <div className="flex gap-3 mb-4">
+        <div
+          ref={applePayRef}
+          onClick={handleApplePay}
+          className="rounded-md overflow-hidden cursor-pointer"
+          style={{
+            flex:      applePayReady ? "1" : "0 0 0",
+            minHeight: applePayReady ? "48px" : undefined,
+            display:   applePayReady ? "block" : "none",
+          }}
+        />
+        <div
+          ref={googlePayRef}
+          onClick={handleGooglePay}
+          className="rounded-md overflow-hidden cursor-pointer"
+          style={{
+            flex:      googlePayReady ? "1" : "0 0 0",
+            minHeight: googlePayReady ? "48px" : undefined,
+            display:   googlePayReady ? "block" : "none",
+          }}
+        />
+      </div>
 
-      {/* ── Google Pay button ── */}
-      <div
-        ref={googlePayRef}
-        onClick={handleGooglePay}
-        className="w-full rounded-md overflow-hidden cursor-pointer mb-3"
-        style={{
-          minHeight: googlePayReady ? "48px" : undefined,
-          display:   googlePayReady ? "block" : "none",
-        }}
-      />
-
-      {/* Divider — only shown when at least one wallet button is visible */}
+      {/* Divider */}
       {(applePayReady || googlePayReady) && (
         <div className="flex items-center gap-3 mb-4">
-          <div className="flex-1 h-px bg-white/10" />
-          <span className="text-xs text-cream/30 tracking-widest uppercase">or pay by card</span>
-          <div className="flex-1 h-px bg-white/10" />
+          <div className="flex-1 h-px bg-mahogany/10" />
+          <span className="text-xs text-mahogany/35 tracking-widest uppercase">or pay by card</span>
+          <div className="flex-1 h-px bg-mahogany/10" />
         </div>
       )}
+
+      {/* ── Cardholder Name ── */}
+      <div className="mb-3">
+        <input
+          type="text"
+          placeholder="Full Name"
+          autoComplete="cc-name"
+          className="w-full bg-white border border-mahogany/20 rounded-md px-4 py-3 text-sm text-mahogany
+            placeholder:text-mahogany/35 focus:outline-none focus:border-gold focus:ring-1
+            focus:ring-gold/20 hover:border-mahogany/35 transition-all"
+        />
+      </div>
 
       {/* ── Card input ── */}
       <div
         ref={cardContainerRef}
-        className="rounded-md overflow-hidden bg-[#1c1c1c] border border-white/15"
+        className="rounded-md overflow-hidden bg-white border border-mahogany/20"
         style={{ minHeight: "56px" }}
       />
 
       {!cardReady && !cardError && (
-        <p className="text-xs text-cream/30 mt-2 flex items-center gap-2">
+        <p className="text-xs text-mahogany/35 mt-2 flex items-center gap-2">
           <span className="inline-block w-3 h-3 border border-gold/30 border-t-gold/80 rounded-full animate-spin" />
           Loading secure payment form…
         </p>
