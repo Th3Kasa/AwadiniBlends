@@ -73,7 +73,7 @@ export default function TermsPage() {
               All Awadini Fragrance Blends products are handcrafted, 100%
               homemade perfume oils manufactured in small batches in South West
               Sydney, NSW, Australia. Products are{" "}
-              <strong className="text-cream">made to order</strong> — each
+              <strong className="text-mahogany">made to order</strong> — each
               bottle is freshly blended and poured upon receipt of your
               confirmed order.
             </p>
@@ -105,7 +105,7 @@ export default function TermsPage() {
             </p>
             <p className="mt-2">
               Payment is processed securely via{" "}
-              <strong className="text-cream">Square Payments</strong>. We
+              <strong className="text-mahogany">Square Payments</strong>. We
               accept major credit and debit cards. Your card details are
               tokenised and processed directly by Square — we never store or
               have access to your full card number. Square&rsquo;s processing is
@@ -124,7 +124,7 @@ export default function TermsPage() {
             </p>
             <p className="mt-2">
               As all products are made to order, please allow{" "}
-              <strong className="text-cream">1–2 business days</strong> for
+              <strong className="text-mahogany">1–2 business days</strong> for
               preparation before dispatch. Orders placed before 2:00 PM AEST on
               a business day will typically be dispatched the following business
               day.
@@ -239,7 +239,7 @@ export default function TermsPage() {
               </Link>{" "}
               or write to:
             </p>
-            <div className="mt-3 p-4 bg-smoke/50 rounded-lg text-cream/85 text-sm">
+            <div className="mt-3 p-4 bg-mahogany/5 rounded-lg text-mahogany text-sm">
               <p>AWAD, DAVID MAHIR (Sole Trader)</p>
               <p>Awadini Fragrance Blends</p>
               <p>ABN: 60 669 962 543</p>
@@ -261,8 +261,8 @@ function TermsSection({
 }) {
   return (
     <div>
-      <h2 className="font-sans font-semibold text-base text-cream mb-3 tracking-wider uppercase">{title}</h2>
-      <div className="text-cream/85 text-sm leading-relaxed">{children}</div>
+      <h2 className="font-sans font-semibold text-base text-mahogany mb-3 tracking-wider uppercase">{title}</h2>
+      <div className="text-mahogany/85 text-sm leading-relaxed">{children}</div>
     </div>
   );
 }

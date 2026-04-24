@@ -30,13 +30,13 @@ export default function RefundPolicyPage() {
           </p>
         </div>
 
-        <div className="prose prose-invert prose-sm max-w-none space-y-8 text-mahogany leading-relaxed">
+        <div className="prose prose-sm max-w-none space-y-8 text-mahogany leading-relaxed">
 
           <div className="glass-card p-6">
             <p className="text-mahogany text-sm leading-relaxed">
               This Refund Policy applies to all purchases made from Awadini
               Fragrance Blends, operated by{" "}
-              <strong className="text-cream">AWAD, DAVID MAHIR</strong> (Sole
+              <strong className="text-mahogany">AWAD, DAVID MAHIR</strong> (Sole
               Trader), ABN 60 669 962 543, Liverpool NSW 2170 (&ldquo;we&rdquo;,
               &ldquo;us&rdquo;, or &ldquo;our&rdquo;). Our rights and obligations
               are governed by the{" "}
@@ -48,7 +48,7 @@ export default function RefundPolicyPage() {
           <PolicySection title="1. Made-to-Order Products">
             <p>
               All Awadini Fragrance Blends products are{" "}
-              <strong className="text-cream">made to order</strong>. Each bottle
+              <strong className="text-mahogany">made to order</strong>. Each bottle
               is individually blended, poured, and sealed by hand in small
               batches specifically upon receipt of your order. Because our
               products are custom-made to your order, we do not accept returns
@@ -87,10 +87,10 @@ export default function RefundPolicyPage() {
             <p>
               If you believe your product is defective or does not match its
               description, you must notify us within{" "}
-              <strong className="text-cream">7 calendar days</strong> of
+              <strong className="text-mahogany">7 calendar days</strong> of
               receiving your order. To make a claim:
             </p>
-            <ol className="mt-3 ml-4 space-y-2 list-decimal list-outside text-cream/85">
+            <ol className="mt-3 ml-4 space-y-2 list-decimal list-outside text-mahogany/85">
               <li>
                 Contact us at{" "}
                 <Link
@@ -117,14 +117,14 @@ export default function RefundPolicyPage() {
               Upon assessment, we will offer one of the following remedies
               based on the nature of the defect:
             </p>
-            <ul className="mt-3 ml-4 space-y-2 list-disc list-outside text-cream/85">
+            <ul className="mt-3 ml-4 space-y-2 list-disc list-outside text-mahogany/85">
               <li>
-                <strong className="text-cream">Major failure:</strong> You may
+                <strong className="text-mahogany">Major failure:</strong> You may
                 choose a full refund to your original payment method or a
                 replacement product of equal value.
               </li>
               <li>
-                <strong className="text-cream">Minor defect:</strong> We will
+                <strong className="text-mahogany">Minor defect:</strong> We will
                 offer a replacement product. If replacement is not reasonably
                 possible, a partial or full refund will be issued at our
                 discretion.
@@ -138,7 +138,7 @@ export default function RefundPolicyPage() {
 
           <PolicySection title="5. Non-Returnable Situations">
             <p>We are unable to offer a refund or replacement where:</p>
-            <ul className="mt-3 ml-4 space-y-1 list-disc list-outside text-cream/85">
+            <ul className="mt-3 ml-4 space-y-1 list-disc list-outside text-mahogany/85">
               <li>You have changed your mind about the purchase.</li>
               <li>You chose the wrong scent.</li>
               <li>The product has been used (partially or fully).</li>
@@ -166,7 +166,7 @@ export default function RefundPolicyPage() {
             <p>
               Approved refunds will be processed to the original payment method
               (Square payment card) within{" "}
-              <strong className="text-cream">5–10 business days</strong> of
+              <strong className="text-mahogany">5–10 business days</strong> of
               approval, depending on your card issuer.
             </p>
           </PolicySection>
@@ -182,7 +182,7 @@ export default function RefundPolicyPage() {
               </Link>{" "}
               or write to:
             </p>
-            <div className="mt-3 p-4 bg-smoke/50 rounded-lg text-cream/85 text-sm">
+            <div className="mt-3 p-4 bg-mahogany/5 rounded-lg text-mahogany text-sm">
               <p>AWAD, DAVID MAHIR (Sole Trader)</p>
               <p>Awadini Fragrance Blends</p>
               <p>ABN: 60 669 962 543</p>
@@ -204,8 +204,8 @@ function PolicySection({
 }) {
   return (
     <div>
-      <h2 className="font-sans font-semibold text-base text-cream mb-3 tracking-wider uppercase">{title}</h2>
-      <div className="text-cream/85 text-sm leading-relaxed">{children}</div>
+      <h2 className="font-sans font-semibold text-base text-mahogany mb-3 tracking-wider uppercase">{title}</h2>
+      <div className="text-mahogany/85 text-sm leading-relaxed">{children}</div>
     </div>
   );
 }
