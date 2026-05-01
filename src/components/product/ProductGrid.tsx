@@ -33,15 +33,20 @@ export function ProductGrid({ scents }: ProductGridProps) {
             Artisanal Scent Library
           </h2>
           <p className="text-mahogany/60 text-base mt-4 max-w-lg mx-auto leading-relaxed">
-            Nine handcrafted car fragrance oils, each poured to order in
+            Handcrafted car fragrance oils, each poured to order in
             Sydney. Long-lasting scents designed to fill your cabin and hold.
           </p>
         </motion.div>
 
-        {/* Unified 4-col luxury grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+        {/* Flex-wrap centered grid — last row auto-centers */}
+        <div className="flex flex-wrap justify-center gap-4 sm:gap-6">
           {ordered.map((scent, index) => (
-            <ProductCard key={scent.slug} scent={scent} index={index} />
+            <div
+              key={scent.slug}
+              className="w-[calc(50%-8px)] sm:w-[calc(50%-12px)] lg:w-[calc(25%-18px)]"
+            >
+              <ProductCard scent={scent} index={index} />
+            </div>
           ))}
         </div>
 

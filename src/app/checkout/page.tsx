@@ -234,7 +234,7 @@ export default function CheckoutPage() {
   return (
     <section className="py-12 sm:py-20">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h1 className="font-sans font-bold text-2xl sm:text-3xl md:text-4xl text-mahogany mb-10 text-center tracking-wider uppercase">Checkout</h1>
+        <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl text-mahogany mb-10 text-center tracking-tight">Checkout</h1>
 
         {/* Bundle free-shipping nudge — shown when 1–2 items in cart */}
         {!isBundleFree && (

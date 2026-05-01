@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { motion } from "framer-motion";
 
 interface FormState {
   name: string;
@@ -76,7 +77,12 @@ export function ContactForm() {
 
   if (success) {
     return (
-      <div className="glass-card p-8 text-center">
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+        className="glass-card p-8 text-center"
+      >
         <div className="w-12 h-12 rounded-full bg-gold/10 border border-gold/20 flex items-center justify-center mx-auto mb-4">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -97,12 +103,19 @@ export function ContactForm() {
         <p className="text-mahogany/70 text-sm">
           Thank you for reaching out. We'll get back to you shortly.
         </p>
-      </div>
+      </motion.div>
     );
   }
 
   return (
-    <form onSubmit={handleSubmit} noValidate className="space-y-6">
+    <motion.form
+      onSubmit={handleSubmit}
+      noValidate
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+      className="space-y-6"
+    >
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
         <div>
           <label
@@ -179,13 +192,15 @@ export function ContactForm() {
         <p className="text-red-400 text-sm">{submitError}</p>
       )}
 
-      <button
+      <motion.button
         type="submit"
         disabled={isSubmitting}
+        whileHover={{ scale: 1.01 }}
+        whileTap={{ scale: 0.98 }}
         className="btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
       >
         {isSubmitting ? "Sending..." : "Send Message"}
-      </button>
-    </form>
+      </motion.button>
+    </motion.form>
   );
 }

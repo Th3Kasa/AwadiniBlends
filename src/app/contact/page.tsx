@@ -25,7 +25,7 @@ export default function ContactPage() {
           <p className="text-gold text-xs tracking-[0.3em] uppercase mb-4">
             Get in Touch
           </p>
-          <h1 className="font-sans font-bold text-2xl sm:text-3xl md:text-4xl text-mahogany tracking-wider uppercase mb-4">
+          <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl text-mahogany tracking-tight mb-4">
             Contact Us
           </h1>
           <p className="text-mahogany/90 text-sm leading-relaxed">
