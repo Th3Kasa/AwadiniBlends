@@ -16,7 +16,7 @@ export function ProductGrid({ scents }: ProductGridProps) {
 
   return (
     <section id="collection" className="pt-8 pb-20 sm:pb-28">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* Section header */}
         <motion.div
@@ -38,12 +38,10 @@ export function ProductGrid({ scents }: ProductGridProps) {
           </p>
         </motion.div>
 
-        {/* Featured — Oud Essence, centred, wider hero card */}
+        {/* Featured — Oud Essence, full width hero card centred */}
         {featured.length > 0 && (
-          <div className="flex justify-center mb-10">
-            <div className="w-full max-w-sm sm:max-w-md">
-              <FeaturedCard scent={featured[0]} />
-            </div>
+          <div className="mb-10">
+            <FeaturedCard scent={featured[0]} />
           </div>
         )}
 
@@ -62,15 +60,10 @@ export function ProductGrid({ scents }: ProductGridProps) {
           </motion.div>
         )}
 
-        {/* Rest — 3-per-row, centred */}
-        <div className="flex flex-wrap justify-center gap-4 sm:gap-6">
+        {/* Rest — strict 3-col grid, centred */}
+        <div className="grid grid-cols-3 gap-4 sm:gap-6">
           {rest.map((scent, index) => (
-            <div
-              key={scent.slug}
-              className="w-[calc(50%-8px)] sm:w-[calc(33.333%-14px)]"
-            >
-              <ProductCard scent={scent} index={index + 1} />
-            </div>
+            <ProductCard key={scent.slug} scent={scent} index={index + 1} />
           ))}
         </div>
 
