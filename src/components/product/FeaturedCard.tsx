@@ -32,8 +32,8 @@ export function FeaturedCard({ scent }: FeaturedCardProps) {
             </span>
           </div>
 
-          {/* Image — wide landscape for hero prominence */}
-          <div className="relative overflow-hidden bg-gradient-to-b from-[#3d2410] via-[#2a1808] to-[#1a0f05] aspect-[21/9]">
+          {/* Image — landscape for hero prominence */}
+          <div className="relative overflow-hidden bg-gradient-to-b from-[#3d2410] via-[#2a1808] to-[#1a0f05] aspect-[16/9]">
             <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(201,168,108,0.18)_0%,transparent_65%)]" />
             <Image
               src={scent.image}

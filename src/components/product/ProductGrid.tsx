@@ -38,10 +38,12 @@ export function ProductGrid({ scents }: ProductGridProps) {
           </p>
         </motion.div>
 
-        {/* Featured — Oud Essence, full width hero card centred */}
+        {/* Featured — Oud Essence, centred hero card */}
         {featured.length > 0 && (
-          <div className="mb-10">
-            <FeaturedCard scent={featured[0]} />
+          <div className="flex justify-center mb-10">
+            <div className="w-full max-w-md">
+              <FeaturedCard scent={featured[0]} />
+            </div>
           </div>
         )}
 
