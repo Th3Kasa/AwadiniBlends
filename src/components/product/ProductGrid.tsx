@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import type { Scent } from "@/types";
 import { ProductCard } from "./ProductCard";
+import { FeaturedCard } from "./FeaturedCard";
 
 interface ProductGridProps {
   scents: Scent[];
@@ -12,11 +13,10 @@ export function ProductGrid({ scents }: ProductGridProps) {
   const visible  = scents.filter((s) => !s.hidden);
   const featured = visible.filter((s) => s.featured);
   const rest     = visible.filter((s) => !s.featured);
-  const ordered  = [...featured, ...rest];
 
   return (
     <section id="collection" className="pt-8 pb-20 sm:pb-28">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* Section header */}
         <motion.div
@@ -38,14 +38,38 @@ export function ProductGrid({ scents }: ProductGridProps) {
           </p>
         </motion.div>
 
-        {/* Flex-wrap centered grid — last row auto-centers */}
+        {/* Featured — Oud Essence, centred, wider hero card */}
+        {featured.length > 0 && (
+          <div className="flex justify-center mb-10">
+            <div className="w-full max-w-sm sm:max-w-md">
+              <FeaturedCard scent={featured[0]} />
+            </div>
+          </div>
+        )}
+
+        {/* Divider */}
+        {featured.length > 0 && rest.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="flex items-center gap-4 mb-10"
+          >
+            <div className="flex-1 h-px bg-mahogany/10" />
+            <span className="text-[10px] tracking-[0.3em] text-mahogany/35 uppercase">The Collection</span>
+            <div className="flex-1 h-px bg-mahogany/10" />
+          </motion.div>
+        )}
+
+        {/* Rest — 3-per-row, centred */}
         <div className="flex flex-wrap justify-center gap-4 sm:gap-6">
-          {ordered.map((scent, index) => (
+          {rest.map((scent, index) => (
             <div
               key={scent.slug}
-              className="w-[calc(50%-8px)] sm:w-[calc(50%-12px)] lg:w-[calc(25%-18px)]"
+              className="w-[calc(50%-8px)] sm:w-[calc(33.333%-14px)]"
             >
-              <ProductCard scent={scent} index={index} />
+              <ProductCard scent={scent} index={index + 1} />
             </div>
           ))}
         </div>
