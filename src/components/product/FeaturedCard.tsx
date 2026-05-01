@@ -33,7 +33,7 @@ export function FeaturedCard({ scent }: FeaturedCardProps) {
           </div>
 
           {/* Image — landscape for hero prominence */}
-          <div className="relative overflow-hidden bg-gradient-to-b from-[#3d2410] via-[#2a1808] to-[#1a0f05] aspect-[16/9]">
+          <div className="relative overflow-hidden bg-gradient-to-b from-[#3d2410] via-[#2a1808] to-[#1a0f05] aspect-square">
             <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(201,168,108,0.18)_0%,transparent_65%)]" />
             <Image
               src={scent.image}
@@ -53,19 +53,9 @@ export function FeaturedCard({ scent }: FeaturedCardProps) {
                 <h3 className="font-serif text-2xl text-gold group-hover:text-gold/80 transition-colors duration-300 mb-1">
                   {scent.name}
                 </h3>
-                <p className="text-sm text-mahogany/55 italic leading-relaxed mb-4">
+                <p className="text-sm text-mahogany/55 italic leading-relaxed">
                   {scent.tagline}
                 </p>
-                <div className="flex flex-wrap gap-1.5">
-                  {[...scent.notes.top, ...scent.notes.heart].slice(0, 5).map((note) => (
-                    <span
-                      key={note}
-                      className="text-[10px] text-mahogany/50 bg-ivory border border-mahogany/10 rounded-full px-2.5 py-1"
-                    >
-                      {note}
-                    </span>
-                  ))}
-                </div>
               </div>
 
               {/* Right: price + CTA */}
