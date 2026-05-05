@@ -181,7 +181,6 @@ export function BundleSection({ preselectedSlug }: { preselectedSlug?: string } 
 
                     {selected.map((value, slotIndex) => {
                       const isLocked = slotIndex === 0 && !!preselectedSlug;
-                      const otherSlots = selected.filter((_, idx) => idx !== slotIndex);
 
                       return (
                         <div key={slotIndex} className="relative">
@@ -206,10 +205,8 @@ export function BundleSection({ preselectedSlug }: { preselectedSlug?: string } 
                                   <option
                                     key={scent.slug}
                                     value={scent.slug}
-                                    disabled={otherSlots.includes(scent.slug)}
                                   >
                                     {scent.name}
-                                    {otherSlots.includes(scent.slug) ? " (chosen)" : ""}
                                   </option>
                                 ))}
                               </select>
