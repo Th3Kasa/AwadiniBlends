@@ -46,7 +46,7 @@ export function ProductCard({ scent, index }: ProductCardProps) {
           }`}
         >
           {/* Image / gradient placeholder */}
-          <div className={`relative overflow-hidden bg-gradient-to-b ${gradient} aspect-square`}>
+          <div className={`relative overflow-hidden bg-gradient-to-b ${gradient} aspect-[4/3] sm:aspect-square`}>
             {/* Subtle radial glow */}
             <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(201,168,108,0.08)_0%,transparent_70%)]" />
 
@@ -76,7 +76,7 @@ export function ProductCard({ scent, index }: ProductCardProps) {
           </div>
 
           {/* Card info */}
-          <div className="p-3 sm:p-4 bg-white">
+          <div className="p-2.5 sm:p-4 bg-white">
             <div className="flex items-start justify-between gap-2 mb-1">
               <h3 className={`font-serif text-sm leading-snug transition-colors duration-300 ${
                 scent.featured
@@ -89,10 +89,10 @@ export function ProductCard({ scent, index }: ProductCardProps) {
                 {formatCurrency(scent.price)}
               </span>
             </div>
-            <p className="text-xs text-mahogany/50 italic leading-relaxed line-clamp-2">
+            <p className="hidden sm:block text-xs text-mahogany/50 italic leading-relaxed line-clamp-2">
               {scent.tagline}
             </p>
-            <p className="text-[10px] text-mahogany/35 mt-2.5 tracking-wide">
+            <p className="hidden sm:block text-[10px] text-mahogany/35 mt-2.5 tracking-wide">
               {scent.weight} · Hanging Diffuser Oil
             </p>
           </div>
