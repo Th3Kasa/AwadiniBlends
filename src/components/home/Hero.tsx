@@ -1,10 +1,8 @@
 "use client";
 
 import { AnimatedMarqueeHero } from "@/components/ui/hero-3";
+import { InlineHighlight } from "@/components/ui/inline-highlight";
 
-// Product images used as the scrolling marquee.
-// When real product photography arrives, simply replace these files in
-// /public/images/scents/ — no code change needed.
 const PRODUCT_IMAGES = [
   "/images/scents/oud-essence.jpg",
   "/images/scents/strawberry-rose.jpg",
@@ -23,9 +21,9 @@ export function Hero() {
       tagline="Handcrafted in Sydney, Australia"
       title={
         <>
-          Your car,
-          <br />
-          <em className="text-gold not-italic">elevated.</em>
+          Your car{" "}
+          <InlineHighlight highlight="should smell" />{" "}
+          this good.
         </>
       }
       description="Small-batch fragrance oils poured to order. Long-lasting scents crafted for the modern driver."
