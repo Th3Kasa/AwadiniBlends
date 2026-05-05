@@ -8,6 +8,7 @@ import { SquarePaymentForm } from "@/components/checkout/SquarePaymentForm";
 import { AddressAutocomplete } from "@/components/checkout/AddressAutocomplete";
 import type { AddressSuggestion } from "@/components/checkout/AddressAutocomplete";
 import { formatCurrency, getBundleUnitPrice, calculateServiceFee } from "@/lib/utils";
+import { GlassCheckoutCard } from "@/components/ui/glass-checkout-card";
 
 // ── Types ──────────────────────────────────────────────────────────────────────
 
@@ -363,26 +364,24 @@ export default function CheckoutPage() {
             </div>
 
             {/* Payment */}
-            <div className="rounded-xl border border-mahogany/15 bg-white/70 p-6 sm:p-8">
-              <div className="flex items-center gap-3 mb-6">
-                <StepBadge n={2} />
-                <h2 className="text-base font-medium text-mahogany">Payment Details</h2>
-                <div className="ml-auto flex items-center gap-1.5">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-3.5 h-3.5 text-gold/60">
-                    <path fillRule="evenodd" d="M10 1a4.5 4.5 0 0 0-4.5 4.5V9H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2h-.5V5.5A4.5 4.5 0 0 0 10 1Zm3 8V5.5a3 3 0 1 0-6 0V9h6Z" clipRule="evenodd" />
-                  </svg>
-                  <span className="text-xs text-mahogany/50">Secured by Square</span>
-                </div>
-              </div>
+            <div className="flex items-center gap-3 mb-2 px-1">
+              <StepBadge n={2} />
+              <h2 className="text-base font-medium text-mahogany">Payment Details</h2>
+            </div>
 
-              <SquarePaymentForm onTokenReceived={handlePaymentToken} isSubmitting={isSubmitting} totalAmount={(isBundleFree || shippingQuote) ? total : subtotal + serviceFee} />
+            <GlassCheckoutCard>
+              <SquarePaymentForm
+                onTokenReceived={handlePaymentToken}
+                isSubmitting={isSubmitting}
+                totalAmount={(isBundleFree || shippingQuote) ? total : subtotal + serviceFee}
+              />
 
               {submitError && (
                 <div className="mt-4 p-3 rounded-md bg-red-500/10 border border-red-500/20">
                   <p className="text-red-400 text-sm flex items-center gap-2">⚠ {submitError}</p>
                 </div>
               )}
-            </div>
+            </GlassCheckoutCard>
           </div>
 
           {/* ── Right: Order Summary ──────────────────────────────────────── */}
