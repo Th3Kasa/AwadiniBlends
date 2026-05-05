@@ -62,8 +62,8 @@ export function ProductGrid({ scents }: ProductGridProps) {
           </motion.div>
         )}
 
-        {/* Rest — strict 3-col grid, centred */}
-        <div className="grid grid-cols-3 gap-4 sm:gap-6">
+        {/* Rest — 2-col on mobile, 3-col from sm */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-6">
           {rest.map((scent, index) => (
             <ProductCard key={scent.slug} scent={scent} index={index + 1} />
           ))}

@@ -46,11 +46,11 @@ export function FeaturedCard({ scent }: FeaturedCardProps) {
           </div>
 
           {/* Info row */}
-          <div className="px-6 py-5 bg-white">
-            <div className="flex items-start justify-between gap-6">
+          <div className="px-5 py-4 sm:px-6 sm:py-5 bg-white">
+            <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 sm:gap-6">
               {/* Left: name + tagline + notes */}
               <div className="flex-1 min-w-0">
-                <h3 className="font-serif text-2xl text-gold group-hover:text-gold/80 transition-colors duration-300 mb-1">
+                <h3 className="font-serif text-xl sm:text-2xl text-gold group-hover:text-gold/80 transition-colors duration-300 mb-1">
                   {scent.name}
                 </h3>
                 <p className="text-sm text-mahogany/55 italic leading-relaxed">
@@ -59,7 +59,7 @@ export function FeaturedCard({ scent }: FeaturedCardProps) {
               </div>
 
               {/* Right: price + CTA */}
-              <div className="flex flex-col items-end gap-3 flex-shrink-0">
+              <div className="flex flex-row sm:flex-col items-center sm:items-end justify-between sm:justify-start gap-3 flex-shrink-0">
                 <span className="font-serif text-2xl text-mahogany">
                   {formatCurrency(scent.price)}
                 </span>

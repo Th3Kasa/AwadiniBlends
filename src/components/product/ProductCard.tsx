@@ -52,7 +52,7 @@ export function ProductCard({ scent, index }: ProductCardProps) {
 
             {/* Watermark name */}
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none">
-              <p className="font-serif text-xl text-white/[0.05] text-center px-4 leading-tight">
+              <p className="font-serif text-base sm:text-xl text-white/[0.05] text-center px-4 leading-tight">
                 {scent.name}
               </p>
             </div>
@@ -76,7 +76,7 @@ export function ProductCard({ scent, index }: ProductCardProps) {
           </div>
 
           {/* Card info */}
-          <div className="p-4 bg-white">
+          <div className="p-3 sm:p-4 bg-white">
             <div className="flex items-start justify-between gap-2 mb-1">
               <h3 className={`font-serif text-sm leading-snug transition-colors duration-300 ${
                 scent.featured

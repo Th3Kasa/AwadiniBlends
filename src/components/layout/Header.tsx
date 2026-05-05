@@ -176,7 +176,7 @@ export function Header() {
                     key={href}
                     href={href}
                     onClick={() => setMenuOpen(false)}
-                    className="block text-sm text-mahogany/70 hover:text-mahogany transition-colors duration-200 py-2"
+                    className="block text-sm text-mahogany/70 hover:text-mahogany transition-colors duration-200 py-3"
                   >
                     {label}
                   </Link>

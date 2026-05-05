@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { CheckoutSchema } from "@/lib/schemas";
 import { getSquareClient, squareLocationId } from "@/lib/square";
 import { getShippingCost } from "@/lib/shipping";
-import { getBundleUnitPrice } from "@/lib/utils";
+import { getBundleUnitPrice, calculateServiceFee } from "@/lib/utils";
 import scents from "@/data/scents.json";
 import type { Scent } from "@/types";
 
@@ -46,7 +46,7 @@ export async function POST(request: NextRequest) {
     shippingCost   = 0;
     shippingSource = "bundle_free";
   } else {
-    const quote    = await getShippingCost(customer.postcode, customer.state);
+    const quote    = await getShippingCost(customer.postcode);
     shippingCost   = quote.cost;
     shippingSource = quote.source;
     shippingService = quote.service;
@@ -83,8 +83,9 @@ export async function POST(request: NextRequest) {
     ? allScents.find((s) => s.slug === GIFT_SLUGS[Math.floor(Math.random() * GIFT_SLUGS.length)])
     : null;
 
-  // 4. Create Square payment (items + shipping)
-  const grandTotalCents = totalCents + shippingCents;
+  // 4. Create Square payment (items + shipping + service fee)
+  const serviceFeeCents = Math.round(calculateServiceFee((totalCents + shippingCents) / 100) * 100);
+  const grandTotalCents = totalCents + shippingCents + serviceFeeCents;
   const squareClient = getSquareClient();
 
   try {
@@ -166,6 +167,7 @@ export async function POST(request: NextRequest) {
             ? `A$${shippingCost.toFixed(2)} via Australia Post`
             : `A$${shippingCost.toFixed(2)}`;
 
+        const serviceFee = serviceFeeCents / 100;
         const htmlBody = `
 <!DOCTYPE html>
 <html>
@@ -203,6 +205,10 @@ export async function POST(request: NextRequest) {
             <tr>
               <td colspan="2" style="padding:8px 12px;color:#f5f0e8;opacity:0.5;font-size:13px;">Shipping</td>
               <td style="padding:8px 12px;text-align:right;color:#f5f0e8;opacity:0.7;font-size:13px;">${shippingLabel}</td>
+            </tr>
+            <tr>
+              <td colspan="2" style="padding:8px 12px;color:#f5f0e8;opacity:0.5;font-size:13px;">Service fee</td>
+              <td style="padding:8px 12px;text-align:right;color:#f5f0e8;opacity:0.7;font-size:13px;">A$${serviceFee.toFixed(2)}</td>
             </tr>
             <tr style="background:#1a1a1a;">
               <td colspan="2" style="padding:12px;font-size:14px;color:#f5f0e8;font-weight:600;">Total</td>

@@ -7,7 +7,7 @@ import { useCartStore } from "@/store/cart";
 import { SquarePaymentForm } from "@/components/checkout/SquarePaymentForm";
 import { AddressAutocomplete } from "@/components/checkout/AddressAutocomplete";
 import type { AddressSuggestion } from "@/components/checkout/AddressAutocomplete";
-import { formatCurrency, getBundleUnitPrice } from "@/lib/utils";
+import { formatCurrency, getBundleUnitPrice, calculateServiceFee } from "@/lib/utils";
 
 // ── Types ──────────────────────────────────────────────────────────────────────
 
@@ -119,7 +119,8 @@ export default function CheckoutPage() {
   }, [form.postcode, form.state, totalQty, isBundleFree, fetchShipping]);
 
   const shippingCost = shippingQuote?.cost ?? 0;
-  const total        = subtotal + shippingCost;
+  const serviceFee   = calculateServiceFee(subtotal + shippingCost);
+  const total        = subtotal + shippingCost + serviceFee;
 
   // ── Field handlers ─────────────────────────────────────────────────────────
   const validateField = (name: keyof CustomerForm, value: string) => {
@@ -238,14 +239,16 @@ export default function CheckoutPage() {
 
         {/* Bundle free-shipping nudge — shown when 1–2 items in cart */}
         {!isBundleFree && (
-          <div className="mb-6 rounded-md border border-gold/20 bg-gold/5 px-4 py-3 flex items-center gap-3">
-            <span className="text-gold text-base flex-shrink-0">✦</span>
-            <p className="text-sm text-mahogany/80">
-              Add <span className="text-gold font-medium">{3 - totalQty} more {3 - totalQty === 1 ? "fragrance" : "fragrances"}</span> to unlock <span className="text-gold font-medium">free shipping</span> on your order.
-            </p>
+          <div className="mb-6 rounded-md border border-gold/20 bg-gold/5 px-4 py-3 flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
+            <div className="flex items-center gap-3 flex-1 min-w-0">
+              <span className="text-gold text-base flex-shrink-0">✦</span>
+              <p className="text-sm text-mahogany/80">
+                Add <span className="text-gold font-medium">{3 - totalQty} more {3 - totalQty === 1 ? "fragrance" : "fragrances"}</span> to unlock <span className="text-gold font-medium">free shipping</span> on your order.
+              </p>
+            </div>
             <button
               onClick={() => router.push("/")}
-              className="ml-auto text-xs text-gold/70 border border-gold/25 rounded px-3 py-1.5 hover:border-gold/50 hover:text-gold transition-all whitespace-nowrap flex-shrink-0"
+              className="self-start sm:self-auto sm:ml-auto text-xs text-gold/70 border border-gold/25 rounded px-3 py-1.5 hover:border-gold/50 hover:text-gold transition-all whitespace-nowrap flex-shrink-0"
             >
               Add More
             </button>
@@ -372,7 +375,7 @@ export default function CheckoutPage() {
                 </div>
               </div>
 
-              <SquarePaymentForm onTokenReceived={handlePaymentToken} isSubmitting={isSubmitting} totalAmount={total} />
+              <SquarePaymentForm onTokenReceived={handlePaymentToken} isSubmitting={isSubmitting} totalAmount={(isBundleFree || shippingQuote) ? total : subtotal + serviceFee} />
 
               {submitError && (
                 <div className="mt-4 p-3 rounded-md bg-red-500/10 border border-red-500/20">
@@ -384,7 +387,7 @@ export default function CheckoutPage() {
 
           {/* ── Right: Order Summary ──────────────────────────────────────── */}
           <div className="lg:col-span-2">
-            <div className="rounded-xl border border-mahogany/15 bg-white/70 p-6 sticky top-24">
+            <div className="rounded-xl border border-mahogany/15 bg-white/70 p-6 lg:sticky lg:top-24">
               <h2 className="text-base font-medium text-mahogany mb-5">Order Summary</h2>
 
               {/* Bundle tier badge */}
@@ -473,6 +476,15 @@ export default function CheckoutPage() {
                   )}
                 </div>
 
+                {/* Service fee */}
+                <div className="flex justify-between items-center text-sm text-mahogany/60">
+                  <div>
+                    <span>Service fee</span>
+                    <p className="text-xs text-mahogany/35 mt-0.5">Card processing (1.9%)</p>
+                  </div>
+                  <span>{formatCurrency(serviceFee)}</span>
+                </div>
+
                 {/* Total */}
                 <div className="flex justify-between items-center pt-2.5 border-t border-mahogany/10">
                   <span className="text-sm font-medium text-mahogany">Total</span>
@@ -481,7 +493,7 @@ export default function CheckoutPage() {
                       ? formatCurrency(total)
                       : (
                         <>
-                          {formatCurrency(subtotal)}
+                          {formatCurrency(subtotal + serviceFee)}
                           <span className="font-sans text-xs text-mahogany/30 ml-1">+ shipping</span>
                         </>
                       )

@@ -8,7 +8,7 @@ const goldWords = new Set(["smell", "this"]);
 
 export function Hero() {
   return (
-    <section className="relative min-h-[75vh] py-20 flex items-center justify-center overflow-hidden">
+    <section className="relative min-h-[75vh] py-14 sm:py-20 flex items-center justify-center overflow-hidden">
       {/* Background */}
       <div className="absolute inset-0 bg-ivory" />
 
@@ -27,7 +27,7 @@ export function Hero() {
       <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
 
         {/* Word-by-word headline animation */}
-        <h1 className="font-serif text-5xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tight text-mahogany leading-[1.1] mb-8">
+        <h1 className="font-serif text-4xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tight text-mahogany leading-[1.1] mb-8">
           {headline.map((word, i) => {
             const isGold = goldWords.has(word);
             return (
@@ -67,13 +67,13 @@ export function Hero() {
           transition={{ duration: 0.8, delay: 0.6, ease: "easeOut" }}
           className="flex flex-col sm:flex-row items-center justify-center gap-4"
         >
-          <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-            <Link href="/#collection" className="btn-primary">
+          <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="w-full sm:w-auto">
+            <Link href="/#collection" className="btn-primary block w-full sm:inline-block sm:w-auto text-center">
               Explore Scents
             </Link>
           </motion.div>
-          <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-            <Link href="/#bundles" className="btn-outline">
+          <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="w-full sm:w-auto">
+            <Link href="/#bundles" className="btn-outline block w-full sm:inline-block sm:w-auto text-center">
               Build a Bundle
             </Link>
           </motion.div>
@@ -86,7 +86,7 @@ export function Hero() {
           transition={{ duration: 0.8, delay: 0.78, ease: "easeOut" }}
           className="mt-6 flex justify-center"
         >
-          <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gold/10 border border-gold/20 text-gold/90 text-sm font-sans tracking-wide">
+          <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gold/10 border border-gold/20 text-gold/90 text-xs sm:text-sm font-sans tracking-wide">
             ★★★★★&nbsp; Loved by 1,000+ drivers across Sydney
           </span>
         </motion.div>
@@ -99,7 +99,7 @@ export function Hero() {
           className="flex items-center gap-4 mt-10"
         >
           <div className="h-px flex-1 bg-mahogany/15" />
-          <span className="text-mahogany/50 text-xs font-sans tracking-widest uppercase whitespace-nowrap">
+          <span className="text-mahogany/50 text-[10px] sm:text-xs font-sans tracking-widest uppercase whitespace-nowrap">
             Handcrafted · Long-Lasting · Poured to Order
           </span>
           <div className="h-px flex-1 bg-mahogany/15" />

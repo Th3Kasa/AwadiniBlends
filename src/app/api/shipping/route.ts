@@ -44,17 +44,24 @@ export async function GET(request: NextRequest) {
     });
   }
 
-  // ── Single / duo: calculate via AusPost (or silent flat-rate fallback) ──────
-  const quote = await getShippingCost(postcode, state);
-
-  return NextResponse.json({
-    cost:         quote.cost,
-    source:       quote.source,
-    service:      quote.service      ?? null,
-    deliveryTime: quote.deliveryTime ?? null,
-    fromPostcode: "2170",
-    toPostcode:   postcode,
-    state,
-    qty,
-  });
+  // ── Single / duo: live AusPost rate ────────────────────────────────────────
+  try {
+    const quote = await getShippingCost(postcode);
+    return NextResponse.json({
+      cost:         quote.cost,
+      source:       quote.source,
+      service:      quote.service      ?? null,
+      deliveryTime: quote.deliveryTime ?? null,
+      fromPostcode: "2170",
+      toPostcode:   postcode,
+      state,
+      qty,
+    });
+  } catch (err) {
+    console.error("[shipping route]", (err as Error).message);
+    return NextResponse.json(
+      { error: "Shipping rates are temporarily unavailable. Please try again." },
+      { status: 503 }
+    );
+  }
 }
