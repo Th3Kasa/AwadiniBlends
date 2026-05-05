@@ -77,15 +77,15 @@ export function ProductCard({ scent, index }: ProductCardProps) {
 
           {/* Card info */}
           <div className="p-2.5 sm:p-4 bg-white">
-            <div className="flex items-start justify-between gap-2 mb-1">
-              <h3 className={`font-serif text-sm leading-snug transition-colors duration-300 ${
+            <div className="flex items-center justify-between gap-1.5">
+              <h3 className={`font-serif text-xs sm:text-sm leading-snug transition-colors duration-300 truncate ${
                 scent.featured
                   ? "text-gold group-hover:text-gold/80"
                   : "text-mahogany group-hover:text-gold"
               }`}>
                 {scent.name}
               </h3>
-              <span className="text-gold font-medium text-sm flex-shrink-0">
+              <span className="text-gold font-medium text-xs sm:text-sm flex-shrink-0">
                 {formatCurrency(scent.price)}
               </span>
             </div>
