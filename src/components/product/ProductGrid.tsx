@@ -24,17 +24,14 @@ export function ProductGrid({ scents }: ProductGridProps) {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          className="text-center mb-14"
+          className="mb-14"
         >
-          <span className="inline-block text-gold text-[10px] tracking-[0.35em] uppercase mb-4 px-4 py-1.5 rounded-full bg-gold/10 border border-gold/20">
-            The Collection
-          </span>
-          <h2 className="font-serif text-4xl sm:text-5xl text-mahogany tracking-tight mt-2">
-            Artisanal Scent Library
+          <span className="font-sans text-xs text-gold tracking-widest mb-5 block">01.</span>
+          <h2 className="font-serif text-4xl sm:text-5xl text-mahogany tracking-tight">
+            The Collection.
           </h2>
-          <p className="text-mahogany/60 text-base mt-4 max-w-lg mx-auto leading-relaxed">
-            Handcrafted car fragrance oils, each poured to order in
-            Sydney. Long-lasting scents designed to fill your cabin and hold.
+          <p className="font-sans text-sm text-mahogany/55 mt-4 leading-6 max-w-sm">
+            Each fragrance is hand-poured in Liverpool, NSW, in batches of fifty.
           </p>
         </motion.div>
 

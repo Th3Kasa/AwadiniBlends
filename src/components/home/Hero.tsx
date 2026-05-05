@@ -3,109 +3,59 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 
-const headline = ["Your", "car", "should", "smell", "this", "good."];
-const goldWords = new Set(["smell", "this"]);
-
 export function Hero() {
   return (
-    <section className="relative min-h-[75vh] py-14 sm:py-20 flex items-center justify-center overflow-hidden">
-      {/* Background */}
-      <div className="absolute inset-0 bg-ivory" />
+    <section className="relative min-h-[80vh] bg-ivory flex items-end pb-16 sm:pb-20 lg:pb-28 overflow-hidden">
 
-      {/* Animated gradient orbs */}
+      {/* Single entrance animation wraps everything */}
       <motion.div
-        animate={{ x: [0, 20, 0], y: [0, -15, 0] }}
-        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute top-1/4 left-1/4 w-96 h-96 bg-gold/8 rounded-full blur-3xl pointer-events-none"
-      />
-      <motion.div
-        animate={{ x: [0, 20, 0], y: [0, -15, 0] }}
-        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
-        className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-gold/5 rounded-full blur-3xl pointer-events-none"
-      />
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.85, ease: [0.22, 1, 0.36, 1] }}
+        className="w-full max-w-7xl mx-auto px-6 sm:px-10 lg:px-16"
+      >
+        {/* Asymmetric two-column grid on desktop */}
+        <div className="lg:grid lg:grid-cols-12 lg:gap-8 lg:items-end">
 
-      <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          {/* Left: display headline — 8 of 12 columns */}
+          <div className="lg:col-span-8">
+            {/* Thin gold rule above — intentional, not decorative filler */}
+            <div className="w-10 h-px bg-gold mb-8 lg:mb-10" />
 
-        {/* Word-by-word headline animation */}
-        <h1 className="font-serif text-4xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tight text-mahogany leading-[1.1] mb-8">
-          {headline.map((word, i) => {
-            const isGold = goldWords.has(word);
-            return (
-              <motion.span
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: i * 0.06, ease: [0.22, 1, 0.36, 1] }}
-                className={
-                  isGold
-                    ? "gold-gradient italic inline-block mr-[0.25em]"
-                    : "inline-block mr-[0.25em]"
-                }
-              >
-                {word}
-              </motion.span>
-            );
-          })}
-          <span className="sr-only"> — Australian luxury car fragrance by Awadini</span>
-        </h1>
+            <h1 className="font-serif text-5xl sm:text-7xl lg:text-8xl text-mahogany tracking-tight leading-[1.05]">
+              A study{" "}
+              <br className="hidden sm:block" />
+              in scent.
+              <span className="sr-only"> — Australian luxury car fragrance by Awadini</span>
+            </h1>
+          </div>
 
-        {/* Subheadline */}
-        <motion.p
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.5, ease: "easeOut" }}
-          className="text-mahogany/70 text-base sm:text-lg max-w-xl mx-auto mb-8 leading-7"
-        >
-          Handcrafted oils for your hanging car diffuser. Small-batch,
-          long-lasting, poured to order in Sydney.
-        </motion.p>
+          {/* Right: metadata + CTA — 4 of 12 columns, bottom-aligned */}
+          <div className="mt-10 lg:mt-0 lg:col-span-4 lg:pb-2">
+            <p className="font-sans text-sm text-mahogany/60 leading-6 mb-8 max-w-xs">
+              Hand-poured fragrance oils for the modern driver.
+              <br />
+              Liverpool, New South Wales.
+            </p>
 
-        {/* CTA buttons */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.6, ease: "easeOut" }}
-          className="flex flex-col sm:flex-row items-center justify-center gap-4"
-        >
-          <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="w-full sm:w-auto">
-            <Link href="/#collection" className="btn-primary block w-full sm:inline-block sm:w-auto text-center">
-              Explore Scents
+            <Link
+              href="/#collection"
+              className="group inline-flex items-center gap-3 font-sans text-sm tracking-wide text-mahogany"
+            >
+              <span className="relative">
+                Browse Scents
+                <span className="absolute -bottom-px left-0 w-full h-px bg-mahogany origin-left scale-x-100 transition-transform duration-300 group-hover:scale-x-0" />
+                <span className="absolute -bottom-px left-0 w-full h-px bg-gold origin-right scale-x-0 transition-transform duration-300 group-hover:scale-x-100" />
+              </span>
+              <span className="text-gold transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true">
+                →
+              </span>
             </Link>
-          </motion.div>
-          <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="w-full sm:w-auto">
-            <Link href="/#bundles" className="btn-outline block w-full sm:inline-block sm:w-auto text-center">
-              Build a Bundle
-            </Link>
-          </motion.div>
-        </motion.div>
+          </div>
 
-        {/* Social proof pill */}
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.78, ease: "easeOut" }}
-          className="mt-6 flex justify-center"
-        >
-          <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gold/10 border border-gold/20 text-gold/90 text-xs sm:text-sm font-sans tracking-wide">
-            ★★★★★&nbsp; Loved by 1,000+ drivers across Sydney
-          </span>
-        </motion.div>
+        </div>
+      </motion.div>
 
-        {/* Divider with text */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 0.95 }}
-          className="flex items-center gap-4 mt-10"
-        >
-          <div className="h-px flex-1 bg-mahogany/15" />
-          <span className="text-mahogany/50 text-[10px] sm:text-xs font-sans tracking-widest uppercase whitespace-nowrap">
-            Handcrafted · Long-Lasting · Poured to Order
-          </span>
-          <div className="h-px flex-1 bg-mahogany/15" />
-        </motion.div>
-
-      </div>
     </section>
   );
 }
