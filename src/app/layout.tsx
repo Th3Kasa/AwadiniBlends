@@ -5,6 +5,7 @@ import { ShippingBanner } from "@/components/layout/ShippingBanner";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { CartDrawer } from "@/components/cart/CartDrawer";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const SITE_URL = "https://awadini.vercel.app";
 
@@ -176,6 +177,7 @@ export default function RootLayout({
         <main className="min-h-screen">{children}</main>
         <Footer />
         <CartDrawer />
+        <SpeedInsights />
       </body>
     </html>
   );
