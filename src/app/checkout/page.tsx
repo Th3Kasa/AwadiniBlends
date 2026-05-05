@@ -479,7 +479,7 @@ export default function CheckoutPage() {
                 <div className="flex justify-between items-center text-sm text-mahogany/60">
                   <div>
                     <span>Service fee</span>
-                    <p className="text-xs text-mahogany/35 mt-0.5">Card processing (1.9%)</p>
+                    <p className="text-xs text-mahogany/35 mt-0.5">Card processing (1.6%)</p>
                   </div>
                   <span>{formatCurrency(serviceFee)}</span>
                 </div>

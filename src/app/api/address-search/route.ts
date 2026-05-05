@@ -143,14 +143,22 @@ export async function GET(request: NextRequest) {
 
   try {
     const geoapifyKey = process.env.GEOAPIFY_API_KEY;
+    let raw: AddressSuggestion[] = [];
+    let engine = "nominatim";
 
-    const raw = geoapifyKey
-      ? await fromGeoapify(q, geoapifyKey)
-      : await fromNominatim(q);
+    if (geoapifyKey) {
+      raw = await fromGeoapify(q, geoapifyKey);
+      if (raw.length > 0) {
+        engine = "geoapify";
+      } else {
+        // Key invalid or no results — fall back to Nominatim
+        raw = await fromNominatim(q);
+      }
+    } else {
+      raw = await fromNominatim(q);
+    }
 
     const results = dedupe(raw).slice(0, 5);
-    const engine  = geoapifyKey ? "geoapify" : "nominatim";
-
     return NextResponse.json({ results, engine });
   } catch {
     return NextResponse.json({ results: [], engine: "error" });

@@ -48,6 +48,7 @@ export async function getShippingCost(toPostcode: string): Promise<ShippingQuote
     width:         String(PACKAGE.width),
     height:        String(PACKAGE.height),
     weight:        String(PACKAGE.weight),
+    service_code:  "AUS_PARCEL_REGULAR", // Parcel Post — most affordable tracked service
   });
 
   const res = await fetch(

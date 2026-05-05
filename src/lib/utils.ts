@@ -8,8 +8,8 @@
  *  3–4 items→ $10.00  (Trio discount + free shipping)
  *  5+ items → $9.00   (Collection discount + free shipping)
  */
-/** Square Australia online processing fee: 1.9% of the charged amount. */
-export const SQUARE_FEE_RATE = 0.019;
+/** Square Australia online processing fee: 1.6% of the charged amount. */
+export const SQUARE_FEE_RATE = 0.016;
 
 export function calculateServiceFee(amount: number): number {
   return Math.ceil(amount * SQUARE_FEE_RATE * 100) / 100;
