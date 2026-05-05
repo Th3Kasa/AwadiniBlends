@@ -27,7 +27,7 @@ export function InlineHighlight({
     <span className={cn("inline", className)}>
       {before && <span>{before} </span>}
       <motion.span
-        animate={{ color: ["currentColor", highlightColor, highlightColor, "currentColor"] }}
+        animate={{ color: ["#332419", highlightColor, highlightColor, "#332419"] }}
         transition={{
           duration: 3.5,
           ease: "easeInOut",

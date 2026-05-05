@@ -21,8 +21,10 @@ export function Hero() {
       tagline="Handcrafted in Sydney, Australia"
       title={
         <>
-          Your car{" "}
-          <InlineHighlight highlight="should smell" />{" "}
+          Your car
+          <br />
+          <InlineHighlight highlight="should smell" />
+          <br />
           this good.
         </>
       }
