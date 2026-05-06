@@ -11,12 +11,21 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import { getShippingCost } from "@/lib/shipping";
+import { rateLimit } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
+
+// 30 lookups per minute per IP — generous for postcode typing, blocks scraping
+const limiter = rateLimit({ limit: 30, windowMs: 60 * 1000 });
 
 const VALID_STATES = ["NSW", "VIC", "QLD", "SA", "WA", "TAS", "NT", "ACT"];
 
 export async function GET(request: NextRequest) {
+  const { success } = limiter(request);
+  if (!success) {
+    return NextResponse.json({ error: "Too many requests." }, { status: 429 });
+  }
+
   const { searchParams } = new URL(request.url);
   const postcode = (searchParams.get("postcode") ?? "").trim();
   const state    = (searchParams.get("state")    ?? "").trim().toUpperCase();

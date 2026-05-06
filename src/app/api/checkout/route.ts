@@ -3,12 +3,20 @@ import { CheckoutSchema } from "@/lib/schemas";
 import { getSquareClient, squareLocationId } from "@/lib/square";
 import { getShippingCost } from "@/lib/shipping";
 import { getBundleUnitPrice, calculateServiceFee } from "@/lib/utils";
+import { rateLimit } from "@/lib/rate-limit";
 import scents from "@/data/scents.json";
 import type { Scent } from "@/types";
 
 const allScents = scents as Scent[];
 
+// 5 payment attempts per 10 minutes per IP — prevents card-testing attacks
+const limiter = rateLimit({ limit: 5, windowMs: 10 * 60 * 1000 });
+
 export async function POST(request: NextRequest) {
+  const { success } = limiter(request);
+  if (!success) {
+    return NextResponse.json({ error: "Too many requests. Please wait a moment and try again." }, { status: 429 });
+  }
   let body: unknown;
 
   try {

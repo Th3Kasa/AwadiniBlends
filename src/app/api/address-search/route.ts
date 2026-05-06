@@ -16,8 +16,12 @@
  */
 
 import { NextRequest, NextResponse } from "next/server";
+import { rateLimit } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
+
+// 40 autocomplete lookups per minute per IP — covers fast typing, blocks key scraping
+const limiter = rateLimit({ limit: 40, windowMs: 60 * 1000 });
 
 export interface AddressSuggestion {
   displayName:  string;
@@ -136,6 +140,11 @@ async function fromNominatim(q: string): Promise<AddressSuggestion[]> {
 
 // ── Route handler ──────────────────────────────────────────────────────────────
 export async function GET(request: NextRequest) {
+  const { success } = limiter(request);
+  if (!success) {
+    return NextResponse.json({ results: [], engine: "rate-limited" }, { status: 429 });
+  }
+
   const { searchParams } = new URL(request.url);
   const q = (searchParams.get("q") ?? "").trim();
 

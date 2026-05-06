@@ -1,6 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
+import { rateLimit } from "@/lib/rate-limit";
+
+// 3 contact submissions per hour per IP — prevents spam
+const limiter = rateLimit({ limit: 3, windowMs: 60 * 60 * 1000 });
 
 export async function POST(request: NextRequest) {
+  const { success } = limiter(request);
+  if (!success) {
+    return NextResponse.json({ error: "Too many requests. Please wait before sending another message." }, { status: 429 });
+  }
   let body: unknown;
   try {
     body = await request.json();
