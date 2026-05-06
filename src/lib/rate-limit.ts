@@ -28,10 +28,10 @@ export function rateLimit({ limit, windowMs }: RateLimitOptions) {
   if (typeof setInterval !== "undefined") {
     setInterval(() => {
       const now = Date.now();
-      for (const [key, entry] of store) {
+      store.forEach((entry, key) => {
         entry.timestamps = entry.timestamps.filter((t) => now - t < windowMs);
         if (entry.timestamps.length === 0) store.delete(key);
-      }
+      });
     }, 5 * 60 * 1000);
   }
 
