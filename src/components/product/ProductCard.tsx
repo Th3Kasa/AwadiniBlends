@@ -5,6 +5,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import type { Scent } from "@/types";
 import { formatCurrency } from "@/lib/utils";
+import { getProductImages } from "@/lib/scent-images";
 
 interface ProductCardProps {
   scent: Scent;
@@ -26,6 +27,7 @@ const gradients: Record<string, string> = {
 
 export function ProductCard({ scent, index }: ProductCardProps) {
   const gradient = gradients[scent.slug] ?? "from-[#1e1e1e] via-[#141414] to-[#0a0a0a]";
+  const [mainImage] = getProductImages(scent.slug);
 
   return (
     <motion.div
@@ -67,7 +69,7 @@ export function ProductCard({ scent, index }: ProductCardProps) {
             )}
 
             <Image
-              src={scent.image}
+              src={mainImage}
               alt={`${scent.name} luxury car fragrance oil by Awadini`}
               fill
               className="object-cover transition-transform duration-700 group-hover:scale-105"
