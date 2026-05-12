@@ -21,7 +21,7 @@ const PRODUCT_IMAGES = getCarouselImages(SCENT_SLUGS);
 export function Hero() {
   return (
     <AnimatedMarqueeHero
-      tagline="Handcrafted in Sydney, Australia"
+      tagline="Handcrafted in Australia"
       title={
         <>
           Your car
