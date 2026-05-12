@@ -7,7 +7,6 @@ import { getProductImages } from "@/lib/scent-images";
 interface Props {
   slug: string;
   name: string;
-  mainImage: string;
 }
 
 export function ProductImageGallery({ slug, name }: Props) {
