@@ -76,11 +76,15 @@ export default function RefundPolicyPage() {
               A product failure may include (but is not limited to):
             </p>
             <ul className="mt-2 ml-4 space-y-1 list-disc list-outside text-mahogany">
-              <li>The product is not of acceptable quality (e.g., contaminated, spoiled, or completely odourless when it should not be).</li>
+              <li>
+                The product is not of acceptable quality — meaning it is objectively <strong className="text-mahogany">contaminated, visibly spoiled, or completely odourless</strong> (i.e., emits no scent whatsoever under normal conditions). A claim under this clause requires photographic or written evidence of the specific defect and must be reported within <strong className="text-mahogany">7 calendar days</strong> of delivery. &ldquo;Acceptable quality&rdquo; is assessed against what a reasonable person would regard as acceptable for a handcrafted, small-batch fragrance oil — not against a personal preference for intensity, longevity, or character. Reduced scent throw due to environmental factors (temperature, airflow, surface type) does not constitute a quality failure.
+              </li>
               <li>
                 The product does not match an <strong className="text-mahogany">objective, verifiable</strong> attribute stated on our website — such as volume (e.g., 8ml), bottle type, or the specific named scent delivered. Descriptions of fragrance character (e.g., &ldquo;warm&rdquo;, &ldquo;rich&rdquo;, &ldquo;floral&rdquo;) are illustrative and reflect the experience of the majority of customers. Because scent perception is subjective and varies between individuals, a personal dislike of or difference in scent experience does not constitute a product mismatch and is not grounds for a claim under this clause.
               </li>
-              <li>The product arrives damaged due to a fault in packaging or transit handling on our part.</li>
+              <li>
+                The product arrives damaged due to a fault in our packaging or transit handling — meaning the damage is <strong className="text-mahogany">visibly present upon delivery and attributable to inadequate packaging on our part</strong>, not to carrier mishandling beyond our control or to post-delivery handling. To be eligible, you must: (a) photograph the <em>outer packaging before opening</em>; (b) photograph the damaged product immediately upon opening; and (c) report the damage within <strong className="text-mahogany">48 hours</strong> of delivery. Claims for transit damage caused solely by the carrier will be assessed on a case-by-case basis and may be subject to the carrier&rsquo;s own claims process.
+              </li>
               <li>
                 The product leaks due to a <strong className="text-mahogany">manufacturing defect</strong> in the bottle or applicator — meaning the leak is present upon delivery and is not caused by mishandling, dropping, exposure to heat, removal of the stopper or cap, or any other action taken after receipt. Evidence of leakage must be reported within 48 hours of delivery with photographs of the sealed product and packaging, before the product has been opened or used.
               </li>
@@ -164,6 +168,9 @@ export default function RefundPolicyPage() {
               <li>The claim is made more than 7 calendar days after delivery.</li>
               <li>Photographic evidence was not provided with the claim.</li>
               <li>The claimed defect is not objectively verifiable.</li>
+              <li>A quality claim relates to scent intensity, longevity, or throw — these are subjective experiences affected by environment and are not quality failures under the ACL.</li>
+              <li>A transit damage claim is reported more than 48 hours after delivery, or photographs of the outer packaging before opening were not taken.</li>
+              <li>Damage occurred after delivery due to dropping, improper storage, or handling by the customer or a third party.</li>
             </ul>
           </PolicySection>
 
