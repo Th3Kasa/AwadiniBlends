@@ -318,23 +318,16 @@ export function SquarePaymentForm({ onTokenReceived, isSubmitting, totalAmount }
         />
         <div
           ref={paypalContainerRef}
-          className="rounded-md overflow-hidden"
-          style={{
-            flex:      paypalReady ? "1" : "0 0 0",
-            minHeight: paypalReady ? "auto" : undefined,
-            display:   paypalReady ? "block" : "none",
-          }}
+          className="rounded-md overflow-hidden flex-1"
+          style={{ minHeight: "48px" }}
         />
       </div>
 
-      {/* Divider */}
-      {(googlePayReady || paypalReady) && (
-        <div className="flex items-center gap-3 mb-4">
-          <div className="flex-1 h-px bg-mahogany/10" />
-          <span className="text-xs text-mahogany/35 tracking-widest uppercase">or pay by card</span>
-          <div className="flex-1 h-px bg-mahogany/10" />
-        </div>
-      )}
+      <div className="flex items-center gap-3 mb-4">
+        <div className="flex-1 h-px bg-mahogany/10" />
+        <span className="text-xs text-mahogany/35 tracking-widest uppercase">or pay by card</span>
+        <div className="flex-1 h-px bg-mahogany/10" />
+      </div>
 
       {/* ── Cardholder Name ── */}
       <div className="mb-3">
