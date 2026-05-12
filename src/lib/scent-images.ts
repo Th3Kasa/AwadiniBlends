@@ -13,7 +13,8 @@ const SCENT_MAP: Record<string, { folder: string; prefix: string }> = {
 function base(slug: string) {
   const m = SCENT_MAP[slug];
   if (!m) return null;
-  return `/images/scents/${m.folder}/${m.prefix}`;
+  const folder = m.folder.replace(/ /g, "%20");
+  return `/images/scents/${folder}/${m.prefix}`;
 }
 
 export function getProductImages(slug: string): [string, string, string] {
