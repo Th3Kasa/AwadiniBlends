@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import { notFound } from "next/navigation";
 import scents from "@/data/scents.json";
 import type { Scent } from "@/types";
 import { BundleSection } from "@/components/product/BundleSection";
 import { ProductDetails } from "./ProductDetails";
+import { ProductImageGallery } from "./ProductImageGallery";
 
 const SITE_URL = "https://awadini.vercel.app";
 const allScents = scents as Scent[];
@@ -133,17 +133,8 @@ export default function ProductPage({ params }: Props) {
     <section className="py-12 sm:py-20">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16">
-          {/* Image */}
-          <div className="relative aspect-square rounded-2xl overflow-hidden bg-gradient-to-br from-[#ede8df] to-[#e0d8cc] ring-1 ring-mahogany/8">
-            <Image
-              src={scent.image}
-              alt={`${scent.name} luxury car fragrance oil by Awadini`}
-              fill
-              className="object-cover"
-              sizes="(max-width: 1024px) 100vw, 50vw"
-              priority
-            />
-          </div>
+          {/* Image gallery */}
+          <ProductImageGallery slug={scent.slug} name={scent.name} />
 
           {/* Details — animated client component */}
           <ProductDetails scent={scent} />

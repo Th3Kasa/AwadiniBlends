@@ -2,18 +2,21 @@
 
 import { AnimatedMarqueeHero } from "@/components/ui/hero-3";
 import { InlineHighlight } from "@/components/ui/inline-highlight";
+import { getCarouselImages } from "@/lib/scent-images";
 
-const PRODUCT_IMAGES = [
-  "/images/scents/oud-essence.jpg",
-  "/images/scents/strawberry-rose.jpg",
-  "/images/scents/vanilla.jpg",
-  "/images/scents/tea-rose.jpg",
-  "/images/scents/honeysuckle.jpg",
-  "/images/scents/rose-geranium.jpg",
-  "/images/scents/forget-me-not.jpg",
-  "/images/scents/green-apple.jpg",
-  "/images/scents/musk.jpg",
+const SCENT_SLUGS = [
+  "oud-essence",
+  "strawberry-rose",
+  "vanilla",
+  "tea-rose",
+  "honeysuckle",
+  "rose-geranium",
+  "forget-me-not",
+  "green-apple",
+  "musk",
 ];
+
+const PRODUCT_IMAGES = getCarouselImages(SCENT_SLUGS);
 
 export function Hero() {
   return (
