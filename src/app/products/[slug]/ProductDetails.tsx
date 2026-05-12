@@ -58,9 +58,9 @@ export function ProductDetails({ scent, avgRating }: Props) {
           {formatCurrency(scent.price)}
         </p>
         {avgRating.count > 0 && (
-          <div className="mt-2">
+          <a href="#customer-reviews" className="mt-2 inline-block group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 rounded">
             <StarRating average={avgRating.average} count={avgRating.count} size="md" />
-          </div>
+          </a>
         )}
         <div className="w-12 h-0.5 bg-gold mt-3 mb-7" />
       </motion.div>

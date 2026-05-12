@@ -44,7 +44,7 @@ export function ProductReviews({ slug, data }: Props) {
   const visible = showAll ? reviews : reviews.slice(0, INITIAL_VISIBLE);
 
   return (
-    <section className="py-16 sm:py-24 border-t border-mahogany/8 bg-[#fdfaf6]">
+    <section id="customer-reviews" className="py-16 sm:py-24 border-t border-mahogany/8 bg-[#fdfaf6] scroll-mt-6">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* ── Section header ── */}
