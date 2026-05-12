@@ -9,6 +9,7 @@ import { AddressAutocomplete } from "@/components/checkout/AddressAutocomplete";
 import type { AddressSuggestion } from "@/components/checkout/AddressAutocomplete";
 import { formatCurrency, getBundleUnitPrice, calculateServiceFee } from "@/lib/utils";
 import { GlassCheckoutCard } from "@/components/ui/glass-checkout-card";
+import { getProductImages } from "@/lib/scent-images";
 
 // ── Types ──────────────────────────────────────────────────────────────────────
 
@@ -71,8 +72,10 @@ export default function CheckoutPage() {
   const [shippingLoading, setShippingLoading] = useState(false);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const items     = useCartStore((s) => s.items);
-  const clearCart = useCartStore((s) => s.clearCart);
+  const items          = useCartStore((s) => s.items);
+  const clearCart      = useCartStore((s) => s.clearCart);
+  const removeItem     = useCartStore((s) => s.removeItem);
+  const updateQuantity = useCartStore((s) => s.updateQuantity);
 
   useEffect(() => { setHydrated(true); }, []);
 
@@ -405,14 +408,36 @@ export default function CheckoutPage() {
                   const lineTotal = unitPrice * item.quantity;
                   const wasTotal  = item.scent.price * item.quantity;
                   const saving    = wasTotal - lineTotal;
+                  const mainImage = getProductImages(item.scent.slug)[0];
                   return (
-                    <li key={item.scent.slug} className="flex gap-3 items-center">
+                    <li key={item.scent.slug} className="flex gap-3 items-start">
                       <div className="relative w-14 h-14 rounded-lg overflow-hidden bg-smoke flex-shrink-0 border border-mahogany/10">
-                        <Image src={item.scent.image} alt={item.scent.name} fill className="object-cover" sizes="56px" />
+                        <Image src={mainImage} alt={item.scent.name} fill className="object-cover" sizes="56px" />
                       </div>
                       <div className="flex-1 min-w-0">
                         <p className="text-sm text-mahogany font-medium truncate">{item.scent.name}</p>
-                        <p className="text-xs text-mahogany/50 mt-0.5">Qty {item.quantity} × {formatCurrency(unitPrice)}</p>
+                        <div className="flex items-center gap-2 mt-1">
+                          <button
+                            onClick={() => updateQuantity(item.scent.slug, Math.max(1, item.quantity - 1))}
+                            className="w-5 h-5 flex items-center justify-center rounded border border-mahogany/20 text-mahogany/60 hover:bg-mahogany/5 transition-colors"
+                          >
+                            −
+                          </button>
+                          <span className="text-xs text-mahogany/70 w-5 text-center">{item.quantity}</span>
+                          <button
+                            onClick={() => updateQuantity(item.scent.slug, item.quantity + 1)}
+                            className="w-5 h-5 flex items-center justify-center rounded border border-mahogany/20 text-mahogany/60 hover:bg-mahogany/5 transition-colors"
+                          >
+                            +
+                          </button>
+                          <button
+                            onClick={() => removeItem(item.scent.slug)}
+                            className="ml-auto text-xs text-mahogany/40 hover:text-red-500 transition-colors"
+                          >
+                            Remove
+                          </button>
+                        </div>
+                        <p className="text-xs text-mahogany/50 mt-1">{formatCurrency(unitPrice)}/scent</p>
                       </div>
                       <div className="text-right flex-shrink-0">
                         <p className="text-sm text-gold font-medium">{formatCurrency(lineTotal)}</p>
