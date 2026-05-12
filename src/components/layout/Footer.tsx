@@ -16,8 +16,7 @@ export function Footer() {
         Fragrance Blends
       </p>
       <p className="text-sm text-mahogany/60 leading-7">
-        Handcrafted car fragrance oils, poured in small batches in
-        Sydney, Australia.
+        Handcrafted car fragrance oils, poured to order in small batches across Australia.
       </p>
     </div>,
 

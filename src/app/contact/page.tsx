@@ -63,9 +63,7 @@ export default function ContactPage() {
               <h3 className="font-sans font-semibold text-sm text-mahogany tracking-wider uppercase">Based In</h3>
             </div>
             <p className="text-mahogany/90 text-sm">
-              Liverpool, NSW 2170
-              <br />
-              South West Sydney, Australia
+              Australia
             </p>
           </div>
 

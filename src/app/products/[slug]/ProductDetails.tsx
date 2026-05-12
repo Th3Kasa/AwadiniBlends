@@ -94,7 +94,7 @@ export function ProductDetails({ scent }: Props) {
       {/* Shipping note */}
       <motion.div {...fadeUp(0.52)} className="flex items-center gap-2 mt-4 text-mahogany/45 text-xs">
         <span>🚚</span>
-        <span>Ships via Australia Post · Handcrafted to order in Sydney</span>
+        <span>Ships via Australia Post · Handcrafted to order in Australia</span>
       </motion.div>
 
     </div>

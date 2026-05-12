@@ -31,7 +31,7 @@ export function ProductGrid({ scents }: ProductGridProps) {
             The Collection.
           </h2>
           <p className="font-sans text-sm text-mahogany/55 mt-4 leading-6 max-w-sm">
-            Each fragrance is hand-poured in Liverpool, NSW, in batches of fifty.
+            Each fragrance is hand-poured to order in small batches of fifty.
           </p>
         </motion.div>
 
