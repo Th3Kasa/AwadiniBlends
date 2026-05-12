@@ -81,7 +81,9 @@ export default function RefundPolicyPage() {
                 The product does not match an <strong className="text-mahogany">objective, verifiable</strong> attribute stated on our website — such as volume (e.g., 8ml), bottle type, or the specific named scent delivered. Descriptions of fragrance character (e.g., &ldquo;warm&rdquo;, &ldquo;rich&rdquo;, &ldquo;floral&rdquo;) are illustrative and reflect the experience of the majority of customers. Because scent perception is subjective and varies between individuals, a personal dislike of or difference in scent experience does not constitute a product mismatch and is not grounds for a claim under this clause.
               </li>
               <li>The product arrives damaged due to a fault in packaging or transit handling on our part.</li>
-              <li>The product leaks due to a manufacturing defect in the bottle or applicator.</li>
+              <li>
+                The product leaks due to a <strong className="text-mahogany">manufacturing defect</strong> in the bottle or applicator — meaning the leak is present upon delivery and is not caused by mishandling, dropping, exposure to heat, removal of the stopper or cap, or any other action taken after receipt. Evidence of leakage must be reported within 48 hours of delivery with photographs of the sealed product and packaging, before the product has been opened or used.
+              </li>
             </ul>
           </PolicySection>
 
@@ -153,9 +155,11 @@ export default function RefundPolicyPage() {
               <li>The scent strength or character differs from your preference — our descriptions are illustrative and based on the general experience of our customers.</li>
               <li>The product has been used (partially or fully).</li>
               <li>
-                The issue arises from abnormal use, storage, or application
-                (e.g., extreme heat exposure, direct skin application, mixing with other products).
+                The issue arises from abnormal use, storage, or application (e.g., extreme heat exposure, direct skin application, mixing with other products).
               </li>
+              <li>A leak claim is reported more than 48 hours after delivery.</li>
+              <li>A leak is caused by dropping, impact, removal of the stopper or cap, or any handling after receipt.</li>
+              <li>The product was opened or used before the leak was reported.</li>
               <li>You were aware of the issue before purchasing.</li>
               <li>The claim is made more than 7 calendar days after delivery.</li>
               <li>Photographic evidence was not provided with the claim.</li>
