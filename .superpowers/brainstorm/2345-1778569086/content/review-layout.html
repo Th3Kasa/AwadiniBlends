@@ -1,0 +1,117 @@
+<h2>Review Section Layout</h2>
+<p class="subtitle">How should the reviews section appear on a product page? Pick the layout that feels right for Awadini's luxury aesthetic.</p>
+
+<div class="cards">
+
+  <div class="card" data-choice="a" onclick="toggleSelect(this)">
+    <div class="card-image" style="padding:16px;background:#faf8f5;border-bottom:1px solid #e8e0d5;">
+      <!-- Layout A: Reviews below product details, full width -->
+      <div style="font-family:sans-serif;font-size:11px;color:#7a5c3e;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:8px;">Customer Reviews</div>
+      <!-- Average stars bar -->
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;padding-bottom:12px;border-bottom:1px solid #e8e0d5;">
+        <div style="font-size:28px;font-weight:700;color:#3d2314;">4.8</div>
+        <div>
+          <div style="color:#c9a86c;font-size:16px;letter-spacing:2px;">★★★★★</div>
+          <div style="font-size:10px;color:#9c7a5a;">24 reviews</div>
+        </div>
+      </div>
+      <!-- Two review cards side by side -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;">
+        <div style="background:white;border:1px solid #e8e0d5;border-radius:6px;padding:10px;">
+          <div style="color:#c9a86c;font-size:12px;margin-bottom:4px;">★★★★★</div>
+          <div style="font-size:10px;color:#3d2314;font-style:italic;margin-bottom:6px;">"Absolutely divine, fills the car instantly"</div>
+          <div style="font-size:9px;color:#9c7a5a;">Sarah M. · 2 days ago</div>
+        </div>
+        <div style="background:white;border:1px solid #e8e0d5;border-radius:6px;padding:10px;">
+          <div style="color:#c9a86c;font-size:12px;margin-bottom:4px;">★★★★☆</div>
+          <div style="font-size:10px;color:#3d2314;font-style:italic;margin-bottom:6px;">"Gorgeous scent, lasts all day long"</div>
+          <div style="font-size:9px;color:#9c7a5a;">James K. · 1 week ago</div>
+        </div>
+      </div>
+      <!-- Write review button -->
+      <div style="background:#c9a86c;color:#fff;text-align:center;padding:8px;border-radius:4px;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;">Write a Review</div>
+    </div>
+    <div class="card-body">
+      <h3>A — Grid layout</h3>
+      <p>Average rating summary at top, reviews in a 2-column grid below, "Write a Review" button at the bottom. Clean and modern.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="b" onclick="toggleSelect(this)">
+    <div class="card-image" style="padding:16px;background:#faf8f5;border-bottom:1px solid #e8e0d5;">
+      <!-- Layout B: Stacked list with form inline -->
+      <div style="font-family:sans-serif;font-size:11px;color:#7a5c3e;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:8px;">Customer Reviews</div>
+      <!-- Avg + write button on same row -->
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid #e8e0d5;">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <div style="font-size:24px;font-weight:700;color:#3d2314;">4.8</div>
+          <div style="color:#c9a86c;font-size:13px;">★★★★★</div>
+          <div style="font-size:9px;color:#9c7a5a;">24 reviews</div>
+        </div>
+        <div style="background:#c9a86c;color:#fff;padding:5px 10px;border-radius:4px;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;">+ Write Review</div>
+      </div>
+      <!-- Stacked reviews -->
+      <div style="border-bottom:1px solid #f0e8df;padding-bottom:8px;margin-bottom:8px;">
+        <div style="display:flex;justify-content:space-between;margin-bottom:3px;">
+          <div style="color:#c9a86c;font-size:12px;">★★★★★</div>
+          <div style="font-size:9px;color:#9c7a5a;">Sarah M. · 2 days ago</div>
+        </div>
+        <div style="font-size:10px;color:#3d2314;font-style:italic;">"Absolutely divine, fills the car instantly"</div>
+      </div>
+      <div style="border-bottom:1px solid #f0e8df;padding-bottom:8px;">
+        <div style="display:flex;justify-content:space-between;margin-bottom:3px;">
+          <div style="color:#c9a86c;font-size:12px;">★★★★☆</div>
+          <div style="font-size:9px;color:#9c7a5a;">James K. · 1 week ago</div>
+        </div>
+        <div style="font-size:10px;color:#3d2314;font-style:italic;">"Gorgeous scent, lasts all day long"</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>B — Stacked list</h3>
+      <p>Average + "Write Review" button on one row, reviews stacked as a feed below. More editorial, like a luxury magazine.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="c" onclick="toggleSelect(this)">
+    <div class="card-image" style="padding:16px;background:#faf8f5;border-bottom:1px solid #e8e0d5;">
+      <!-- Layout C: Side by side — reviews left, form right -->
+      <div style="font-family:sans-serif;font-size:11px;color:#7a5c3e;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:8px;">Customer Reviews</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <!-- Left: reviews -->
+        <div>
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px;">
+            <div style="font-size:20px;font-weight:700;color:#3d2314;">4.8</div>
+            <div>
+              <div style="color:#c9a86c;font-size:11px;">★★★★★</div>
+              <div style="font-size:8px;color:#9c7a5a;">24 reviews</div>
+            </div>
+          </div>
+          <div style="border-bottom:1px solid #f0e8df;padding-bottom:6px;margin-bottom:6px;">
+            <div style="color:#c9a86c;font-size:10px;margin-bottom:2px;">★★★★★</div>
+            <div style="font-size:9px;color:#3d2314;font-style:italic;">"Divine, fills the car instantly"</div>
+            <div style="font-size:8px;color:#9c7a5a;margin-top:2px;">Sarah M. · 2 days ago</div>
+          </div>
+          <div>
+            <div style="color:#c9a86c;font-size:10px;margin-bottom:2px;">★★★★☆</div>
+            <div style="font-size:9px;color:#3d2314;font-style:italic;">"Gorgeous, lasts all day"</div>
+            <div style="font-size:8px;color:#9c7a5a;margin-top:2px;">James K. · 1 week ago</div>
+          </div>
+        </div>
+        <!-- Right: form -->
+        <div style="background:white;border:1px solid #e8e0d5;border-radius:6px;padding:10px;">
+          <div style="font-size:9px;color:#7a5c3e;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:6px;">Leave a Review</div>
+          <div style="color:#c9a86c;font-size:16px;letter-spacing:3px;margin-bottom:6px;">☆☆☆☆☆</div>
+          <div style="height:5px;background:#f0e8df;border-radius:3px;margin-bottom:5px;"></div>
+          <div style="height:5px;background:#f0e8df;border-radius:3px;width:70%;margin-bottom:5px;"></div>
+          <div style="height:5px;background:#f0e8df;border-radius:3px;width:85%;margin-bottom:8px;"></div>
+          <div style="background:#c9a86c;color:white;text-align:center;padding:5px;border-radius:3px;font-size:8px;letter-spacing:0.1em;text-transform:uppercase;">Submit</div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>C — Split panel</h3>
+      <p>Reviews on the left, write-a-review form always visible on the right. Both visible at once — most inviting for new reviews.</p>
+    </div>
+  </div>
+
+</div>
