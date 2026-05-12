@@ -6,12 +6,15 @@ import { motion } from "framer-motion";
 import type { Scent } from "@/types";
 import { formatCurrency } from "@/lib/utils";
 import { getProductImages } from "@/lib/scent-images";
+import { StarRating } from "@/components/reviews/StarRating";
+import type { RatingSummary } from "@/lib/reviews";
 
 interface FeaturedCardProps {
   scent: Scent;
+  avgRating?: RatingSummary;
 }
 
-export function FeaturedCard({ scent }: FeaturedCardProps) {
+export function FeaturedCard({ scent, avgRating }: FeaturedCardProps) {
   const [mainImage] = getProductImages(scent.slug);
   return (
     <motion.div
@@ -65,6 +68,9 @@ export function FeaturedCard({ scent }: FeaturedCardProps) {
                 <span className="font-serif text-2xl text-mahogany">
                   {formatCurrency(scent.price)}
                 </span>
+                {avgRating && avgRating.count > 0 && (
+                  <StarRating average={avgRating.average} count={avgRating.count} size="sm" />
+                )}
                 <span className="text-xs text-gold/70 font-medium group-hover:text-gold transition-colors duration-200 flex items-center gap-1.5 whitespace-nowrap">
                   Shop now
                   <svg className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>

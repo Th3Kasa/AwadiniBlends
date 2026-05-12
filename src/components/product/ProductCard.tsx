@@ -6,10 +6,13 @@ import { motion } from "framer-motion";
 import type { Scent } from "@/types";
 import { formatCurrency } from "@/lib/utils";
 import { getProductImages } from "@/lib/scent-images";
+import { StarRating } from "@/components/reviews/StarRating";
+import type { RatingSummary } from "@/lib/reviews";
 
 interface ProductCardProps {
   scent: Scent;
   index: number;
+  avgRating?: RatingSummary;
 }
 
 // Warm light gradients — intentional placeholder while images load
@@ -25,7 +28,7 @@ const gradients: Record<string, string> = {
   "forget-me-not":   "from-[#182035] via-[#101522] to-[#0a0d16]",
 };
 
-export function ProductCard({ scent, index }: ProductCardProps) {
+export function ProductCard({ scent, index, avgRating }: ProductCardProps) {
   const gradient = gradients[scent.slug] ?? "from-[#1e1e1e] via-[#141414] to-[#0a0a0a]";
   const [mainImage] = getProductImages(scent.slug);
 
@@ -91,6 +94,11 @@ export function ProductCard({ scent, index }: ProductCardProps) {
                 {formatCurrency(scent.price)}
               </span>
             </div>
+            {avgRating && avgRating.count > 0 && (
+              <div className="mt-1.5">
+                <StarRating average={avgRating.average} count={avgRating.count} size="sm" />
+              </div>
+            )}
             <p className="hidden sm:block text-xs text-mahogany/50 italic leading-relaxed line-clamp-2">
               {scent.tagline}
             </p>
