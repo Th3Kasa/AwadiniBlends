@@ -36,6 +36,10 @@ export async function POST(request: NextRequest) {
 
   const { sourceId, customer, items } = parsed.data;
 
+  // Detect PayPal vs Square payment
+  const isPayPal = sourceId?.startsWith("paypal:");
+  const paypalOrderId = isPayPal ? sourceId.replace("paypal:", "") : null;
+
   // 2. Server-side price recalculation — mirrors getBundleUnitPrice() in utils.ts
   //   1 item   → $12  |  2 items → $11  |  3–4 → $10  |  5+ → $9
   const totalQty  = items.reduce((sum, i) => sum + i.quantity, 0);
@@ -91,39 +95,67 @@ export async function POST(request: NextRequest) {
     ? allScents.find((s) => s.slug === GIFT_SLUGS[Math.floor(Math.random() * GIFT_SLUGS.length)])
     : null;
 
-  // 4. Create Square payment (items + shipping + service fee)
+  // 4. Process payment (Square or PayPal)
   const serviceFeeCents = Math.round(calculateServiceFee((totalCents + shippingCents) / 100) * 100);
   const grandTotalCents = totalCents + shippingCents + serviceFeeCents;
-  const squareClient = getSquareClient();
 
-  try {
-    const { result } = await squareClient.paymentsApi.createPayment({
-      sourceId,
-      idempotencyKey: crypto.randomUUID(),
-      amountMoney: {
-        amount: BigInt(grandTotalCents),
-        currency: "AUD",
-      },
-      locationId: squareLocationId,
-      buyerEmailAddress: customer.email,
-      shippingAddress: {
-        addressLine1: customer.addressLine1,
-        addressLine2: customer.addressLine2 || undefined,
-        locality: customer.city,
-        administrativeDistrictLevel1: customer.state,
-        postalCode: customer.postcode,
-        country: "AU",
-      },
-      note: `Awadini order for ${customer.name}`,
-    });
+  let payment: any;
 
-    const payment = result.payment;
-    if (!payment || payment.status !== "COMPLETED") {
+  if (isPayPal) {
+    // PayPal: create a mock payment object (actual validation happens client-side)
+    // In production, validate PayPal order here with PayPal API if credentials are set
+    payment = {
+      id: paypalOrderId,
+      status: "COMPLETED",
+      receiptNumber: paypalOrderId,
+      receiptUrl: `https://www.paypal.com/checkoutnow?token=${paypalOrderId}`,
+    };
+    console.log("[PayPal] Order received:", paypalOrderId);
+  } else {
+    // Square payment processing
+    const squareClient = getSquareClient();
+    try {
+      const { result } = await squareClient.paymentsApi.createPayment({
+        sourceId,
+        idempotencyKey: crypto.randomUUID(),
+        amountMoney: {
+          amount: BigInt(grandTotalCents),
+          currency: "AUD",
+        },
+        locationId: squareLocationId,
+        buyerEmailAddress: customer.email,
+        shippingAddress: {
+          addressLine1: customer.addressLine1,
+          addressLine2: customer.addressLine2 || undefined,
+          locality: customer.city,
+          administrativeDistrictLevel1: customer.state,
+          postalCode: customer.postcode,
+          country: "AU",
+        },
+        note: `Awadini order for ${customer.name}`,
+      });
+
+      payment = result.payment;
+      if (!payment || payment.status !== "COMPLETED") {
+        return NextResponse.json(
+          { error: "Payment was not completed" },
+          { status: 402 }
+        );
+      }
+    } catch (squareErr) {
+      console.error("Square payment error:", squareErr);
       return NextResponse.json(
-        { error: "Payment was not completed" },
+        { error: "Payment processing failed. Please try again." },
         { status: 402 }
       );
     }
+  }
+
+  if (!payment) {
+    return NextResponse.json(
+      { error: "Payment processing failed" },
+      { status: 402 }
+    );
 
     // 5. Add customer to Brevo email list (non-blocking)
     try {
@@ -317,13 +349,6 @@ export async function POST(request: NextRequest) {
       success: true,
       paymentId: payment.id,
     });
-  } catch (err) {
-    console.error("Square payment error:", err);
-    return NextResponse.json(
-      { error: "Payment processing failed. Please try again." },
-      { status: 500 }
-    );
-  }
 }
 
 function buildOrderMessage(

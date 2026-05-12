@@ -13,7 +13,12 @@
 import { useEffect, useRef, useState } from "react";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-declare global { interface Window { Square?: any } }
+declare global {
+  interface Window {
+    Square?: any;
+    paypal?: any;
+  }
+}
 
 interface Props {
   onTokenReceived: (token: string) => void;
@@ -71,19 +76,17 @@ function loadSquareSDK(): Promise<void> {
 export function SquarePaymentForm({ onTokenReceived, isSubmitting, totalAmount }: Props) {
   const cardContainerRef   = useRef<HTMLDivElement>(null);
   const googlePayRef       = useRef<HTMLDivElement>(null);
-  const applePayRef        = useRef<HTMLDivElement>(null);
+  const paypalContainerRef = useRef<HTMLDivElement>(null);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const cardRef            = useRef<any>(null);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const paymentsRef        = useRef<any>(null); // Square payments instance, shared between effects
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const googlePayButtonRef = useRef<any>(null);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const applePayButtonRef  = useRef<any>(null);
 
   const [cardReady,       setCardReady]       = useState(false);
   const [googlePayReady,  setGooglePayReady]  = useState(false);
-  const [applePayReady,   setApplePayReady]   = useState(false);
+  const [paypalReady,     setPaypalReady]     = useState(false);
   const [tokenizing,      setTokenizing]      = useState(false);
   const [cardError,       setCardError]       = useState("");
 
@@ -195,42 +198,56 @@ export function SquarePaymentForm({ onTokenReceived, isSubmitting, totalAmount }
         setGooglePayReady(false);
       }
 
-      // ── Apple Pay ───────────────────────────────────────────────────────────
-      try {
-        if (applePayButtonRef.current) {
-          applePayButtonRef.current.destroy?.().catch(() => {});
-          applePayButtonRef.current = null;
-          setApplePayReady(false);
-        }
-        console.log("[Square] Initialising Apple Pay…");
-        const applePay = await payments.applePay(paymentRequest);
-        if (!mounted || !applePayRef.current) { applePay.destroy?.().catch(() => {}); return; }
-        await applePay.attach(applePayRef.current);
-        if (!mounted) { applePay.destroy?.().catch(() => {}); return; }
-        applePayButtonRef.current = applePay;
-        applePay.addEventListener("click", async () => {
-          setCardError("");
-          setTokenizing(true);
-          try {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            const result: any = await applePay.tokenize();
-            if (result.status === "OK" && result.token) {
-              onTokenReceived(result.token);
-            } else {
-              const msgs = (result.errors ?? []).map((e: { message: string }) => e.message).join(" ");
-              setCardError(msgs || "Apple Pay could not complete. Please try card payment.");
-            }
-          } catch {
-            setCardError("Apple Pay failed. Please try card payment below.");
-          } finally {
-            setTokenizing(false);
+      // ── PayPal ──────────────────────────────────────────────────────────────
+      if (!window.paypal) {
+        const script = document.createElement("script");
+        script.src = `https://www.paypal.com/sdk/js?client-id=${process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID}&currency=AUD`;
+        script.async = true;
+        script.onload = () => {
+          if (mounted && paypalContainerRef.current && window.paypal) {
+            initPayPal();
           }
-        });
-        setApplePayReady(true);
-        console.log("[Square] Apple Pay ready ✓");
-      } catch (apErr) {
-        console.warn("[Square] Apple Pay unavailable:", apErr);
-        setApplePayReady(false);
+        };
+        document.head.appendChild(script);
+      } else if (mounted && paypalContainerRef.current) {
+        initPayPal();
+      }
+
+      function initPayPal() {
+        if (!mounted || !paypalContainerRef.current || !window.paypal) return;
+        paypalContainerRef.current.innerHTML = "";
+
+        window.paypal
+          .Buttons({
+            createOrder: (_data: any, actions: any) => {
+              return actions.order.create({
+                purchase_units: [{ amount: { value: totalAmount.toFixed(2), currency_code: "AUD" } }],
+              });
+            },
+            onApprove: async (data: any, actions: any) => {
+              setCardError("");
+              setTokenizing(true);
+              try {
+                const order = await actions.order.capture();
+                // Send PayPal order ID as a special token
+                onTokenReceived(`paypal:${order.id}`);
+              } catch {
+                setCardError("PayPal payment failed. Please try again or use card payment.");
+              } finally {
+                setTokenizing(false);
+              }
+            },
+            onError: (err: any) => {
+              setCardError(err.message || "PayPal error. Please try again or use card payment.");
+            },
+            style: { layout: "vertical", color: "gold", shape: "rect", label: "pay" },
+          })
+          .render(paypalContainerRef.current)
+          .then(() => setPaypalReady(true))
+          .catch((err: any) => {
+            console.warn("[PayPal] Failed to render:", err);
+            setPaypalReady(false);
+          });
       }
     }
 
@@ -240,8 +257,6 @@ export function SquarePaymentForm({ onTokenReceived, isSubmitting, totalAmount }
       mounted = false;
       googlePayButtonRef.current?.destroy?.().catch(() => {});
       googlePayButtonRef.current = null;
-      applePayButtonRef.current?.destroy?.().catch(() => {});
-      applePayButtonRef.current = null;
     };
     // cardReady is included so this effect re-runs once the card effect has
     // set paymentsRef.current (without it the guard above would exit early on
@@ -283,15 +298,6 @@ export function SquarePaymentForm({ onTokenReceived, isSubmitting, totalAmount }
       ── */}
       <div className="flex gap-3 mb-4">
         <div
-          ref={applePayRef}
-          className="rounded-md overflow-hidden"
-          style={{
-            flex:      applePayReady ? "1" : "0 0 0",
-            minHeight: applePayReady ? "48px" : undefined,
-            display:   applePayReady ? "block" : "none",
-          }}
-        />
-        <div
           ref={googlePayRef}
           className="rounded-md overflow-hidden"
           style={{
@@ -300,10 +306,19 @@ export function SquarePaymentForm({ onTokenReceived, isSubmitting, totalAmount }
             display:   googlePayReady ? "block" : "none",
           }}
         />
+        <div
+          ref={paypalContainerRef}
+          className="rounded-md overflow-hidden"
+          style={{
+            flex:      paypalReady ? "1" : "0 0 0",
+            minHeight: paypalReady ? "auto" : undefined,
+            display:   paypalReady ? "block" : "none",
+          }}
+        />
       </div>
 
       {/* Divider */}
-      {(applePayReady || googlePayReady) && (
+      {(googlePayReady || paypalReady) && (
         <div className="flex items-center gap-3 mb-4">
           <div className="flex-1 h-px bg-mahogany/10" />
           <span className="text-xs text-mahogany/35 tracking-widest uppercase">or pay by card</span>
