@@ -198,57 +198,6 @@ export function SquarePaymentForm({ onTokenReceived, isSubmitting, totalAmount }
         setGooglePayReady(false);
       }
 
-      // ── PayPal ──────────────────────────────────────────────────────────────
-      if (!window.paypal) {
-        const script = document.createElement("script");
-        script.src = `https://www.paypal.com/sdk/js?client-id=${process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID}&currency=AUD`;
-        script.async = true;
-        script.onload = () => {
-          if (mounted && paypalContainerRef.current && window.paypal) {
-            initPayPal();
-          }
-        };
-        document.head.appendChild(script);
-      } else if (mounted && paypalContainerRef.current) {
-        initPayPal();
-      }
-
-      function initPayPal() {
-        if (!mounted || !paypalContainerRef.current || !window.paypal) return;
-        paypalContainerRef.current.innerHTML = "";
-
-        window.paypal
-          .Buttons({
-            createOrder: (_data: any, actions: any) => {
-              return actions.order.create({
-                purchase_units: [{ amount: { value: totalAmount.toFixed(2), currency_code: "AUD" } }],
-              });
-            },
-            onApprove: async (data: any, actions: any) => {
-              setCardError("");
-              setTokenizing(true);
-              try {
-                const order = await actions.order.capture();
-                // Send PayPal order ID as a special token
-                onTokenReceived(`paypal:${order.id}`);
-              } catch {
-                setCardError("PayPal payment failed. Please try again or use card payment.");
-              } finally {
-                setTokenizing(false);
-              }
-            },
-            onError: (err: any) => {
-              setCardError(err.message || "PayPal error. Please try again or use card payment.");
-            },
-            style: { layout: "vertical", color: "gold", shape: "rect", label: "pay" },
-          })
-          .render(paypalContainerRef.current)
-          .then(() => setPaypalReady(true))
-          .catch((err: any) => {
-            console.warn("[PayPal] Failed to render:", err);
-            setPaypalReady(false);
-          });
-      }
     }
 
     initWallets();
@@ -263,6 +212,67 @@ export function SquarePaymentForm({ onTokenReceived, isSubmitting, totalAmount }
     // every render until the card finishes initialising).
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [totalAmount, cardReady]);
+
+  // ── Effect 3: PayPal (independent of Square) ──────────────────────────────
+  useEffect(() => {
+    let mounted = true;
+    const clientId = process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID;
+    if (!clientId) return;
+
+    function renderPayPal() {
+      if (!mounted || !paypalContainerRef.current || !window.paypal) return;
+      paypalContainerRef.current.innerHTML = "";
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      window.paypal.Buttons({
+        createOrder: (_data: any, actions: any) => {
+          return actions.order.create({
+            purchase_units: [{ amount: { value: totalAmount.toFixed(2), currency_code: "AUD" } }],
+          });
+        },
+        onApprove: async (_data: any, actions: any) => {
+          setCardError("");
+          setTokenizing(true);
+          try {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const order = await actions.order.capture();
+            onTokenReceived(`paypal:${order.id}`);
+          } catch {
+            setCardError("PayPal payment failed. Please try again or pay by card.");
+          } finally {
+            setTokenizing(false);
+          }
+        },
+        onError: () => {
+          setCardError("PayPal error. Please try again or pay by card.");
+        },
+        style: { layout: "vertical", color: "gold", shape: "rect", label: "pay" },
+      })
+        .render(paypalContainerRef.current)
+        .then(() => { if (mounted) setPaypalReady(true); })
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        .catch((err: any) => console.warn("[PayPal] render failed:", err));
+    }
+
+    if (window.paypal) {
+      renderPayPal();
+    } else {
+      const existing = document.getElementById("paypal-sdk");
+      if (existing) {
+        existing.addEventListener("load", renderPayPal, { once: true });
+      } else {
+        const script = document.createElement("script");
+        script.id  = "paypal-sdk";
+        script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}&currency=AUD`;
+        script.async = true;
+        script.addEventListener("load", renderPayPal, { once: true });
+        document.head.appendChild(script);
+      }
+    }
+
+    return () => { mounted = false; };
+  // Re-render when amount changes so the PayPal order value is correct
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [totalAmount]);
 
   // ── Tokenise card ──────────────────────────────────────────────────────────
   const handlePay = async () => {
