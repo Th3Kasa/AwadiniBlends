@@ -4,6 +4,7 @@ import { ProductGrid } from "@/components/product/ProductGrid";
 import { BundleSection } from "@/components/product/BundleSection";
 import scents from "@/data/scents.json";
 import type { Scent } from "@/types";
+import { getAllProductRatings } from "@/lib/reviews";
 
 const SITE_URL = "https://awadini.vercel.app";
 
@@ -31,11 +32,12 @@ export const metadata: Metadata = {
   },
 };
 
-export default function HomePage() {
+export default async function HomePage() {
+  const ratings = await getAllProductRatings();
   return (
     <>
       <Hero />
-      <ProductGrid scents={scents as Scent[]} />
+      <ProductGrid scents={scents as Scent[]} ratings={ratings} />
       <BundleSection />
     </>
   );

@@ -5,6 +5,8 @@ import type { Scent } from "@/types";
 import { BundleSection } from "@/components/product/BundleSection";
 import { ProductDetails } from "./ProductDetails";
 import { ProductImageGallery } from "./ProductImageGallery";
+import { getProductReviews } from "@/lib/reviews";
+import { ProductReviews } from "@/components/reviews/ProductReviews";
 
 const SITE_URL = "https://awadini.vercel.app";
 const allScents = scents as Scent[];
@@ -55,9 +57,12 @@ export function generateMetadata({ params }: Props): Metadata {
   };
 }
 
-export default function ProductPage({ params }: Props) {
+export default async function ProductPage({ params }: Props) {
   const scent = allScents.find((s) => s.slug === params.slug);
   if (!scent) notFound();
+
+  const reviewData = await getProductReviews(scent.slug);
+  const avgRating  = { average: reviewData.average, count: reviewData.count };
 
   const productUrl = `${SITE_URL}/products/${scent.slug}`;
   const imageUrl = `${SITE_URL}${scent.image}`;
@@ -137,11 +142,12 @@ export default function ProductPage({ params }: Props) {
           <ProductImageGallery slug={scent.slug} name={scent.name} />
 
           {/* Details — animated client component */}
-          <ProductDetails scent={scent} />
+          <ProductDetails scent={scent} avgRating={avgRating} />
         </div>
       </div>
     </section>
     <BundleSection preselectedSlug={scent.slug} />
+    <ProductReviews slug={scent.slug} data={reviewData} />
     </>
   );
 }

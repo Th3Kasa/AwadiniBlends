@@ -6,9 +6,12 @@ import type { Scent } from "@/types";
 import { formatCurrency } from "@/lib/utils";
 import { FreshlyPouredBadge } from "@/components/product/FreshlyPouredBadge";
 import { AddToCartButton } from "./AddToCartButton";
+import { StarRating } from "@/components/reviews/StarRating";
+import type { RatingSummary } from "@/lib/reviews";
 
 interface Props {
   scent: Scent;
+  avgRating: RatingSummary;
 }
 
 const fadeUp = (delay: number) => ({
@@ -17,7 +20,7 @@ const fadeUp = (delay: number) => ({
   transition: { duration: 0.5, delay, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] },
 });
 
-export function ProductDetails({ scent }: Props) {
+export function ProductDetails({ scent, avgRating }: Props) {
   return (
     <div className="flex flex-col justify-center">
 
@@ -49,11 +52,16 @@ export function ProductDetails({ scent }: Props) {
         {scent.tagline}
       </motion.p>
 
-      {/* Price + divider */}
+      {/* Price + star rating + divider */}
       <motion.div {...fadeUp(0.2)}>
         <p className="text-4xl font-serif text-mahogany">
           {formatCurrency(scent.price)}
         </p>
+        {avgRating.count > 0 && (
+          <div className="mt-2">
+            <StarRating average={avgRating.average} count={avgRating.count} size="md" />
+          </div>
+        )}
         <div className="w-12 h-0.5 bg-gold mt-3 mb-7" />
       </motion.div>
 

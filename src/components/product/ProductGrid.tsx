@@ -4,12 +4,14 @@ import { motion } from "framer-motion";
 import type { Scent } from "@/types";
 import { ProductCard } from "./ProductCard";
 import { FeaturedCard } from "./FeaturedCard";
+import type { RatingSummary } from "@/lib/reviews";
 
 interface ProductGridProps {
   scents: Scent[];
+  ratings: Record<string, RatingSummary>;
 }
 
-export function ProductGrid({ scents }: ProductGridProps) {
+export function ProductGrid({ scents, ratings }: ProductGridProps) {
   const visible  = scents.filter((s) => !s.hidden);
   const featured = visible.filter((s) => s.featured);
   const rest     = visible.filter((s) => !s.featured);
@@ -39,7 +41,7 @@ export function ProductGrid({ scents }: ProductGridProps) {
         {featured.length > 0 && (
           <div className="flex justify-center mb-10">
             <div className="w-full max-w-md">
-              <FeaturedCard scent={featured[0]} />
+              <FeaturedCard scent={featured[0]} avgRating={ratings[featured[0].slug]} />
             </div>
           </div>
         )}
@@ -62,7 +64,7 @@ export function ProductGrid({ scents }: ProductGridProps) {
         {/* Rest — 2-col on mobile, 3-col from sm */}
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-6">
           {rest.map((scent, index) => (
-            <ProductCard key={scent.slug} scent={scent} index={index + 1} />
+            <ProductCard key={scent.slug} scent={scent} index={index + 1} avgRating={ratings[scent.slug]} />
           ))}
         </div>
 
