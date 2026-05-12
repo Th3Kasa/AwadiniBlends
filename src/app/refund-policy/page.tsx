@@ -76,8 +76,10 @@ export default function RefundPolicyPage() {
               A product failure may include (but is not limited to):
             </p>
             <ul className="mt-2 ml-4 space-y-1 list-disc list-outside text-mahogany">
-              <li>The product is not of acceptable quality (e.g., contaminated, spoiled, or has an abnormal smell inconsistent with the product description).</li>
-              <li>The product does not match its description on our website.</li>
+              <li>The product is not of acceptable quality (e.g., contaminated, spoiled, or completely odourless when it should not be).</li>
+              <li>
+                The product does not match an <strong className="text-mahogany">objective, verifiable</strong> attribute stated on our website — such as volume (e.g., 8ml), bottle type, or the specific named scent delivered. Descriptions of fragrance character (e.g., &ldquo;warm&rdquo;, &ldquo;rich&rdquo;, &ldquo;floral&rdquo;) are illustrative and reflect the experience of the majority of customers. Because scent perception is subjective and varies between individuals, a personal dislike of or difference in scent experience does not constitute a product mismatch and is not grounds for a claim under this clause.
+              </li>
               <li>The product arrives damaged due to a fault in packaging or transit handling on our part.</li>
               <li>The product leaks due to a manufacturing defect in the bottle or applicator.</li>
             </ul>
@@ -85,31 +87,37 @@ export default function RefundPolicyPage() {
 
           <PolicySection title="3. How to Make a Claim">
             <p>
-              If you believe your product is defective or does not match its
-              description, you must notify us within{" "}
+              If you believe your product is defective or does not match an objective attribute stated on our website, you must notify us within{" "}
               <strong className="text-mahogany">7 calendar days</strong> of
-              receiving your order. To make a claim:
+              receiving your order. Claims submitted after this period will not be accepted. To make a valid claim, all of the following are required:
             </p>
             <ol className="mt-3 ml-4 space-y-2 list-decimal list-outside text-mahogany/85">
               <li>
-                Contact us at{" "}
+                Contact us via our{" "}
                 <Link
                   href="/contact"
                   className="text-gold hover:text-gold-light underline underline-offset-2"
                 >
-                  awadini.com.au/contact
+                  contact form
                 </Link>{" "}
-                or email us directly.
+                with your order number and a clear description of the specific defect.
               </li>
               <li>
-                Provide your order number, a description of the issue, and
-                clear photographs of the product and packaging.
+                Attach <strong className="text-mahogany">clear photographs</strong> of the product, the label, and the original packaging. Claims submitted without photographic evidence will not be assessed.
               </li>
               <li>
-                We will assess your claim within 3 business days and advise
-                you of the outcome.
+                The product must be <strong className="text-mahogany">substantially unused</strong>. Products that have been used, partially emptied, or tampered with are not eligible for a claim.
+              </li>
+              <li>
+                We reserve the right to request the return of the product before issuing any remedy. Return shipping will be reimbursed only if the claim is upheld.
+              </li>
+              <li>
+                We will assess your claim within 3 business days of receiving all required information and advise you of the outcome.
               </li>
             </ol>
+            <p className="mt-3 text-mahogany/70 text-xs italic">
+              We take all claims seriously. Submitting a false or misleading claim may result in refusal of the claim and reporting to relevant consumer protection authorities.
+            </p>
           </PolicySection>
 
           <PolicySection title="4. Remedies">
@@ -141,15 +149,17 @@ export default function RefundPolicyPage() {
             <ul className="mt-3 ml-4 space-y-1 list-disc list-outside text-mahogany/85">
               <li>You have changed your mind about the purchase.</li>
               <li>You chose the wrong scent.</li>
+              <li>You dislike the scent, or find it different from your expectation — fragrance perception is personal and subjective.</li>
+              <li>The scent strength or character differs from your preference — our descriptions are illustrative and based on the general experience of our customers.</li>
               <li>The product has been used (partially or fully).</li>
               <li>
                 The issue arises from abnormal use, storage, or application
-                (e.g., extreme heat exposure, mixing with other products).
+                (e.g., extreme heat exposure, direct skin application, mixing with other products).
               </li>
-              <li>
-                You were aware of the defect before purchasing.
-              </li>
-              <li>The claim is made more than 7 days after delivery.</li>
+              <li>You were aware of the issue before purchasing.</li>
+              <li>The claim is made more than 7 calendar days after delivery.</li>
+              <li>Photographic evidence was not provided with the claim.</li>
+              <li>The claimed defect is not objectively verifiable.</li>
             </ul>
           </PolicySection>
 
