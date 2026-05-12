@@ -5,12 +5,14 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import type { Scent } from "@/types";
 import { formatCurrency } from "@/lib/utils";
+import { getProductImages } from "@/lib/scent-images";
 
 interface FeaturedCardProps {
   scent: Scent;
 }
 
 export function FeaturedCard({ scent }: FeaturedCardProps) {
+  const [mainImage] = getProductImages(scent.slug);
   return (
     <motion.div
       initial={{ opacity: 0, y: 32 }}
@@ -36,7 +38,7 @@ export function FeaturedCard({ scent }: FeaturedCardProps) {
           <div className="relative overflow-hidden bg-gradient-to-b from-[#3d2410] via-[#2a1808] to-[#1a0f05] aspect-square">
             <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(201,168,108,0.18)_0%,transparent_65%)]" />
             <Image
-              src={scent.image}
+              src={mainImage}
               alt={`${scent.name} luxury car fragrance oil by Awadini`}
               fill
               className="object-cover transition-transform duration-700 group-hover:scale-103"

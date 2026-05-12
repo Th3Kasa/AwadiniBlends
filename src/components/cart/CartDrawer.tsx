@@ -6,6 +6,7 @@ import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { useCartStore } from "@/store/cart";
 import { formatCurrency, getBundleUnitPrice } from "@/lib/utils";
+import { getProductImages } from "@/lib/scent-images";
 
 // Bundle tier labels shown in the drawer header badge
 function getBundleLabel(totalQty: number): { label: string; colour: string } | null {
@@ -126,7 +127,7 @@ export function CartDrawer() {
                       <li key={item.scent.slug}
                         className="flex gap-4 pb-5 border-b border-mahogany/10 last:border-0">
                         <div className="relative w-20 h-20 rounded-lg overflow-hidden bg-smoke flex-shrink-0">
-                          <Image src={item.scent.image} alt={item.scent.name}
+                          <Image src={getProductImages(item.scent.slug)[0]} alt={item.scent.name}
                             fill className="object-cover" sizes="80px" />
                         </div>
 
@@ -220,7 +221,7 @@ export function CartDrawer() {
                   or{" "}
                   <a href="https://www.tiktok.com/@awadini.au" target="_blank" rel="noopener noreferrer"
                     className="text-gold hover:underline font-medium">TikTok</a>{" "}
-                  to arrange collection in Sydney.
+                  to arrange collection.
                 </div>
 
                 <Link
