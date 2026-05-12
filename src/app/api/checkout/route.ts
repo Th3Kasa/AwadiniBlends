@@ -156,8 +156,9 @@ export async function POST(request: NextRequest) {
       { error: "Payment processing failed" },
       { status: 402 }
     );
+  }
 
-    // 5. Add customer to Brevo email list (non-blocking)
+  // 5. Add customer to Brevo email list (non-blocking)
     try {
       const brevoKey = process.env.BREVO_API_KEY;
       if (brevoKey) {
