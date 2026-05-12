@@ -1,5 +1,11 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  images: {
+    formats: ["image/avif", "image/webp"],
+    minimumCacheTTL: 31536000, // 1 year
+    deviceSizes: [390, 640, 768, 1024, 1280, 1920],
+    imageSizes: [64, 128, 256, 384, 512],
+  },
   async headers() {
     return [
       {

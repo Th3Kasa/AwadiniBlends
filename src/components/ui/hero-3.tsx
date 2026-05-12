@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
@@ -110,14 +111,16 @@ export const AnimatedMarqueeHero: React.FC<AnimatedMarqueeHeroProps> = ({
           {duplicatedImages.map((src, index) => (
             <div
               key={index}
-              className="relative aspect-[3/4] h-44 sm:h-60 md:h-72 flex-shrink-0"
+              className="relative aspect-[3/4] h-44 sm:h-60 md:h-72 flex-shrink-0 rounded-2xl overflow-hidden shadow-lg shadow-mahogany/20 ring-1 ring-mahogany/10"
               style={{ rotate: `${index % 2 === 0 ? -2 : 5}deg` }}
             >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
+              <Image
                 src={src}
                 alt=""
-                className="w-full h-full object-cover rounded-2xl shadow-lg shadow-mahogany/20 ring-1 ring-mahogany/10"
+                fill
+                priority={index < 6}
+                sizes="(max-width: 640px) 33vw, (max-width: 1024px) 20vw, 15vw"
+                className="object-cover"
               />
             </div>
           ))}
