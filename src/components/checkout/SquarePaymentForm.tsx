@@ -339,11 +339,8 @@ export function SquarePaymentForm({ onTokenReceived, isSubmitting, totalAmount }
               }
             }}
             disabled={isBusy}
-            className="flex-1 h-12 rounded-lg bg-black text-white font-semibold text-sm flex items-center justify-center gap-2 hover:bg-gray-900 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            className="flex-1 h-12 rounded-lg bg-[#1a1a1a] text-white text-sm font-medium tracking-wide flex items-center justify-center hover:bg-black disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
           >
-            <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.6 0 12 0zm0 22c-5.5 0-10-4.5-10-10S6.5 2 12 2s10 4.5 10 10-4.5 10-10 10z"/>
-            </svg>
             G Pay
           </button>
         )}
@@ -352,20 +349,15 @@ export function SquarePaymentForm({ onTokenReceived, isSubmitting, totalAmount }
         {paypalReady && (
           <button
             type="button"
-            onClick={async () => {
-              if (!paypalButtonsRef.current || isBusy) return;
+            onClick={() => {
+              if (isBusy) return;
               setCardError("");
-              // Click the hidden PayPal button or trigger its flow
               const hiddenButton = paypalContainerRef.current?.querySelector("button");
               if (hiddenButton) hiddenButton.click();
             }}
             disabled={isBusy}
-            className="flex-1 h-12 rounded-lg bg-[#FFC439] text-[#003087] font-bold text-sm flex items-center justify-center gap-1.5 hover:brightness-95 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+            className="flex-1 h-12 rounded-lg bg-[#FFC439] text-[#003087] text-sm font-bold tracking-wide flex items-center justify-center hover:bg-[#f0b429] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
           >
-            <span>Pay</span>
-            <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M8.4 2.4c-.8 0-1.4.6-1.4 1.4v17.2c0 .8.6 1.4 1.4 1.4h7.2c.8 0 1.4-.6 1.4-1.4V3.8c0-.8-.6-1.4-1.4-1.4H8.4z"/>
-            </svg>
             PayPal
           </button>
         )}
