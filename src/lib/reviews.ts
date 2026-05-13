@@ -1,5 +1,6 @@
-// src/lib/reviews.ts
-import { sql } from "@vercel/postgres";
+import { neon } from "@neondatabase/serverless";
+
+const sql = neon(process.env.POSTGRES_URL!);
 
 export interface Review {
   id: number;
@@ -23,7 +24,7 @@ export interface RatingSummary {
 
 /** Fetch all reviews for a single product slug, newest first. */
 export async function getProductReviews(slug: string): Promise<ReviewSummary> {
-  const { rows } = await sql`
+  const rows = await sql`
     SELECT id, slug, name, rating, body, created_at
     FROM reviews
     WHERE slug = ${slug}
@@ -47,7 +48,7 @@ export async function getProductReviews(slug: string): Promise<ReviewSummary> {
 
 /** Fetch average rating + count for every slug in one query (used on home page). */
 export async function getAllProductRatings(): Promise<Record<string, RatingSummary>> {
-  const { rows } = await sql`
+  const rows = await sql`
     SELECT
       slug,
       ROUND(AVG(rating)::numeric, 1)::float AS average,
