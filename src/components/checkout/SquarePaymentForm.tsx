@@ -247,7 +247,7 @@ export function SquarePaymentForm({ onTokenReceived, isSubmitting, totalAmount }
         onError: () => {
           setCardError("PayPal error. Please try again or pay by card.");
         },
-        style: { layout: "vertical", color: "gold", shape: "rect", label: "pay" },
+        style: { layout: "vertical", color: "gold", shape: "rect", label: "pay", height: 48 },
       });
       paypalButtonsRef.current = buttons;
       buttons
@@ -358,11 +358,11 @@ export function SquarePaymentForm({ onTokenReceived, isSubmitting, totalAmount }
             <span className="text-[#003087] font-bold text-[15px] tracking-[-0.2px]">Pay</span>
             <span className="text-[#009CDE] font-bold text-[15px] tracking-[-0.2px]">Pal</span>
           </div>
-          {/* SDK iframe layer — transparent, captures real clicks */}
+          {/* SDK iframe layer — near-invisible but click-registered (opacity:0 blocks iframe events) */}
           <div
             ref={paypalContainerRef}
-            className="absolute inset-0 rounded-lg overflow-hidden opacity-0"
-            style={{ pointerEvents: isBusy ? "none" : "all" }}
+            className="absolute inset-0 rounded-lg"
+            style={{ opacity: 0.001, pointerEvents: isBusy ? "none" : "all" }}
           />
         </div>
 
