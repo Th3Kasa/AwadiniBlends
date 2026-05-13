@@ -306,21 +306,24 @@ export function SquarePaymentForm({ onTokenReceived, isSubmitting, totalAmount }
           rendering) to avoid the ref-orphan bug. Flex row naturally collapses
           hidden items so a single visible button spans full width.
       ── */}
-      <div className="flex flex-col sm:flex-row gap-3 mb-4">
+      <div className="flex flex-col sm:flex-row gap-2.5 mb-5">
+        {/* Google Pay */}
         <div
           ref={googlePayRef}
-          className="rounded-md overflow-hidden"
+          className="rounded-lg overflow-hidden"
           style={{
             flex:      googlePayReady ? "1" : "0 0 0",
-            minHeight: googlePayReady ? "48px" : undefined,
+            height:    googlePayReady ? "48px" : undefined,
             display:   googlePayReady ? "block" : "none",
           }}
         />
-        <div
-          ref={paypalContainerRef}
-          className="rounded-md overflow-hidden flex-1"
-          style={{ minHeight: "48px" }}
-        />
+        {/* PayPal */}
+        <div className="flex-1" style={{ height: "48px" }}>
+          <div
+            ref={paypalContainerRef}
+            className="rounded-lg overflow-hidden h-full"
+          />
+        </div>
       </div>
 
       <div className="flex items-center gap-3 mb-4">

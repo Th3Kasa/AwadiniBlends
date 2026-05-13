@@ -50,38 +50,41 @@ export function FeaturedCard({ scent, avgRating }: FeaturedCardProps) {
             />
           </div>
 
-          {/* Info row */}
-          <div className="px-5 py-4 sm:px-6 sm:py-5 bg-white">
-            <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 sm:gap-6">
-              {/* Left: name + tagline + notes */}
-              <div className="flex-1 min-w-0">
-                <h3 className="font-serif text-xl sm:text-2xl text-gold group-hover:text-gold/80 transition-colors duration-300 mb-1">
-                  {scent.name}
-                </h3>
-                <p className="text-sm text-mahogany/55 italic leading-relaxed">
-                  {scent.tagline}
-                </p>
-              </div>
+          {/* Info panel */}
+          <div className="px-5 pt-5 pb-6 sm:px-7 sm:pt-6 sm:pb-7 bg-white">
 
-              {/* Right: price + CTA */}
-              <div className="flex flex-row sm:flex-col items-center sm:items-end justify-between sm:justify-start gap-3 flex-shrink-0">
-                <span className="font-serif text-2xl text-mahogany">
-                  {formatCurrency(scent.price)}
-                </span>
-                {avgRating && avgRating.count > 0 && (
-                  <StarRating average={avgRating.average} count={avgRating.count} size="sm" />
-                )}
-                <span className="text-xs text-gold/70 font-medium group-hover:text-gold transition-colors duration-200 flex items-center gap-1.5 whitespace-nowrap">
-                  Shop now
-                  <svg className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
-                  </svg>
-                </span>
-                <p className="text-[10px] text-mahogany/30 tracking-wide">
-                  {scent.weight} · Hanging Diffuser Oil
-                </p>
-              </div>
+            {/* Name + tagline */}
+            <h3 className="font-serif text-2xl sm:text-3xl text-gold group-hover:text-gold/80 transition-colors duration-300 leading-tight mb-1.5">
+              {scent.name}
+            </h3>
+            <p className="text-sm text-mahogany/50 italic leading-relaxed mb-4">
+              {scent.tagline}
+            </p>
+
+            {/* Price + stars row */}
+            <div className="flex items-center justify-between mb-5">
+              <span className="font-serif text-3xl text-mahogany">
+                {formatCurrency(scent.price)}
+              </span>
+              {avgRating && avgRating.count > 0 && (
+                <StarRating average={avgRating.average} count={avgRating.count} size="sm" />
+              )}
             </div>
+
+            {/* CTA button */}
+            <div className="flex items-center justify-center gap-2 w-full py-3 rounded-lg border border-gold/40 bg-gold/5 group-hover:bg-gold group-hover:border-gold transition-all duration-300">
+              <span className="text-xs font-semibold tracking-[0.15em] uppercase text-gold group-hover:text-obsidian transition-colors duration-300">
+                Shop Now
+              </span>
+              <svg className="w-3.5 h-3.5 text-gold group-hover:text-obsidian transition-all duration-300 group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+              </svg>
+            </div>
+
+            {/* Meta */}
+            <p className="text-[10px] text-mahogany/30 tracking-wide text-center mt-3">
+              {scent.weight} · Hanging Diffuser Oil · Poured to Order
+            </p>
           </div>
 
           {/* Gold accent bar */}
