@@ -74,15 +74,17 @@ function loadSquareSDK(): Promise<void> {
 }
 
 export function SquarePaymentForm({ onTokenReceived, isSubmitting, totalAmount }: Props) {
-  const cardContainerRef   = useRef<HTMLDivElement>(null);
-  const googlePayRef       = useRef<HTMLDivElement>(null);
-  const paypalContainerRef = useRef<HTMLDivElement>(null);
+  const cardContainerRef     = useRef<HTMLDivElement>(null);
+  const googlePayRef         = useRef<HTMLDivElement>(null);
+  const paypalContainerRef   = useRef<HTMLDivElement>(null);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const cardRef            = useRef<any>(null);
+  const cardRef              = useRef<any>(null);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const paymentsRef        = useRef<any>(null); // Square payments instance, shared between effects
+  const paymentsRef          = useRef<any>(null);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const googlePayButtonRef = useRef<any>(null);
+  const googlePayButtonRef   = useRef<any>(null);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const paypalButtonsRef     = useRef<any>(null);
 
   const [cardReady,       setCardReady]       = useState(false);
   const [googlePayReady,  setGooglePayReady]  = useState(false);
@@ -223,7 +225,7 @@ export function SquarePaymentForm({ onTokenReceived, isSubmitting, totalAmount }
       if (!mounted || !paypalContainerRef.current || !window.paypal) return;
       paypalContainerRef.current.innerHTML = "";
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      window.paypal.Buttons({
+      const buttons = window.paypal.Buttons({
         createOrder: (_data: any, actions: any) => {
           return actions.order.create({
             purchase_units: [{ amount: { value: totalAmount.toFixed(2), currency_code: "AUD" } }],
@@ -246,7 +248,9 @@ export function SquarePaymentForm({ onTokenReceived, isSubmitting, totalAmount }
           setCardError("PayPal error. Please try again or pay by card.");
         },
         style: { layout: "vertical", color: "gold", shape: "rect", label: "pay" },
-      })
+      });
+      paypalButtonsRef.current = buttons;
+      buttons
         .render(paypalContainerRef.current)
         .then(() => { if (mounted) setPaypalReady(true); })
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -301,29 +305,71 @@ export function SquarePaymentForm({ onTokenReceived, isSubmitting, totalAmount }
 
   return (
     <>
-      {/* ── Wallet buttons — side by side ────────────────────────────────────
-          Containers are ALWAYS in the DOM (CSS display toggled, not conditional
-          rendering) to avoid the ref-orphan bug. Flex row naturally collapses
-          hidden items so a single visible button spans full width.
+      {/* ── Wallet buttons — custom styled, side by side ──────────────────────
+          Google Pay and PayPal SDK buttons are rendered but hidden.
+          Custom buttons trigger the SDK payments.
       ── */}
-      <div className="flex flex-col sm:flex-row gap-2.5 mb-5">
-        {/* Google Pay */}
-        <div
-          ref={googlePayRef}
-          className="rounded-lg overflow-hidden"
-          style={{
-            flex:      googlePayReady ? "1" : "0 0 0",
-            height:    googlePayReady ? "48px" : undefined,
-            display:   googlePayReady ? "block" : "none",
-          }}
-        />
-        {/* PayPal */}
-        <div className="flex-1" style={{ height: "48px" }}>
-          <div
-            ref={paypalContainerRef}
-            className="rounded-lg overflow-hidden h-full"
-          />
-        </div>
+      <div className="flex gap-2.5 mb-5">
+
+        {/* Hidden SDK containers (for SDK initialization) */}
+        <div ref={googlePayRef} style={{ display: "none" }} />
+        <div ref={paypalContainerRef} style={{ display: "none" }} />
+
+        {/* Custom Google Pay Button */}
+        {googlePayReady && (
+          <button
+            type="button"
+            onClick={async () => {
+              if (!googlePayButtonRef.current || isBusy) return;
+              setCardError("");
+              setTokenizing(true);
+              try {
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                const result: any = await googlePayButtonRef.current.tokenize();
+                if (result.status === "OK" && result.token) {
+                  onTokenReceived(result.token);
+                } else {
+                  const msgs = (result.errors ?? []).map((e: { message: string }) => e.message).join(" ");
+                  setCardError(msgs || "Google Pay could not complete. Please try card payment.");
+                }
+              } catch {
+                setCardError("Google Pay failed. Please try card payment below.");
+              } finally {
+                setTokenizing(false);
+              }
+            }}
+            disabled={isBusy}
+            className="flex-1 h-12 rounded-lg bg-black text-white font-semibold text-sm flex items-center justify-center gap-2 hover:bg-gray-900 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          >
+            <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.6 0 12 0zm0 22c-5.5 0-10-4.5-10-10S6.5 2 12 2s10 4.5 10 10-4.5 10-10 10z"/>
+            </svg>
+            G Pay
+          </button>
+        )}
+
+        {/* Custom PayPal Button */}
+        {paypalReady && (
+          <button
+            type="button"
+            onClick={async () => {
+              if (!paypalButtonsRef.current || isBusy) return;
+              setCardError("");
+              // Click the hidden PayPal button or trigger its flow
+              const hiddenButton = paypalContainerRef.current?.querySelector("button");
+              if (hiddenButton) hiddenButton.click();
+            }}
+            disabled={isBusy}
+            className="flex-1 h-12 rounded-lg bg-[#FFC439] text-[#003087] font-bold text-sm flex items-center justify-center gap-1.5 hover:brightness-95 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+          >
+            <span>Pay</span>
+            <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M8.4 2.4c-.8 0-1.4.6-1.4 1.4v17.2c0 .8.6 1.4 1.4 1.4h7.2c.8 0 1.4-.6 1.4-1.4V3.8c0-.8-.6-1.4-1.4-1.4H8.4z"/>
+            </svg>
+            PayPal
+          </button>
+        )}
+
       </div>
 
       <div className="flex items-center gap-3 mb-4">
