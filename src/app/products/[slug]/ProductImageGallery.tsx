@@ -44,6 +44,7 @@ export function ProductImageGallery({ slug, name }: Props) {
               src={src}
               alt={`${name} view ${i + 1}`}
               fill
+              priority
               className="object-cover"
               sizes="(max-width: 1024px) 33vw, 17vw"
             />

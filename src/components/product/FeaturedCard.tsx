@@ -45,7 +45,7 @@ export function FeaturedCard({ scent, avgRating }: FeaturedCardProps) {
               alt={`${scent.name} luxury car fragrance oil by Awadini`}
               fill
               className="object-cover transition-transform duration-700 group-hover:scale-103"
-              sizes="(max-width: 768px) 100vw, 896px"
+              sizes="(max-width: 640px) 100vw, 448px"
               priority
             />
           </div>
