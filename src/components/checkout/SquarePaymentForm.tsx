@@ -244,7 +244,8 @@ export function SquarePaymentForm({ onTokenReceived, isSubmitting, totalAmount }
             setTokenizing(false);
           }
         },
-        onError: () => {
+        onError: (err: unknown) => {
+          console.error("[PayPal] onError:", err);
           setCardError("PayPal error. Please try again or pay by card.");
         },
         style: { layout: "vertical", color: "gold", shape: "rect", label: "pay", height: 48 },
