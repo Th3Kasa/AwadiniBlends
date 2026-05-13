@@ -311,9 +311,8 @@ export function SquarePaymentForm({ onTokenReceived, isSubmitting, totalAmount }
       ── */}
       <div className="flex gap-2.5 mb-5">
 
-        {/* Hidden SDK containers (for SDK initialization) */}
+        {/* Hidden Google Pay SDK container */}
         <div ref={googlePayRef} style={{ display: "none" }} />
-        <div ref={paypalContainerRef} style={{ display: "none" }} />
 
         {/* Custom Google Pay Button — matches Google Pay brand style */}
         {googlePayReady && (
@@ -352,23 +351,20 @@ export function SquarePaymentForm({ onTokenReceived, isSubmitting, totalAmount }
           </button>
         )}
 
-        {/* Custom PayPal Button — matches PayPal brand style */}
-        {paypalReady && (
-          <button
-            type="button"
-            onClick={() => {
-              if (isBusy) return;
-              setCardError("");
-              const hiddenButton = paypalContainerRef.current?.querySelector("button");
-              if (hiddenButton) hiddenButton.click();
-            }}
-            disabled={isBusy}
-            className="flex-1 h-12 rounded-lg bg-[#FFC439] flex items-center justify-center gap-[3px] hover:bg-[#f0b429] disabled:opacity-40 disabled:cursor-not-allowed transition-colors shadow-sm"
-          >
+        {/* PayPal Button — custom visual with SDK iframe overlaid transparently on top */}
+        <div className="flex-1 relative h-12">
+          {/* Visual layer */}
+          <div className={`absolute inset-0 rounded-lg bg-[#FFC439] flex items-center justify-center shadow-sm pointer-events-none transition-opacity ${isBusy ? "opacity-40" : "opacity-100"}`}>
             <span className="text-[#003087] font-bold text-[15px] tracking-[-0.2px]">Pay</span>
             <span className="text-[#009CDE] font-bold text-[15px] tracking-[-0.2px]">Pal</span>
-          </button>
-        )}
+          </div>
+          {/* SDK iframe layer — transparent, captures real clicks */}
+          <div
+            ref={paypalContainerRef}
+            className="absolute inset-0 rounded-lg overflow-hidden opacity-0"
+            style={{ pointerEvents: isBusy ? "none" : "all" }}
+          />
+        </div>
 
       </div>
 
