@@ -262,7 +262,7 @@ export function SquarePaymentForm({ onTokenReceived, isSubmitting, totalAmount }
       } else {
         const script = document.createElement("script");
         script.id  = "paypal-sdk";
-        script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}&currency=AUD`;
+        script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}&currency=AUD&disable-funding=card,credit`;
         script.async = true;
         script.addEventListener("load", renderPayPal, { once: true });
         document.head.appendChild(script);
@@ -306,7 +306,7 @@ export function SquarePaymentForm({ onTokenReceived, isSubmitting, totalAmount }
           rendering) to avoid the ref-orphan bug. Flex row naturally collapses
           hidden items so a single visible button spans full width.
       ── */}
-      <div className="flex gap-3 mb-4">
+      <div className="flex flex-col sm:flex-row gap-3 mb-4">
         <div
           ref={googlePayRef}
           className="rounded-md overflow-hidden"
